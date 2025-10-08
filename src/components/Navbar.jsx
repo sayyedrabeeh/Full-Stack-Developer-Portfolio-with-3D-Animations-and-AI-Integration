@@ -32,7 +32,7 @@ function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 py-5">
         <div className="flex justify-between items-center">
-          {/* Logo */}
+        
           <div className="relative group">
             <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent cursor-pointer transition-all duration-300 hover:scale-105">
               Sayyed Rabeeh
@@ -40,12 +40,18 @@ function Navbar() {
             <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 group-hover:w-full transition-all duration-300"></div>
           </div>
 
-          {/* Desktop Navigation */}
+          
           <ul className="hidden md:flex gap-1 items-center bg-white/5 backdrop-blur-sm rounded-full px-2 py-2 border border-white/10">
             {navItems.map((item) => (
               <li key={item.id}>
                 <button
-                  onClick={() => setActiveSection(item.id)}
+                        onClick={() => {
+                        setActiveSection(item.id)
+                        const section = document.getElementById(item.id);
+                        if (section) {
+                            section.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }}
+                  }
                   className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
                     activeSection === item.id
                       ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-purple-500/50"
@@ -58,9 +64,12 @@ function Navbar() {
             ))}
           </ul>
 
-          {/* Mobile Menu Button */}
+ 
           <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                      onClick={() => {
+                          setIsMobileMenuOpen(!isMobileMenuOpen)
+                          
+                      }}
             className="md:hidden flex flex-col gap-1.5 p-2 hover:bg-white/10 rounded-lg transition-all duration-300"
           >
             <span
@@ -81,7 +90,7 @@ function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Menu */}
+        
         <div
           className={`md:hidden overflow-hidden transition-all duration-300 ${
             isMobileMenuOpen ? "max-h-96 mt-4" : "max-h-0"
@@ -94,6 +103,10 @@ function Navbar() {
                   onClick={() => {
                     setActiveSection(item.id);
                     setIsMobileMenuOpen(false);
+                     const section = document.getElementById(item.id);
+                    if (section) {
+                      section.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }
                   }}
                   className={`w-full text-left px-6 py-3 rounded-xl text-base font-medium transition-all duration-300 ${
                     activeSection === item.id
