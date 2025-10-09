@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 
 function Navbar() {
-  const [activeSection, setActiveSection] = useState("about");
+  const [activeSection, setActiveSection] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -15,7 +15,7 @@ function Navbar() {
   }, []);
 
   const navItems = [
-    { id: "about", label: "About" },
+    { id: "About", label: "About" },
     { id: "projects", label: "Projects" },
     { id: "journey", label: "Journey" },
     { id: "skills", label: "Skills" },

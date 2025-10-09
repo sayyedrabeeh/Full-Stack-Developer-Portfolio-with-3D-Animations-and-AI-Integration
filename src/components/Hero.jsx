@@ -1,10 +1,14 @@
-import React, { useState,useRef } from "react";
+import React, { useState,useRef,useEffect } from "react";
 import { motion } from "framer-motion";
 
 
 function HeroSection() {
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const constraintsRef = useRef(null);
+
+  useEffect(() => {
+    constraintsRef.current = document.body;
+  }, []);
 
   const handleMouseMove = (e) => {
     const card = e.currentTarget;
@@ -26,13 +30,12 @@ function HeroSection() {
   };
 
   return (
-    <section   className="min-h-screen    flex flex-col-reverse md:flex-row items-center justify-center text-center md:text-left px-8 md:px-20 relative z-10 overflow-hidden">
+    <section   className="min-h-screen    flex flex-col-reverse md:flex-row items-center justify-center text-center md:text-left px-8 md:px-20 relative z-10  ">
       <div className="md:w-1/2 text-white space-y-6">
         <h1 className="text-5xl md:text-6xl font-bold mb-4">
           Hey, I'm <span className="text-blue-400">Sayyed Rabeeh</span>
         </h1>
-        <div ref={constraintsRef} className="absolute inset-[60px]" />
-
+ 
 
         <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
           A <span className="text-blue-300 font-medium">Full Stack Developer</span> passionate
@@ -65,7 +68,7 @@ function HeroSection() {
           dragConstraints={constraintsRef}
           dragElastic={0.5}
     
-          className="relative perspective-1000"
+          className="relative perspective-1000 z-50"
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >

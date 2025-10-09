@@ -1,14 +1,18 @@
 import Navbar from "./components/Navbar";
 
 import HeroSection from "./components/Hero";
+import About from "./components/About";
 
 
 function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center text-white text-4xl font-bold animate-gradient">
+    <div className="min-h-screen flex items-center justify-center text-white text-4xl font-bold animate-gradient overflow-hidden">
        
-      <Navbar />
-      <HeroSection/>
+     <div className="min-h-screen text-white animate-gradient">
+  <Navbar />
+  <HeroSection />
+  <About />
+</div>
 
        
       <style>
