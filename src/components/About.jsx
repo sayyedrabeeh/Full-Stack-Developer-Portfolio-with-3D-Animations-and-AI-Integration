@@ -1,4 +1,4 @@
-import React,{ useState } from "react"
+
 import { easeOut, motion } from "framer-motion"
 
 
@@ -11,7 +11,7 @@ function About() {
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{duration:0.8}}
+                transition={{duration:1}}
             >
                 Who Am I
             </motion.h2>
@@ -20,7 +20,7 @@ function About() {
                     initial={{ opacity: 0, x: -40 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 1 }}
+                    transition={{ duration: 1.5 }}
                     >
                     <p>I'm <span className="text-blue-400 font-semibold">sayyed rabeeh </span>
                         a <span className="text-purple-400 font-semibold">Full Stack Developer </span>
@@ -58,7 +58,7 @@ function About() {
                     initial={{ opacity: 0, x: -40 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 1 }}
+                    transition={{ duration: 1.5 }}
                     >
                     <motion.div
                         animate={{

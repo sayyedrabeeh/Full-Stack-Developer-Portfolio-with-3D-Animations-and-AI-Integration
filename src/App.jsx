@@ -1,5 +1,5 @@
 import Navbar from "./components/Navbar";
-
+import Skills from "./components/Skills";
 import HeroSection from "./components/Hero";
 import About from "./components/About";
 
@@ -12,6 +12,7 @@ function App() {
   <Navbar />
   <HeroSection />
   <About />
+  <Skills/>      
 </div>
 
        
