@@ -15,18 +15,60 @@ function About() {
             >
                 About Me
             </motion.h2>
-            <p>
-                 I'm a  Full Stack Developer with a unique foundation in Humanities. 
-                My background has sharpened my critical thinking, communication, and problem-solving skills, which I now apply to building software.
-                       Over the years, I have worked with a wide range of technologies to create  scalable, maintainable, and efficient solutions. 
-                I focus on writing clean code while leveraging frameworks and tools that maximize productivity and performance.
+            <div className="max-w-6xl  mx-auto flex flex-col md: flex-row items-center gap-12" >
+                <motion.div className="flex-1 text-lg  md:text-xl leading-relaxed text-gray-300 space-y-6"
+                    initial={{ opacity: 0, x: -40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1 }}
+                    >
+                    <p>I'm <span className="text-blue-400 font-semibold">sayyed rabeeh </span>
+                        a <span className="text-purple-400 font-semibold">Full Stack Developer</span>
+                       passionate about merging design, logic, and creativity into meaningful software.
+                    </p>
+
+                    <p>
+                        Coming from a <span className="text-blue-400">Humanities</span> background, 
+                        I bring perspective, empathy, and narrative thinking into my code — creating 
+                        applications that feel as intuitive as they are functional.
+                    </p>
+
+                    <p>
+                        I build with <span className="text-blue-400">Python (Django)</span> and 
+                        <span className="text-purple-400"> React.js</span>, focusing on  architectures, 
+                        responsive UI, and seamless user experience.
+                    </p>
+
+                    <p>
+                        Over the years, I have worked with a wide range of technologies to create  scalable, maintainable, and efficient solutions. 
+
+                    </p>
+
+                    <p>
+                        I love exploring new ideas — from 
+                        <span className="text-pink-400 font-semibold"> AI-driven tools</span> to 
+                        <span className="text-purple-400 font-semibold"> gesture-controlled systems</span> — 
+                        always striving for code that’s elegant, scalable, and impactful.
+                    </p>
+
+                </motion.div>
+                  
+ 
+                <motion.div className="flex-1 flex justify-center relative"
+                    initial={{ opacity: 0, x: -40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1 }}
+                    >
+
+                    
+                    
+              </motion.div>
                 
-                          My core technologies include:  python, Django, React.js, PostgreSQL, and Bootstrap. 
-                I enjoy tackling real-world problems through code — from AI-driven apps and gesture-controlled games to dynamic full-stack platforms.
-                   I value  clean architecture, scalable solutions, and continuous learning. 
-          I'm a collaborative team player but also confident working independently. Let’s connect to build innovative and meaningful software together!
-       
-        </p>
+                          
+                     
+        
+        </div>
         </section>
     )
 }
