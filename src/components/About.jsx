@@ -1,5 +1,5 @@
 import React,{ useState } from "react"
-import { motion } from "framer-motion"
+import { easeOut, motion } from "framer-motion"
 
 
 function About() {
@@ -13,9 +13,9 @@ function About() {
                 viewport={{ once: true }}
                 transition={{duration:0.8}}
             >
-                About Me
+                Who Am I
             </motion.h2>
-            <div className="max-w-6xl  mx-auto flex flex-col md: flex-row items-center gap-12" >
+            <div className="max-w-6xl  mx-auto flex flex-col md:flex-row items-center gap-12" >
                 <motion.div className="flex-1 text-lg  md:text-xl leading-relaxed text-gray-300 space-y-6"
                     initial={{ opacity: 0, x: -40 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -23,7 +23,7 @@ function About() {
                     transition={{ duration: 1 }}
                     >
                     <p>I'm <span className="text-blue-400 font-semibold">sayyed rabeeh </span>
-                        a <span className="text-purple-400 font-semibold">Full Stack Developer</span>
+                        a <span className="text-purple-400 font-semibold">Full Stack Developer </span>
                        passionate about merging design, logic, and creativity into meaningful software.
                     </p>
 
@@ -60,15 +60,39 @@ function About() {
                     viewport={{ once: true }}
                     transition={{ duration: 1 }}
                     >
-
-                    
-                    
+                    <motion.div
+                        animate={{
+                            y: [0,15,0],
+                            scale :[1,1.05,1]
+                        }}
+                        transition={{
+                            duration: 6,
+                            repeat: Infinity,
+                            ease:easeOut
+                        }}
+                        className="relative w-64 h-64 md:w-80 md:h-80 rounded-full 
+                        bg-gradient-to-tr from-blue-400/30 to-purple-500/30 blur-3xl shadow-[0_0_40px_rgba(99,102,241,0.4)]"
+                    />
+                        <div className="absolute inset-0  rounded-full border border-blue-400/20 animate-spin-slow"></div>
+                        <div className="absolute inset-8  rounded-full border border-purple-400/210 animate-pulse-slow"></div>
               </motion.div>
-                
-                          
-                     
-        
-        </div>
+            </div>
+            <style jsx>{`
+        .animate-spin-slow {
+          animation: spin 20s linear infinite;
+        }
+        .animate-pulse-slow {
+          animation: pulse 5s ease-in-out infinite;
+        }
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 0.4; }
+          50% { opacity: 1; }
+        }
+      `}</style>
         </section>
     )
 }

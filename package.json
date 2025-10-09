@@ -14,11 +14,13 @@
     "@react-three/drei": "^10.0.8",
     "@react-three/fiber": "^9.1.2",
     "framer-motion": "^12.23.22",
+    "lottie-react": "^2.4.1",
     "maath": "^0.10.8",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.0",
     "react-tilt": "^1.0.2",
+    "react-tsparticles": "^2.12.2",
     "react-vertical-timeline-component": "^3.5.3"
   },
   "devDependencies": {
