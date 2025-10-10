@@ -62,7 +62,14 @@ function Skilss() {
             Bodies.rectangle(-20,height / 2 ,40, height + 50,wallOptions),
             Bodies.rectangle(width + 20,height / 2 ,40, height + 50,wallOptions),
         ])
-
+        
+        const mouse = Mouse.create(containerRef.current)
+        const mouseconstraint = MouseConstraint.create(engine, {
+            mouse,
+            constraint: {stiffness:0.2 ,render:{ visible: false}}
+        })
+        World.add(world, mouseconstraint)
+        containerRef.current.style.cursor = 'grab'
 
     },[])
     
