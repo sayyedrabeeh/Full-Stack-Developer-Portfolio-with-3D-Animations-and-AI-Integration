@@ -5,6 +5,7 @@ import { SiDjango,SiTailwindcss,SiPostgresql,SiOpencv,SiFramer } from "react-ico
 import { useRef,useState,useEffect } from "react";
 import Matter from "matter-js";
 import { body } from "framer-motion/client";
+import { u } from "framer-motion/m";
 
 const skillsIcons = [
   { icon: FaPython, name: "Python", color: "#3776AB" },
@@ -77,7 +78,25 @@ function Skilss() {
         if (containerRef.current) containerRef.current.style.cursor = "grab";
         });
         const runner = Runner.create()
-        Runner.run(runner,engine)
+        Runner.run(runner, engine)
+        
+        const update = () => {
+            iconBodies.forEach((body) => {
+                const el = document.getElementById(body.id)
+                if (el) {
+                    el.style.transform = `translate(${body.position.x - 32}px, ${body.position.y - 32}px) rotate(${body.angle}rad)`;
+
+                }
+            })
+            requestAnimationFrame(update)
+        }
+        update()
+
+        return  () => {
+            Runner.stop(runner)
+            World.clear(world)
+            Engine.clear(engine)
+        }
 
     },[])
     
