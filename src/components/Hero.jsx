@@ -30,7 +30,7 @@ function HeroSection() {
   };
 
   return (
-    <section   className="min-h-screen    flex flex-col-reverse md:flex-row items-center justify-center text-center md:text-left px-8 md:px-20 relative z-10  ">
+    <section id="Home"  className="min-h-screen    flex flex-col-reverse md:flex-row items-center justify-center text-center md:text-left px-8 md:px-20 relative z-10  ">
       <div className="md:w-1/2 text-white space-y-6">
         <h1 className="text-5xl md:text-6xl font-bold mb-4">
           Hey, I'm <span className="text-blue-400">Sayyed Rabeeh</span>

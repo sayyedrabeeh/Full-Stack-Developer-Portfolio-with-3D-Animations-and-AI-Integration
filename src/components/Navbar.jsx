@@ -9,16 +9,33 @@ function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
+
+      const sections = navItems.map(item => document.getElementById(item.id));
+      let currentSectionId = "";
+       sections.forEach(section => {
+      if (section) {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= 100 && rect.bottom >= 100) {
+          currentSectionId = section.id;
+        }
+      }
+    });
+
+    setActiveSection(currentSectionId);
+  
     };
     window.addEventListener("scroll", handleScroll);
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const navItems = [
+  
+    { id: "Home", label: "Home" },
     { id: "About", label: "About" },
+    { id: "skills", label: "Skills" },
     { id: "projects", label: "Projects" },
     { id: "journey", label: "Journey" },
-    { id: "skills", label: "Skills" },
     { id: "contact", label: "Contact" }
   ];
 

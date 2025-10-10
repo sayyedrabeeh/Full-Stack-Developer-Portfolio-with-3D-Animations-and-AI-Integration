@@ -98,7 +98,7 @@ export default function SkillsSection() {
   }, []);
 
   return (
-    <section className="w-full  text-white py-24">
+    <section id="skills" className="w-full  text-white py-24">
       <div className="max-w-6xl mx-auto px-6 flex flex-col lg:flex-row items-start justify-between gap-12">
         
         <div className="flex-1 space-y-8 text-left">
