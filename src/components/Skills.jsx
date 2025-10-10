@@ -3,6 +3,8 @@ import React from "react";
 import { FaPython,FaReact,FaHtml5,FaCss3Alt,FaBootstrap,FaGitAlt,FaFigma } from "react-icons/fa";
 import { SiDjango,SiTailwindcss,SiPostgresql,SiOpencv,SiFramer } from "react-icons/si";
 import { useRef,useState,useEffect } from "react";
+import Matter from "matter-js";
+import { body } from "framer-motion/client";
 
 const skillsIcons = [
   { icon: FaPython, name: "Python", color: "#3776AB" },
@@ -23,7 +25,40 @@ const skillsIcons = [
 function Skilss() {
 
     const containerRef = useRef(null)
+    const [bodies, setBodies] = useState([])
+    
+    useEffect(() => {
+        if (!containerRef.current) return
+        const { Engine, World, Bodies, Mouse, MouseConstraint, Runner, Events } = Matter;
+        const engine = Engine.create()
+        const world = engine.world
+        world.gravity.y = 0 
 
+        const  height = 400
+        const  width = 400
+
+        const iconBodies = skillsIcons.map((skill, i) => {
+            
+            const x = 70 + (i % 4) * 85 
+            const y = 70 + Math.floor(i / 4) * 100
+
+            const body = Bodies.circle(x, y, 32, {
+                restitution: 0.9,
+                friction: 0.01,
+                frictionAir: 0.02,
+                density:0.001
+            })
+            body.skill = skill
+            World.add(world, body)
+            return body            
+            
+        })
+
+        setBodies(iconBodies)
+ 
+
+
+    },[])
     
     return (
         <section className="w-full text-white py-24">
@@ -47,7 +82,32 @@ function Skilss() {
                                 style={{
                                   background:  "linear-gradient(145deg, #0D1117 0%, #1B2430 50%, #222B45 100%)"
                             }}>
-
+                                <div className="absolute  inset-0 opacity-10">
+                                    <div className="absolute inset-0" style={{
+                                        backgroundImage: "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)",
+                                        backgroundSize:"32px 32px" 
+                                    }}></div>
+                                </div>
+                                {bodies.map((body) => {
+                                    const Icon = body.skill.icon
+                                    return (
+                                        <div key={body.id} id={body.id}
+                                            className="absolute w-16 h-16 flex justify-center items-center transition-shadow duration-200"
+                                             style={{ filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.4))" }}>
+                                            <div className="w-14 h-14 rounded-2xl flex items-center justify-center backdrop-blur-sm "
+                                                style={{
+                                                background: `linear-gradient(135deg, ${body.skill.color}20, ${body.skill.color}10)`,
+                                                border: `2px solid ${body.skill.color}40`,
+                                                boxShadow: `0 0 20px ${body.skill.color}30`,
+                                                }}>
+                                                <Icon size={36} style={{color:body.skill.color}}/>
+                                            </div>
+                                        </div>
+                                    )
+                                    }) }
+                                <div className="absolute bottom-4 left-0 right-0 text-center">
+                                <p className="text-white/60 text-sm font-medium"> Drag & throw the icons</p>
+                                </div>
 
                             </div>
                         </div>
