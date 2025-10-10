@@ -55,7 +55,13 @@ function Skilss() {
         })
 
         setBodies(iconBodies)
- 
+        const wallOptions = { static: true }
+        World.add(world, [
+            Bodies.rectangle(width/2,-20,width+50,40,wallOptions),
+            Bodies.rectangle(width/2,height + 20,width+50,40,wallOptions),
+            Bodies.rectangle(-20,height / 2 ,40, height + 50,wallOptions),
+            Bodies.rectangle(width + 20,height / 2 ,40, height + 50,wallOptions),
+        ])
 
 
     },[])
