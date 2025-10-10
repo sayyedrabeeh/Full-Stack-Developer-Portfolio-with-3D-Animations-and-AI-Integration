@@ -1,7 +1,7 @@
 import Navbar from "./components/Navbar";
-import Skills from "./components/Skills";
 import HeroSection from "./components/Hero";
 import About from "./components/About";
+import Skilss from "./components/Skills";
 
 
 function App() {
@@ -9,11 +9,12 @@ function App() {
     <div className="min-h-screen flex items-center justify-center text-white text-4xl font-bold animate-gradient overflow-hidden">
        
      <div className="min-h-screen text-white animate-gradient">
-  <Navbar />
-  <HeroSection />
-  <About />
-  <Skills/>      
-</div>
+        <Navbar />
+        <HeroSection />
+        <About />
+        <Skilss/>
+      
+      </div>
 
        
       <style>
