@@ -70,6 +70,14 @@ function Skilss() {
         })
         World.add(world, mouseconstraint)
         containerRef.current.style.cursor = 'grab'
+        Events.on(mouseconstraint, "startdrag", () => {
+        if (containerRef.current) containerRef.current.style.cursor = "grabbing";
+        });
+        Events.on(mouseconstraint, "enddrag", () => {
+        if (containerRef.current) containerRef.current.style.cursor = "grab";
+        });
+        const runner = Runner.create()
+        Runner.run(runner,engine)
 
     },[])
     
