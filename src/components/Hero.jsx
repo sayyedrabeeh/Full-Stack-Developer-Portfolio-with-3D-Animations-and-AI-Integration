@@ -2,6 +2,7 @@ import React, { useState,useRef,useEffect } from "react";
 import { motion } from "framer-motion";
 
 
+
 function HeroSection() {
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const constraintsRef = useRef(null);
