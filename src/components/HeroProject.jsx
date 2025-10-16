@@ -1,15 +1,18 @@
+ 
 
 
 
 
-function Projects() {
+
+export default function Projects() {
     
     return (
-        <section className=" ">
+        <>
         
-        </section>
+            project
+        
+        </>
     )
 
-}
 
-export default  Projects
+}

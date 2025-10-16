@@ -22,7 +22,7 @@
     "react-dom": "^19.1.0",
     "react-icons": "^5.5.0",
     "react-parallax-tilt": "^1.7.310",
-    "react-router-dom": "^7.6.0",
+    "react-router-dom": "^7.9.4",
     "react-tsparticles": "^2.12.2",
     "react-vertical-timeline-component": "^3.5.3",
     "swiper": "^12.0.2"
