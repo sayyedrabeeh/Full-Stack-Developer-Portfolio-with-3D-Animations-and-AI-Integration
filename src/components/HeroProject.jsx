@@ -47,14 +47,21 @@ export default function Projects() {
                     My Projects
                 </motion.h1>
 
-                <motion.p>
+                <motion.p className="text-gray-300 text-lg lg:text-xl leading-relaxed"
+                    initial={{ x: -50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{duration:0.9,delay:0.1}}
+                >
                 
                     Explore some of my featured projects built with modern web technologies — each
                     showcasing creative UI, clean code, and robust performance.
                 
                 </motion.p>
                 
-                <motion.button>
+                <motion.button 
+                 className="w-max px-8 py-3 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-3xl font-bold text-white shadow-2xl hover:scale-105 hover:shadow-purple-500/40 transition-transform duration-300"
+                     whileHover={{ scale: 1.1 }}
+                 >
                     Explore All 
                 </motion.button>
             </div>
