@@ -1,14 +1,14 @@
 import { motion } from "framer-motion"  
-import { rotate } from "maath/dist/declarations/src/buffer"
 import { Autoplay, EffectCoverflow } from "swiper/modules"
 import { Swiper,SwiperSlide } from "swiper/react"
+import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 
 const projects  =[
       {
     img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop",
     title: "Front-End Expertise",
     description: "Advanced interfaces with React, Next.js, and sophisticated animations.",
-    tech: "React / Next.js / TypeScript",
+    tech: [ 'React', 'Next.js',  'TypeScript'],
     live: "#",
     github: "#",
     },
@@ -16,7 +16,7 @@ const projects  =[
     img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop",
     title: "Robust Back-End",
     description: "Efficient APIs, optimized databases, and scalable architecture.",
-    tech: "Node.js / Express / MongoDB",
+    tech:  [ 'React', 'Next.js',  'TypeScript'],
     live: "#",
     github: "#",
   },
@@ -24,7 +24,7 @@ const projects  =[
     img: "https://images.unsplash.com/photo-1570545887537-865bd283af1c?w=600&h=400&fit=crop",
     title: "Migtech Hub",
     description: "System for optimal job transitions with healthcare diploma support.",
-    tech: "JavaScript / React / API",
+    tech:  [ 'React', 'Next.js',  'TypeScript'],
     live: "#",
     github: "#",
   }
@@ -65,7 +65,7 @@ export default function Projects() {
 
             <motion.div className="lg:w-[900px] w-full">
                 <div>
-                    <swipper
+                    <Swiper
                         effect='controlflow'
                         grabCursor
                         centeredSlides
@@ -83,17 +83,45 @@ export default function Projects() {
                             }}
                         modules={[EffectCoverflow, Autoplay]}
                         className='h-[500px] select-none'>
-                        
-
-                    </swipper>
+                        {projects.map((p, i) =>(
+                            <SwiperSlide key={i} style={{ width: '400px' }}>
+                                <motion.div>
+                                    <div>
+                                        <div>
+                                            <motion.img src={p.img} alt={p.title} />
+                                            <div>
+                                                <a href={p.live}>
+                                                   <FaExternalLinkAlt/>Link 
+                                                </a>
+                                                <a href={p.github}>
+                                                    <FaGithub/>Github 
+                                                </a>
+                                            </div>
+                                            <div></div>
+                                        </div>
+                                        <div>
+                                            <h3>
+                                                { p.title }
+                                            </h3>
+                                            <div>
+                                                {p.tech.map((p,i)=>(
+                                                <span key={i} >
+                                                    {p.trim()}
+                                                </span>
+                                                ))}
+                                            </div>
+                                            <p>
+                                                { p.description }
+                                            </p>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            </SwiperSlide>  
+                            )
+                        ) }
+                    </Swiper>
                 </div>
-
-            </motion.div>
-        
-            
-        
+            </motion.div>   
         </motion.section>
     )
-
-
 }
