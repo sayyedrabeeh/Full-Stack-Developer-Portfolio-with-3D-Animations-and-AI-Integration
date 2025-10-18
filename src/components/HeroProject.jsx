@@ -85,19 +85,32 @@ export default function Projects() {
                         className='h-[500px] select-none'>
                         {projects.map((p, i) =>(
                             <SwiperSlide key={i} style={{ width: '400px' }}>
-                                <motion.div>
-                                    <div>
-                                        <div>
-                                            <motion.img src={p.img} alt={p.title} />
-                                            <div>
-                                                <a href={p.live}>
+                                <motion.div className="group relative h-full cursor-pointer"
+                                    whileHover={{ y: -15 }}
+                                    transition={{ type: String, stiffness: 200 }}
+                                    
+                                >
+
+                                    <div className="relative h-full  bg-white/5 backdrop-blur-2xl rounded-3xl border border-white/10  shadow-xl overflow-hidden transition-all flex flex-col  ">
+                                        <div className="h-3/4  overflow-hidden relative group ">
+                                            <motion.img src={p.img} alt={p.title} className="w-full
+                                            h-full object-cover transition-transform  duration-[1200ms]  ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-110 group-hover:blur-sm" />
+                                            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ">
+                                                <a href={p.live}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="flex items-center gap-2 px-5 py-2 rounded-full  bg-gradient-to-r from-green-400 to-blue-500 text-white font-semibold shadow-lg hover:from-blue-500 hover:to-green-400 transition-all duration-300 "
+                                                >
                                                    <FaExternalLinkAlt/>Link 
                                                 </a>
-                                                <a href={p.github}>
+                                                <a href={p.github}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                className="flex items-center gap-2 px-5 py-2 rounded-full bg-white/20  text-white font-semibold shadow-lg hover:bg-white/30 transition-all duration-300 ">
                                                     <FaGithub/>Github 
                                                 </a>
                                             </div>
-                                            <div></div>
+                                            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/10 " ></div>
                                         </div>
                                         <div>
                                             <h3>
