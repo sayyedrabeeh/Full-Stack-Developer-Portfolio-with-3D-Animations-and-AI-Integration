@@ -1,5 +1,7 @@
 import { motion } from "framer-motion"  
-
+import { rotate } from "maath/dist/declarations/src/buffer"
+import { Autoplay, EffectCoverflow } from "swiper/modules"
+import { Swiper,SwiperSlide } from "swiper/react"
 
 const projects  =[
       {
@@ -31,7 +33,6 @@ const projects  =[
 
 
 export default function Projects() {
-    
     return (
         <motion.section
             initial={{ opacity: 0 }}
@@ -46,27 +47,46 @@ export default function Projects() {
                 >
                     My Projects
                 </motion.h1>
-
                 <motion.p className="text-gray-300 text-lg lg:text-xl leading-relaxed"
                     initial={{ x: -50, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{duration:0.9,delay:0.1}}
                 >
-                
                     Explore some of my featured projects built with modern web technologies — each
                     showcasing creative UI, clean code, and robust performance.
-                
                 </motion.p>
-                
                 <motion.button 
-                 className="w-max px-8 py-3 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-3xl font-bold text-white shadow-2xl hover:scale-105 hover:shadow-purple-500/40 transition-transform duration-300"
+                 className="w-max px-8 py-3 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-3xl font-bold text-white shadow-2xl hover:scale-105 hover:shadow-purple-500/40 transition-transform duration-300 text-2xl"
                      whileHover={{ scale: 1.1 }}
                  >
                     Explore All 
                 </motion.button>
             </div>
 
-            <motion.div>
+            <motion.div className="lg:w-[900px] w-full">
+                <div>
+                    <swipper
+                        effect='controlflow'
+                        grabCursor
+                        centeredSlides
+                        slidesPriview='auto'
+                        loop
+                        speed={1300}
+                        spaceBetween={-130}
+                        controlflowEffect={
+                            {
+                                rotate: 15,
+                                stretch: 0,
+                                depth: 600,
+                                modifier: 2.5,
+                                slideshow: false
+                            }}
+                        modules={[EffectCoverflow, Autoplay]}
+                        className='h-[500px] select-none'>
+                        
+
+                    </swipper>
+                </div>
 
             </motion.div>
         
