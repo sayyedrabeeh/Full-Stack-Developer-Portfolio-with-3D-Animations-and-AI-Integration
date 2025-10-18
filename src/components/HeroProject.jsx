@@ -2,6 +2,8 @@ import { motion } from "framer-motion"
 import { Autoplay, EffectCoverflow } from "swiper/modules"
 import { Swiper,SwiperSlide } from "swiper/react"
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import "swiper/css";
+import "swiper/css/effect-coverflow";
 
 const projects  =[
       {
@@ -34,11 +36,12 @@ const projects  =[
 
 export default function Projects() {
     return (
-        <motion.section
+        <motion.section id="projects"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
             className="min-h-screen  text-white  px-6 py-12 flex items-center justify-center relative overflow-hidden ">
+            <div className="relative z-10 w-full max-w-[1600px] mx-auto flex flex-col lg:flex-row  items-center">
             <div className="w-full lg:w-1/2  flex flex-col justify-center p-4 lg:p-16 space-y-6">
                 <motion.h1 className="text-6xl lg:text-7xl font-extrabold tracking-tight text-transparent bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text"
                     initial={{ opacity: 0, x: -50 }}
@@ -63,17 +66,21 @@ export default function Projects() {
                 </motion.button>
             </div>
 
-            <motion.div className="lg:w-[900px] w-full">
-                <div>
+                <motion.div className="lg:w-[900px] w-full"
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.7 }}
+                >
+                <div className="[perspective:2000px]" >
                     <Swiper
-                        effect='controlflow'
+                        effect='coverflow'
                         grabCursor
                         centeredSlides
-                        slidesPriview='auto'
+                        slidesPerView='auto'
                         loop
                         speed={1300}
-                        spaceBetween={-130}
-                        controlflowEffect={
+                        spaceBetween={-150}
+                        coverflowEffect={
                             {
                                 rotate: 15,
                                 stretch: 0,
@@ -87,7 +94,7 @@ export default function Projects() {
                             <SwiperSlide key={i} style={{ width: '400px' }}>
                                 <motion.div className="group relative h-full cursor-pointer"
                                     whileHover={{ y: -15 }}
-                                    transition={{ type: String, stiffness: 200 }}
+                                    transition={{ type: 'spring', stiffness: 200 }}
                                     
                                 >
 
@@ -95,7 +102,7 @@ export default function Projects() {
                                         <div className="h-3/4  overflow-hidden relative group ">
                                             <motion.img src={p.img} alt={p.title} className="w-full
                                             h-full object-cover transition-transform  duration-[1200ms]  ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-110 group-hover:blur-sm" />
-                                            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ">
+                                            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ">
                                                 <a href={p.live}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
@@ -119,12 +126,12 @@ export default function Projects() {
                                             <div>
                                                 {p.tech.map((p,i)=>(
                                                     <span key={i}
-                                                className="text-xs font-medium text-gray-200 bg-white/10 px-2 py-1 rounded-full border border-white/20 "    >
+                                                className="text-xs font-medium text-gray-200 bg-white/10 px-2 py-1 rounded-full border  border-white/20 "    >
                                                     {p.trim()}
                                                 </span>
                                                 ))}
                                             </div>
-                                            <p className="text-sm text-gray-300 leading-relaxed mb-6 " >
+                                            <p className="text-sm text-gray-300 mt-4 leading-relaxed mb-6 " >
                                                 { p.description }
                                             </p>
                                         </div>
@@ -135,7 +142,8 @@ export default function Projects() {
                         ) }
                     </Swiper>
                 </div>
-            </motion.div>   
+                </motion.div> 
+            </div>    
         </motion.section>
     )
 }
