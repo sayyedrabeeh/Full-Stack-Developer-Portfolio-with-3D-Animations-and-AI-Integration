@@ -112,18 +112,19 @@ export default function Projects() {
                                             </div>
                                             <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/10 " ></div>
                                         </div>
-                                        <div>
-                                            <h3>
+                                        <div className="flex-1 p-6 bg-gradient-to-br from-black to-gray-900 flex flex-col justify-between " >
+                                            <h3 className="text-xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text mb-3"> 
                                                 { p.title }
                                             </h3>
                                             <div>
                                                 {p.tech.map((p,i)=>(
-                                                <span key={i} >
+                                                    <span key={i}
+                                                className="text-xs font-medium text-gray-200 bg-white/10 px-2 py-1 rounded-full border border-white/20 "    >
                                                     {p.trim()}
                                                 </span>
                                                 ))}
                                             </div>
-                                            <p>
+                                            <p className="text-sm text-gray-300 leading-relaxed mb-6 " >
                                                 { p.description }
                                             </p>
                                         </div>
