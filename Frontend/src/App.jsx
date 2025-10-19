@@ -3,6 +3,7 @@ import HeroSection from "./components/Hero";
 import About from "./components/About";
 import Skilss from "./components/Skills";
 import Projects from "./components/HeroProject";
+// import Login3D from "./components/pages/login";
 
 
 function App() {
@@ -14,7 +15,8 @@ function App() {
         <HeroSection />
         <About />
         <Skilss/>
-        <Projects/>
+        <Projects />
+        {/* <Login3D/> */}
       
       </div>
 
