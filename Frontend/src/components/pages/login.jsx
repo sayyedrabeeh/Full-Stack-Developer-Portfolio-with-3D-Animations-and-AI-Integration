@@ -80,8 +80,19 @@ export default Login3D(){
         tours.rotation.x = Math.PI / 4
         scene.add(tours)
 
+        const octa = new THREE.Mesh(
+            new THREE.OctahedronGeometry(3, 0),
+            new THREE.MeshPhongMaterial({
+                color: 0x8b5cf6,
+                wireframe: true,
+                transparent: true,
+                opacity : 0.5
+            })
+        )
+        scene.add(octa)
 
         
+
 
     },[])
 
