@@ -24,7 +24,7 @@ export default Login3D(){
         const scene = new THREE.Scene()
         const fog = new THREE.Fog(0x0a0a1a, 10, 50)
         
-        const camera = new THREE.PerspectiveCamera(
+        const camera = new THREE.PerspectiveCamera( 
             75,
             window.innerWidth / window.innerHeight,
             0.1,
@@ -53,10 +53,35 @@ export default Login3D(){
             colors[i + 3] = 1
 
         }
+        const geometry = new THREE.BufferGeometry()
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions,3))
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
         
+        const material = new THREE.PointsMaterial({
+            size: 0.15,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
+        })
+
+        const particles = new THREE.Points(geometry, material)
+        scene.add(particles)
+
+        const tours = new THREE.Mesh(
+            new THREE.TubeGeometry(5, 0.8, 16, 100),
+            new THREE.MeshPhongMaterial({
+                color: 0x6366f1,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.6,
+            })
+        )
+        tours.rotation.x = Math.PI / 4
+        scene.add(tours)
 
 
-
+        
 
     },[])
 
