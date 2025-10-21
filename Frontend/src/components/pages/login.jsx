@@ -39,8 +39,8 @@ export default function Login3D(){
 
 
         const particleCount = 1500;
-        const positions  = Float32Array(particleCount * 3)
-        const colors   = Float32Array(particleCount * 3)
+        const positions  = new Float32Array(particleCount * 3)
+        const colors   = new Float32Array(particleCount * 3)
         for (let i = 0; i < particleCount * 3; i += 3){
             const radius = 30
             const theta = Math.random() * Math.PI * 2
@@ -205,8 +205,35 @@ export default function Login3D(){
     
 
     return (
-        <>
-        </>
+        <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-purple-950 via-indigo-950 to-violet-950" >
+            <div className="absolute z-0 inset-0 " ref={mountRef} />
+            <div className="absolute top-20 left-20  w-96 h-96  bg-purple-500/20 rounded-full blur-3xl animate-pluse" />
+            <div className="absolute bottom-20 right-20  w-96 h-96  bg-blue-500/20 rounded-full blur-3xl animate-pluse" style={{animationDelay:'1s'}} />
+            <motion.div
+                ref={cardRef}
+                drag
+                dragMomentum={false}
+                dragElastic={0.1}
+                    dragConstraints={{
+                        top: -window.innerHeight / 3,
+                        bottom: window.innerHeight / 3,
+                        left: -window.innerWidth / 3,
+                        right: window.innerWidth / 3,
+                }}
+                onDragStart={() => cardRef.current && (cardRef.current.style.cursor = 'grabbing')}
+                onDragEnd={() => cardRef.current && (cardRef.current.style.cursor = 'grab')}
+                style={{
+                    rotateX: rotationX,
+                    rotateY: rotationY,
+                    transformStyle:'preserve-3d'
+                }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-1/2  w-[400px] h-[480px] cursor-grab ">
+                
+                
+                </motion.div>
+
+            
+        </div>
     )
 
 
