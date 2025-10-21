@@ -91,8 +91,17 @@ export default Login3D(){
         )
         scene.add(octa)
 
+        scene.add(new THREE.AmbientLight(0x404040, 2))
+        const pointLight1 = new THREE.PointLight(0x6366f1, 2, 100)
+        pointLight1.position.set(10, 10, 10)
+        scene.add(pointLight1)
+        const PointLight2 = new THREE.PointLight(0x8b5cf6, 2, 100)
+        PointLight2.position.set(-10, -10, -10)
+        scene.add(PointLight2)
         
 
+
+        
 
     },[])
 
