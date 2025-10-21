@@ -99,9 +99,21 @@ export default Login3D(){
         PointLight2.position.set(-10, -10, -10)
         scene.add(PointLight2)
         
+        let time = 0
+        const animateScene = () => {
+            requestAnimationFrame(animateScene)
+            time += 0.01
+            particles.rotation.y = time * 0.15
+            particles.rotation.x = time * 0.5
+            tours.rotation.y +=  0.008
+            tours.rotation.y += 0.005
+            octa.rotation.x += 0.008
+            octa.rotation.y += 0.006
+            renderer.render(scene,camera)
+        }
 
+        animateScene()
 
-        
 
     },[])
 
