@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, useMotionValue, animate } from "framer-motion";
 import * as THREE from 'three'
 
-export default Login3D(){
+export default function Login3D(){
 
     const mountRef = useRef(null)
     const cardRef = useRef(null)
@@ -128,9 +128,39 @@ export default Login3D(){
                 renderer.dispose()
             }   
         }
+    }, [])
+    
+
+
+
+    useEffect(() => {
+        const el = cardRef.current
+        if (!el) return
+
+        const formElement = ["INPUT", "TEXTAREA", "BUTTON", "LABEL"];
+        const onPointerDwon = (e) => {
+            
+            draggingMode.current = formElement.includes(e.target.tagName) ? 'move' : 'rotate'
+            lastPointer.current = { x: e.clientX, y: e.clientY }
+            el.setPointerCapture(e.pointerId)
+
+
+        }
+        const onPointerMove = (e) => {
+            if (!lastPointer.current) return
+            const dx = e.clientX - lastPointer.current.x 
+            const dy = e.clientY - lastPointer.current.y 
+
+            if (draggingMode.current == 'rotate') {
+                rotationY.set(rotationY.get() + dy * 0.05)
+                rotationX.set(rotationY.get() - dx * 0.05)
+            }
+            lastPointer.current = { x:e.clientX, y :e.clientY  }
+        }
+        
+        
+
     },[])
-
-
 
 
 
