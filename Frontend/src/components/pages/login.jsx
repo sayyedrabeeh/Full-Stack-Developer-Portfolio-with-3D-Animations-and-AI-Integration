@@ -138,7 +138,7 @@ export default function Login3D(){
         if (!el) return
 
         const formElement = ["INPUT", "TEXTAREA", "BUTTON", "LABEL"];
-        const onPointerDwon = (e) => {
+        const onPointerDown = (e) => {
             
             draggingMode.current = formElement.includes(e.target.tagName) ? 'move' : 'rotate'
             lastPointer.current = { x: e.clientX, y: e.clientY }
@@ -157,15 +157,52 @@ export default function Login3D(){
             }
             lastPointer.current = { x:e.clientX, y :e.clientY  }
         }
+
+        const onPointerUp = (e) => {
+            lastPointer.current = null
+            el.releasePointerCapture(e.pointerId)
+
+            if (draggingMode.current == 'rotate') {
+                const currentX = rotationX.get()
+            
+            const currentY = rotationY.get()
+
+      
+        animate(rotationX, 0, {
+            type: "tween",
+            duration: 3,
+            ease: [0.25, 0.1, 0.25, 1],
+            from: currentX
+        })
+        animate(rotationY, 0, {
+            type: "tween",
+            duration: 3,
+            ease: [0.25, 0.1, 0.25, 1],
+            from: currentY
+        })
         
+            }
+        }
         
+        el.addEventListener("pointerdown",onPointerDown)
+        el.addEventListener("pointermove",onPointerMove)
+        el.addEventListener("pointerup",onPointerUp)
+        el.addEventListener("pointerleave",onPointerUp)
+        
+        return () => {
+            el.removeEventListener('pointerdown',onPointerDown)
+            el.removeEventListener('pointermove',onPointerMove)
+            el.removeEventListener('pointerup',onPointerUp)
+            el.removeEventListener('pointerleave',onPointerUp)
+            
+        }
 
-    },[])
-
-
-
-
-
+    }, [rotationX, rotationY])
+    
+    const handleSubmit = (e) => {
+            e.preventDefault()
+    }
+    
 
     return (
         <>
