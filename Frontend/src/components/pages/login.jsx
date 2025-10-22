@@ -229,7 +229,9 @@ export default function Login3D(){
                 }}
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-1/2  w-[400px] h-[480px] cursor-grab ">
                 
-                
+                <div className="absolute inset-0  rounded-3xl shadow-2xl  backdrop-blur-xl border border-purple-500/30 "  style={{transform:'translateZ(30px)'}} />
+                <div className="absolute inset-0  rounded-3xl shadow-inner  bg-gradient-to-br from-violet-900/60  via-purple-900/60 to-indigo-900/60 border border-purple-500/30 "  style={{transform:'translateZ(-30px) rotateY(180deg) '}} />
+
                 </motion.div>
 
             
