@@ -231,8 +231,13 @@ export default function Login3D(){
                 
                 <div className="absolute inset-0  rounded-3xl shadow-2xl  backdrop-blur-xl border border-purple-500/30 "  style={{transform:'translateZ(30px)'}} />
                 <div className="absolute inset-0  rounded-3xl shadow-inner  bg-gradient-to-br from-violet-900/60  via-purple-900/60 to-indigo-900/60 border border-purple-500/30 "  style={{transform:'translateZ(-30px) rotateY(180deg) '}} />
+                <div className="absolute top-0 left-0 w-[60px] h-full bg-gradient-to-r from-purple-900/60 to-indigo-900/60 " style={{ transform: 'translateX(-30px) rotateY(-90deg)',transformOrigin:'left',borderRadius:'0 0 0 24px' }} />
+                <div className="absolute top-0 right-0 w-[60px] h-full bg-gradient-to-l from-purple-900/60 to-indigo-900/60 " style={{ transform: 'translateX(30px) rotateY(90deg)',transformOrigin:'right',borderRadius:'0 0  24px 0' }} />
+                <div className="absolute top-0 left-0 w-[60px] h-full bg-gradient-to-b from-purple-900/60 to-indigo-900/60 " style={{ transform: 'translateY(-30px) rotateX(90deg)',transformOrigin:'top',borderRadius:'  24px 24px 0 0 '  }} />
+                <div className="absolute bottom-0 left-0 w-[60px] h-full bg-gradient-to-t from-purple-900/60 to-indigo-900/60 " style={{ transform: 'translateY(30px) rotateX(-90deg)',transformOrigin:'bottom',borderRadius:' 0 0 24px 24px'  }} />
 
-                </motion.div>
+
+            </motion.div>
 
             
         </div>
