@@ -5,15 +5,16 @@ import * as THREE from "three";
 export default function Login3D() {
   const mountRef = useRef(null);
   const cardRef = useRef(null);
-  const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
   const rotationX = useMotionValue(0);
   const rotationY = useMotionValue(0);
-
   const draggingMode = useRef("rotate");
   const lastPointer = useRef(null);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");  
 
   
   useEffect(() => {
@@ -194,8 +195,11 @@ export default function Login3D() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Login attempt:", { email, password });
+    if (isSignUp) console.log("Signup:", { email, password, confirmPassword });
+    else console.log("Login:", { email, password });
   };
+     
+
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-purple-950 via-indigo-950 to-violet-950">
@@ -205,7 +209,8 @@ export default function Login3D() {
       <div className="absolute top-20 left-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-20 right-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
 
-      <motion.div
+     <motion.div
+               
         ref={cardRef}
         drag
         dragMomentum={false}
@@ -220,10 +225,11 @@ export default function Login3D() {
         onDragEnd={() => cardRef.current && (cardRef.current.style.cursor = 'grab')}
         style={{
           rotateX: rotationX,
-          rotateY: rotationY,
+            rotateY: rotationY,
+          
           transformStyle: "preserve-3d",
         }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[480px] cursor-grab"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[530px] cursor-grab"
       >
         
         <div 
@@ -276,8 +282,8 @@ export default function Login3D() {
           }}
         />
  
-        <div className="absolute inset-0 p-10 flex flex-col justify-center items-center pointer-events-none" style={{ transform: "translateZ(31px)" }}>
-          <div className="w-full max-w-sm space-y-6 pointer-events-auto">
+        <div className="absolute inset-0 p-10 flex flex-col justify-center items-center  " style={{ transform: "translateZ(31px)" }}>
+          <div className="w-full max-w-sm space-y-6  ">
             
             <div className="flex justify-center mb-2">
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
@@ -287,18 +293,20 @@ export default function Login3D() {
                   </svg>
                 </div>
               </div>
-            </div>
+                      </div>
+            
+
             <div className="text-center space-y-1">
               <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-200 via-purple-100 to-blue-200 tracking-tight">
-                Welcome Back
+               {isSignUp ? "Create Account" : "Welcome Back"}
               </h1>
               <p className="text-purple-300/60 text-sm">
-                Sign in to your account
+                {isSignUp ? "Sign up to get started" : "Sign in to your account"}
               </p>
             </div>
             <div className="space-y-4">
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center  ">
                   <svg className="w-5 h-5 text-purple-400/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
                   </svg>
@@ -312,7 +320,7 @@ export default function Login3D() {
                 />
               </div>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center  ">
                   <svg className="w-5 h-5  text-purple-400/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
@@ -339,16 +347,62 @@ export default function Login3D() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
                   )}
+                              </button>   
+                              
+                </div>
+                 {isSignUp && (<div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center  ">
+                  <svg className="w-5 h-5  text-purple-400/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Confirm password"
+                  className="w-full px-4 py-3 text-sm rounded-xl bg-white/5 text-white placeholder-purple-300/50 border border-purple-500/20 focus:ring-2 focus:ring-purple-500/40 focus:border-transparent"
+                                  />
+                    <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex  items-center text-purple-400/70 hover:text-purple-300 transition-colors"
+                >
+                  {showPassword ? (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                    </svg>
+                  ) : (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  )}
                 </button>
-              </div>
+              </div>)}       
+
+                          
               <button
                 onClick={handleSubmit}
                 className="w-full py-3 text-sm  bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 rounded-xl text-white font-semibold shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all relative overflow-hidden group"
               >
-                <span className="relative z-10">Sign In</span>
+                <span className="relative z-10">{isSignUp ? "Sign Up" : "Sign In"}</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-400 via-purple-300 to-blue-400 opacity-0 group-hover:opacity-20 transition-opacity" />
               </button>
-
+                <div className="text-center text-purple-400/70 text-sm">
+                {isSignUp ? "Already have an account?" : "Don't have an account?"}
+                <button
+                                  onClick={() => {
+                                      
+                                          setIsSignUp(!isSignUp) 
+                                      console.log('clicked')
+                                      
+}}
+                  className="ml-2 text-purple-300 hover:text-purple-100 underline transition-colors  "
+                >
+                  {isSignUp ? "Sign In" : "Sign Up"}
+                </button>
+              </div>
       
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
@@ -373,6 +427,7 @@ export default function Login3D() {
               </div>
 
             </div>
+                              
           </div>
         </div>
       </motion.div>
