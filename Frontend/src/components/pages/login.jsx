@@ -134,7 +134,8 @@ export default function Login3D() {
 
     const formElements = ["INPUT", "TEXTAREA", "BUTTON", "LABEL"];
 
-    const onPointerDown = (e) => {
+      const onPointerDown = (e) => {
+        if (e.target.tagName === "BUTTON") return;
       draggingMode.current = formElements.includes(e.target.tagName)
         ? "move"
         : "rotate";
