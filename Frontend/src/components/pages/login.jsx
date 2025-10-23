@@ -378,7 +378,7 @@ export default function Login3D() {
       </motion.div>
 
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-purple-300/30 text-xs text-center">
-        <p>Drag the card or move your mouse to interact</p>
+        <p>Drag the card or move your mouse to interact ... </p>
       </div>
     </div>
   );
