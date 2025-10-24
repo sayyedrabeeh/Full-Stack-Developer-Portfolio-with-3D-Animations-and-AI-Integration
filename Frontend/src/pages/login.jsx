@@ -1,12 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useMotionValue, animate  } from "framer-motion";
 import * as THREE from "three";
+import api from "../api/axios";
 
 export default function Login3D() {
   const mountRef = useRef(null);
   const cardRef = useRef(null);
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const rotationX = useMotionValue(0);
   const rotationY = useMotionValue(0);
@@ -18,6 +19,10 @@ export default function Login3D() {
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [message, setMessage] = useState('')
+  const [error, setError] = useState('')
+  
 
   
   useEffect(() => {
@@ -199,9 +204,24 @@ export default function Login3D() {
     };
   }, [rotationX, rotationY]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    setMessage('')
+    setError('')
+    const url = isSignUp ? 'signup/' : 'login/'
+    const payload = isSignUp ? {email: signupEmail,password : signupPassword,confirmPassword}:{ email : signinEmail,password : signinPassword  }
     
+    try {
+      const res = await api.post(url, payload)
+      if (res.data.access) {
+        localStorage.setItem('access', res.data.access)
+        localStorage.setItem('refresh', res.data.refresh)
+        
+      }
+      setMessage(res.data.message || 'success')
+    } catch (err) {
+      setError(err.response?.data?.error||'some thing went Wrong. ')
+    }
   };
      
 
@@ -397,6 +417,12 @@ export default function Login3D() {
                   )}
                 </button>
               </div>)}       
+                {message && (
+                  <p className="text-green-400 text-sm text-center">{message}</p>
+                )}
+                {error && (
+                  <p className="text-red-400 text-sm text-center">{error}</p>
+                )}
 
                           
               <button
