@@ -35,4 +35,15 @@ def signUp(request):
     return Response({'message':'User created Successfully'},status=status.HTTP_201_CREATED)
 
 
+@api_view(['POST'])
+def login(request):
 
+    email = request.data.get('email')
+    password = request.data.get('password')
+
+    user = authenticate(username = email)
+    if user is not None:
+        return Response({'message': 'Login successful'})
+    else:
+        return Response('error':'Invalid credentials',status=status.HTTP_401_UNAUTHORIZED)
+    
