@@ -17,6 +17,10 @@ def signUp(request):
     password = request.data.get('password')
     confirmPassword = request.data.get('confirmPassword')
 
+    if not email or not password or not confirmPassword:
+      return Response({'error': 'All fields are required'}, status=status.HTTP_400_BAD_REQUEST)
+
+
     if password != confirmPassword:
         return Response({'error':'Password not match'},status=status.HTTP_400_BAD_REQUEST)
     
@@ -29,5 +33,6 @@ def signUp(request):
     user = User.objects.create(username = email , email = email,password =  password)
 
     return Response({'message':'User created Successfully'},status=status.HTTP_201_CREATED)
+
 
 
