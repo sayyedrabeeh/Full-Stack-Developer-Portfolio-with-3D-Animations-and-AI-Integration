@@ -234,7 +234,7 @@ export default function Login3D() {
           
           transformStyle: "preserve-3d",
         }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[530px] cursor-grab"
+        className="absolute top-2 right-2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[540px] cursor-grab"
       >
         
         <div 
