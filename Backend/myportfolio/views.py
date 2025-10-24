@@ -45,5 +45,5 @@ def login(request):
     if user is not None:
         return Response({'message': 'Login successful'})
     else:
-        return Response('error':'Invalid credentials',status=status.HTTP_401_UNAUTHORIZED)
+        return Response({'error':'Invalid credentials'},status=status.HTTP_401_UNAUTHORIZED)
     
