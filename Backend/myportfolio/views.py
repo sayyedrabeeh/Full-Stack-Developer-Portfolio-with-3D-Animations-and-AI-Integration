@@ -4,6 +4,8 @@ from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
+
 
 
 
@@ -32,7 +34,13 @@ def signUp(request):
     
     user = User.objects.create(username = email , email = email,password =  password)
 
-    return Response({'message':'User created Successfully'},status=status.HTTP_201_CREATED)
+    refresh = RefreshToken.for_user(user)
+
+    return Response({
+        'message':'User created Successfully',
+        'refresh' : str(refresh),
+        'access':str(refresh.access_token)
+        },status=status.HTTP_201_CREATED)
 
 
 @api_view(['POST'])
@@ -43,7 +51,12 @@ def login(request):
 
     user = authenticate(username = email)
     if user is not None:
-        return Response({'message': 'Login successful'})
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            'message': 'Login successful',
+            'refresh' : str(refresh),
+            'access':str(refresh.access_token)
+        })
     else:
         return Response({'error':'Invalid credentials'},status=status.HTTP_401_UNAUTHORIZED)
     
