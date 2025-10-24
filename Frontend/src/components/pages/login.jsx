@@ -5,15 +5,17 @@ import * as THREE from "three";
 export default function Login3D() {
   const mountRef = useRef(null);
   const cardRef = useRef(null);
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const rotationX = useMotionValue(0);
   const rotationY = useMotionValue(0);
   const draggingMode = useRef("rotate");
   const lastPointer = useRef(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [signinemail, setSigninEmail] = useState("");
+  const [signupemail, setSignupEmail] = useState("");
+  const [signinpassword, setSigninPassword] = useState("");
+  const [signuppassword, setSignupPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");  
 
   
@@ -196,12 +198,21 @@ export default function Login3D() {
     };
   }, [rotationX, rotationY]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isSignUp) console.log("Signup:", { email, password, confirmPassword });
-    else console.log("Login:", { email, password });
-  };
-     
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (isSignUp) {
+            console.log("Signup:", {
+                email: signupemail,
+                password: signuppassword,
+                confirmPassword,
+            });
+        } else {
+            console.log("Login:", {
+                email: signinemail,
+                password: signinpassword,
+            });
+        };
+    }   
 
 
   return (
@@ -219,7 +230,7 @@ export default function Login3D() {
         dragMomentum={false}
         dragElastic={0.1}
         dragConstraints={{
-          top: -window.innerHeight / 3,
+          top: -window.innerHeight / 2,
           bottom: window.innerHeight / 3,
           left: -window.innerWidth / 3,
           right: window.innerWidth / 3,
@@ -232,7 +243,7 @@ export default function Login3D() {
           
           transformStyle: "preserve-3d",
         }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[540px] cursor-grab"
+        className="absolute top-2 right-1 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[540px] cursor-grab"
       >
         
         <div 
@@ -316,8 +327,11 @@ export default function Login3D() {
                 </div>
                 <input
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={isSignUp ? signupemail : signinemail}
+                  onChange={(e) =>  isSignUp
+                        ? setSignupEmail(e.target.value)
+                        : setSigninEmail(e.target.value)
+                    }
                   placeholder="Email address"
                   className="w-full pl-10 pr-4 py-3  text-sm rounded-xl bg-white/5 text-white placeholder-purple-300/50 border border-purple-500/20 focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-transparent transition-all backdrop-blur-sm"
                 />
@@ -330,8 +344,10 @@ export default function Login3D() {
                 </div>
                 <input
                   type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={isSignUp ? signuppassword : signinpassword}
+                  onChange={(e) => isSignUp
+                                ? setSignupPassword(e.target.value)
+                                : setSigninPassword(e.target.value)}
                   placeholder="Password"
                   className="w-full pl-10 pr-12 py-3 rounded-xl bg-white/5 text-white placeholder-purple-300/50 border text-sm border-purple-500/20 focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-transparent transition-all backdrop-blur-sm"
                 />
