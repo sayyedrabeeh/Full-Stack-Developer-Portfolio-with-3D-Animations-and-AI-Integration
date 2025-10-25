@@ -212,7 +212,7 @@ export default function Login3D() {
     setMessage('')
     setError('')
     const url = isSignUp ? 'api/accounts/signup/' : 'api/accounts/login/';
-    const payload = isSignUp ? {email: signupEmail,password : signupPassword,confirmPassword}:{ email : signinEmail,password : signinPassword  }
+    const payload = isSignUp ? {username: signupEmail,password : signupPassword,confirmPassword}:{ username : signinEmail,password : signinPassword  }
     
     try {
       const res = await api.post(url, payload)
