@@ -2,6 +2,8 @@ import { motion } from "framer-motion"
 import { Autoplay, EffectCoverflow } from "swiper/modules"
 import { Swiper,SwiperSlide } from "swiper/react"
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 
@@ -35,6 +37,17 @@ const projects  =[
 
 
 export default function Projects() {
+    const navigate = useNavigate();
+
+    const handleautheticate = () => {
+        const token = localStorage.getItem("access");
+        if (token) {
+      navigate("/projects"); 
+    } else {
+      navigate("/login");  
+    }
+    }
+
     return (
         <motion.section id="projects"
             initial={{ opacity: 0 }}
@@ -60,7 +73,8 @@ export default function Projects() {
                 </motion.p>
                 <motion.button 
                  className="w-max px-8 py-3 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-3xl font-bold text-white shadow-2xl hover:scale-105 hover:shadow-purple-500/40 transition-transform duration-300 text-2xl"
-                     whileHover={{ scale: 1.1 }}
+                        whileHover={{ scale: 1.1 }}
+                        onClick={handleautheticate}
                  >
                     Explore All 
                 </motion.button>

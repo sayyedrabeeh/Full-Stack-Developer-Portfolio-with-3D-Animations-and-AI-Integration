@@ -7,6 +7,7 @@ import Projects from "./components/HeroProject";
 import Login3D from "./pages/login";
 
 function App() {
+ 
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
 
@@ -28,7 +29,7 @@ function App() {
                 <HeroSection />
                 <About />
                 <Skilss />
-                <Projects />
+                <Projects   />
               </>
             }
           />
