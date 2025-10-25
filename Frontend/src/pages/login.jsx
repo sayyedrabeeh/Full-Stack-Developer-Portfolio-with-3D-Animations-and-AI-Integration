@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useMotionValue, animate  } from "framer-motion";
 import * as THREE from "three";
+import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 
 export default function Login3D() {
@@ -23,7 +24,7 @@ export default function Login3D() {
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   
-
+  const navigate = useNavigate()
   
   useEffect(() => {
     if (!mountRef.current) return;
@@ -208,7 +209,7 @@ export default function Login3D() {
     e.preventDefault();
     setMessage('')
     setError('')
-    const url = isSignUp ? 'signup/' : 'login/'
+    const url = isSignUp ? 'api/accounts/signup/' : 'api/accounts/login/';
     const payload = isSignUp ? {email: signupEmail,password : signupPassword,confirmPassword}:{ email : signinEmail,password : signinPassword  }
     
     try {
@@ -219,6 +220,8 @@ export default function Login3D() {
         
       }
       setMessage(res.data.message || 'success')
+      navigate('/')
+      
     } catch (err) {
       setError(err.response?.data?.error||'some thing went Wrong. ')
     }
@@ -254,7 +257,7 @@ export default function Login3D() {
           
           transformStyle: "preserve-3d",
         }}
-        className="absolute top-2 right-2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[540px] cursor-grab"
+        className="absolute top-2 right-2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[570px] cursor-grab"
       >
         
         <div 
@@ -337,12 +340,12 @@ export default function Login3D() {
                   </svg>
                 </div>
                 <input
-                  type="email"
+                  type="text"
                   value={isSignUp ? signupEmail : signinEmail}
                   onChange={(e) =>  isSignUp
                       ? setSignupEmail(e.target.value)
                       : setSignInEmail(e.target.value)}
-                  placeholder="Email address"
+                  placeholder="username"
                   className="w-full pl-10 pr-4 py-3  text-sm rounded-xl bg-white/5 text-white placeholder-purple-300/50 border border-purple-500/20 focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-transparent transition-all backdrop-blur-sm"
                 />
               </div>
