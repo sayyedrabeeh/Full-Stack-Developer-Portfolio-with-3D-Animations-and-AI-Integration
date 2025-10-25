@@ -6,6 +6,9 @@ from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from google.oauth2 import id_token
+from google.auth.transport import requests
+
 
 
 
@@ -32,7 +35,7 @@ def signUp(request):
     if len(password) < 6 :
         return Response({'error':'password must be six character '},status=status.HTTP_400_BAD_REQUEST)
     
-    user = User.objects.create_user(username = email , email = email,password =  password)
+    user = User.objects.create(username = email , email = email,password =  password)
 
     refresh = RefreshToken.for_user(user)
 
@@ -59,4 +62,29 @@ def login(request):
         })
     else:
         return Response({'error':'Invalid credentials'},status=status.HTTP_401_UNAUTHORIZED)
+    
+
+
+@api_view(['POST'])
+def google_login(request):
+
+    token = request.data.get('token')
+    if not token:
+        return Response({'error':'token is required '},status=status.HTTP_400_BAD_REQUEST)
+    try:
+        idinfo = id_token.verify_oauth2_token(token,requests.Request())
+
+        email = idinfo.get('email')
+        name = idinfo.get('name')
+        if not email:
+            return Response({'error':'invalid google token '},status=status.HTTP_400_BAD_REQUEST)
+        user,created =User.objects.get_or_create(username= email,defaults={'email':email,'first_name':name or ''})
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            'message':'google login successfull',
+            'refresh': str(refresh),
+            'access':str(refresh.access_token)
+        },status=status.HTTP_200_OK)
+    except ValueError:
+        return Response({'error':'invalid or expired google token '},status=status.HTTP_400_BAD_REQUEST)
     
