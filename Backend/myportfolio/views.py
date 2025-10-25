@@ -9,6 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 
 
+
 # Create your views here.
 
 
@@ -60,3 +61,4 @@ def login(request):
     else:
         return Response({'error':'Invalid credentials'},status=status.HTTP_401_UNAUTHORIZED)
     
+

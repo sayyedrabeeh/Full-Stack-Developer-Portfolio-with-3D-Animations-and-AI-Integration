@@ -92,7 +92,7 @@ export default function Login3D() {
       new THREE.OctahedronGeometry(3, 0),
       new THREE.MeshPhongMaterial({
         color: 0x8b5cf6,
-        wireframe: true,
+         
         transparent: true,
         opacity: 0.5,
       })
