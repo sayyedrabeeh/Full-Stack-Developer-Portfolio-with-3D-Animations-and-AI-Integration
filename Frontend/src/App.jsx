@@ -2,41 +2,28 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import HeroSection from "./components/Hero";
 import About from "./components/About";
-import Skilss from "./components/Skills";
+import Skills from "./components/Skills";
 import Projects from "./components/HeroProject";
 import Login3D from "./pages/login";
+import AppLayout from "./components/projects/Applayout";
+import PrivateRoute from "./api/PrivateRoute";
 
 function App() {
- 
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
+  const isProjectsPage = location.pathname.startsWith("/projects");
 
   return (
-    <div
-      className={`min-h-screen ${
-        !isLoginPage
-          ? "flex items-center justify-center text-white text-4xl font-bold animate-gradient overflow-hidden"
-          : ""
-      }`}
-    >
-      <div className={!isLoginPage ? "min-h-screen text-white animate-gradient" : ""}>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Navbar />
-                <HeroSection />
-                <About />
-                <Skilss />
-                <Projects   />
-              </>
-            }
-          />
-          <Route path="/login" element={<Login3D />} />
-        </Routes>
+    <>
+       
+      {!isLoginPage && !isProjectsPage && (
+        <div className="min-h-screen text-white animate-gradient overflow-hidden">
+          <Navbar />
+          <HeroSection />
+          <About />
+          <Skills />
+          <Projects />
 
-        {!isLoginPage && (
           <style>
             {`
               @keyframes gradient {
@@ -51,9 +38,20 @@ function App() {
               }
             `}
           </style>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+
+     
+      {isLoginPage && <Login3D />}
+ 
+      {isProjectsPage && (
+        <div className="w-full min-h-screen">
+          <PrivateRoute>
+            <AppLayout />
+          </PrivateRoute>
+        </div>
+      )}
+    </>
   );
 }
 
