@@ -17,6 +17,7 @@ import React from "./components/projects/React";
 import Opencv from "./components/projects/opencv";
 import AI from "./components/projects/AI";
 import Learning from "./components/projects/Learning";
+import Miniprojects from "./components/projects/MiniProjects";
 
 
 function App() {
@@ -58,7 +59,19 @@ function App() {
       {isProjectsPage && (
         <div className="w-full min-h-screen">
           <PrivateRoute>
-            <AppLayout />
+            <Routes>
+              <Route path="/projects" element={<AppLayout />}>
+                <Route index element={<HomeProjects />} />
+                <Route path="fullstack" element={<Fullstack />} />
+                <Route path="django" element={<Django />} />
+                <Route path="react" element={<React />} />
+                <Route path="opencv" element={<Opencv />} />
+                <Route path="ai" element={<AI />} />
+                <Route path="learnings" element={<Learning />} />
+                <Route path="minirojects" element={<Miniprojects/>}/>
+              </Route>
+            </Routes>
+          
           </PrivateRoute>
         </div>
       )}
