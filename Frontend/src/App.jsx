@@ -8,6 +8,17 @@ import Login3D from "./pages/login";
 import AppLayout from "./components/projects/Applayout";
 import PrivateRoute from "./api/PrivateRoute";
 
+
+
+import HomeProjects from "./components/projects/HomeProjects";
+import Fullstack from "./components/projects/Fullstack";
+import Django from "./components/projects/Django";
+import React from "./components/projects/React";
+import Opencv from "./components/projects/opencv";
+import AI from "./components/projects/AI";
+import Learning from "./components/projects/Learning";
+
+
 function App() {
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
