@@ -10,6 +10,33 @@
           <style>
     .font-heading { font-family: 'Roboto Slab', serif; }
     .font-body { font-family: 'Playfair Display', serif; }
+
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(59, 130, 246, 0.25); 
+        border-radius: 8px;
+        transition: background 0.3s ease;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(139, 92, 246, 0.45); 
+      }
+
+      nav:hover::-webkit-scrollbar-thumb {
+        background: rgba(59, 130, 246, 0.35);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: transparent;
+      }
+      nav:hover::-webkit-scrollbar-thumb {
+        background: rgba(59, 130, 246, 0.35);
+      }
+
       </style>
     <title>SR Portfolio</title>
     <link rel="icon" type="image/jpeg" href="/public/images/a.jpg"> 
