@@ -73,7 +73,7 @@ export default function AppLayout() {
             <h3 className="text-xs  font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3" >
               categories
             </h3>
-            {categories.map(({ id, name, icon: Icon, color }) => {
+            {categories.map(({ id, name, Icon, color }) => {
               const active = location.pathname === `/projects/${id}` || (id === '' && location.pathname === '/projects') 
               return (
                 <button key={id} onClick={() => navigate(`/projects/${id}`)}
@@ -82,12 +82,18 @@ export default function AppLayout() {
                     'hover : bg-gray-800 hover : bg-opacity-60'
                   }`}
                 >
-                  
+                  <div className={`p-2 rounded-lg ${active ? 'bg-white/20' : `${color} bg-opacity-60`}`} >
+                    <Icon size={20}/>
+                  </div>
+                  <span className="font-medium text-sm">{ name }</span>                  
                 </button>
               )
             }) }
-
           </nav>
+
+
+
+          
 
 
         </div>
