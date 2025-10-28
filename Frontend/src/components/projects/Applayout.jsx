@@ -70,8 +70,22 @@ export default function AppLayout() {
           </div>
 
           <nav className="flex-1 overflow-y-auto p-4">
-            
-
+            <h3 className="text-xs  font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3" >
+              categories
+            </h3>
+            {categories.map(({ id, name, icon: Icon, color }) => {
+              const active = location.pathname === `/projects/${id}` || (id === '' && location.pathname === '/projects') 
+              return (
+                <button key={id} onClick={() => navigate(`/projects/${id}`)}
+                  className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg mb-1 transition-all duration-200 ${
+                    active ? 'bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg shadow-blue-500/30' :
+                    'hover : bg-gray-800 hover : bg-opacity-60'
+                  }`}
+                >
+                  
+                </button>
+              )
+            }) }
 
           </nav>
 
