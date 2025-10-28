@@ -68,7 +68,7 @@ function App() {
                 <Route path="opencv" element={<Opencv />} />
                 <Route path="ai" element={<AI />} />
                 <Route path="learnings" element={<Learning />} />
-                <Route path="minirojects" element={<Miniprojects/>}/>
+                <Route path="miniprojects" element={<Miniprojects/>}/>
               </Route>
             </Routes>
           
