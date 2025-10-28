@@ -91,15 +91,30 @@ export default function AppLayout() {
             }) }
           </nav>
 
-
-
-          
-
-
         </div>
 
 
       </aside>
+
+
+      <main className="flex-1 flex flex-col overflow-hidden w-full">
+
+        <header className="bg-gray-900/60  border-b border-gray-800 p-4 flex items-center  gap-4 backdrop-blur-md w-full ">
+          
+          <button onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="p-2 hover: bg-gray-800 rounded-lg  transition-colors "
+          >
+            { isSidebarOpen ? <X size={24} /> : <Menu size={24}/>  }            
+          </button>
+          <h1 className="text-2xl font-bold  bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text  text-transparent " >
+            Projects 
+          </h1>
+        </header>
+
+        <section className="flex-1 overflow-y-auto p-8 bg-gradient-to-b from-gray-950 via-gray-900  to-gray-950 w-full " >
+            <Outlet/>
+        </section>
+      </main>
 
       
     </div>
