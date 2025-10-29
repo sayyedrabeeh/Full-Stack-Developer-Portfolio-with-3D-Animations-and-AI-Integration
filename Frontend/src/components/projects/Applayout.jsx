@@ -31,11 +31,11 @@ export default function AppLayout() {
   },[])
 
   return (
-    <div className="flex w-full bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white">
+    <div className="flex w-full bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white ">
        <aside
-        className={`${
+        className={`fixed top-0 left-0 ${
           isSidebarOpen ? "w-72" : "w-0"
-        } bg-gray-900/70 backdrop-blur-md border-r border-gray-800 transition-all duration-300 overflow-hidden flex flex-col h-screen`}
+        } bg-gray-900/70 backdrop-blur-md border-r border-gray-800 transition-all duration-300 overflow-hidden   flex flex-col h-screen`}
       >
        <div className="p-6 border-b border-gray-800">
         <div className="flex items-center gap-4 mb-1">
@@ -77,9 +77,6 @@ export default function AppLayout() {
         <nav className="flex-1 overflow-y-auto p-4 
           scrollbar-thin scrollbar-thumb-[#3B82F6]/40 scrollbar-track-transparent 
           hover:scrollbar-thumb-[#8B5CF6]/60 transition-colors duration-300">
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">
-            Categories
-          </h3>
           {categories.map(({ id, name, icon: Icon, color }) => {
             const active = location.pathname === `/projects/${id}` || 
               (id === "" && location.pathname === "/projects");
@@ -135,7 +132,7 @@ export default function AppLayout() {
      
       </aside>
 
-      <main className="flex-1 flex flex-col overflow-hidden w-full">
+      <main className={`flex-1 flex flex-col ml-${isSidebarOpen ? "72" : "0"} transition-all duration-300`}>
         <header className="bg-gray-900/60 border-b border-gray-800 p-4 flex items-center gap-4 backdrop-blur-md w-full">
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
