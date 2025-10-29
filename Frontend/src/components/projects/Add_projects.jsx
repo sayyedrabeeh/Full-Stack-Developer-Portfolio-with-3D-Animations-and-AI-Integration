@@ -46,6 +46,7 @@ export default function Add_Project() {
         } else {
             delete new_error[name]
         }
+    setErrors(new_error)
     }    
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -192,7 +193,109 @@ export default function Add_Project() {
                                 </div>
                             </div>
 
-                            
+                            <div className="bg-slate-900/70 backdrop-blur-2xl rounded-3xl border border-slate-800/60 p-8 shadow-2xl ">
+                                <div className="flex items-center gap-3 mb-7  pb-5 border-b border-slate-800/50" >
+                                    <ExternalLink className="w-6  h-6 text-emerald-400" />
+                                    <h2 className="text-2xl font-bold text-white">Project Links</h2>
+                                </div>
+
+                                <div className="grid md:grid-cols-2 gap-6 ">
+                                    <div className="space-y-2" >
+                                        <label className="flex items-center gap-2 text-sm font-semibold text-slate-300" >
+                                            <ExternalLink className="w-4 h-4 text-emerald-400"/>Live Demo
+                                        </label>
+                                        <input 
+                                            type="url"
+                                            name="live_link"
+                                            value={formData.live_link}
+                                            onChange={handleChange}
+                                         onFocus={() => setFocusField('live_link')} onBlur={() => setFocusField(null)}
+                                            
+                                            className={`w-full px-5 py-4 bg-slate-800/60 border-2 rounded-2xl transition-all duration-300 outline-none text-white placeholder-slate-500 font-medium 
+                                                ${focusField === 'live_link' ? 'border-emerald-500 shadow-xl shadow-emerald-500/30' : 'border-slate-700'} ${errors.live_link ? 'border-red-500 ' : ''}
+                                                hover:border-emerald-400/70 hover:bg-slate-800/80 `} placeholder="https://yourproject.com" required />
+                                        {errors.live_link && (
+                                            <p className="text-xs text-red-400  flex items-center gap-1 mt-1" >
+                                                <AlertCircle className="w-3 h-3" />{errors.live_link}
+                                            </p>
+                                        )}
+                                    </div>
+                                    <div className="space-y-2" >
+                                        <label className="flex items-center gap-2 text-sm font-semibold text-slate-300" >
+                                            <ExternalLink className="w-4 h-4 text-violet-400"/>Repository
+                                        </label>
+                                        <input 
+                                            type="url"
+                                            name="github_link"
+                                            value={formData.github_link}
+                                            onChange={handleChange}
+                                         onFocus={() => setFocusField('github_link')} onBlur={() => setFocusField(null)}
+                                            
+                                            className={`w-full px-5 py-4 bg-slate-800/60 border-2 rounded-2xl transition-all duration-300 outline-none text-white placeholder-slate-500 font-medium 
+                                                ${focusField === 'github_link' ? 'border-violet-500 shadow-xl shadow-violet-500/30' : 'border-slate-700'} ${errors.github_link ? 'border-red-500 ' : ''}
+                                                hover:border-violet-400/70 hover:bg-slate-800/80 `} placeholder="https://github.com/username/repo" required />
+                                        {errors.github_link && (
+                                            <p className="text-xs text-red-400  flex items-center gap-1 mt-1" >
+                                                <AlertCircle className="w-3 h-3" />{errors.github_link}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div className="bg-slate-900/70 backdrop-blur-2xl rounded-3xl border border-slate-800/60 p-8 shadow-2xl" >
+                                <div className="flex items-center gap-3 mb-7 pb-5 border-b border-slate-800/50" >
+                                    <Code className="w-6 h-6 text-orange-400" />
+                                    <h2 className="text-2xl font-bold text-white " >Technical Details</h2>
+                                </div>
+
+                                <div className="grid md:grid-cols-2 gap-6 ">
+                                    <div className="space-y-2" >
+                                        <label className="flex items-center gap-2 text-sm font-semibold text-slate-300" >
+                                            <Code className="w-4 h-4 text-orange-400"/>Tech Stack
+                                        </label>
+                                        <input 
+                                            type="text"
+                                            name="tech_stack"
+                                            value={formData.tech_stack}
+                                            onChange={handleChange}
+                                         onFocus={() => setFocusField('tech_stack')} onBlur={() => setFocusField(null)}
+                                            
+                                            className={`w-full px-5 py-4 bg-slate-800/60 border-2 rounded-2xl transition-all duration-300 outline-none text-white placeholder-slate-500 font-medium 
+                                                ${focusField === 'tech_stack' ? 'border-orange-500 shadow-xl shadow-orange-500/30' : 'border-slate-700'} ${errors.tech_stack ? 'border-red-500 ' : ''}
+                                                hover:border-orange-400/70 hover:bg-slate-800/80 `} placeholder="React, Node.js, Tailwind, PostgreSQL" required />
+                                        {errors.tech_stack && (
+                                            <p className="text-xs text-red-400  flex items-center gap-1 mt-1" >
+                                                <AlertCircle className="w-3 h-3" />{errors.tech_stack}
+                                            </p>
+                                        )}
+                                    </div>
+                                    <div className="space-y-2" >
+                                        <label className="flex items-center gap-2 text-sm font-semibold text-slate-300" >
+                                            <Clock className="w-4 h-4 text-pink-400"/>Time Spent 
+                                        </label>
+                                        <input 
+                                            type="text"
+                                            name="time_spent"
+                                            value={formData.time_spent}
+                                            onChange={handleChange}
+                                         onFocus={() => setFocusField('time_spent')} onBlur={() => setFocusField(null)}
+                                            
+                                            className={`w-full px-5 py-4 bg-slate-800/60 border-2 rounded-2xl transition-all duration-300 outline-none text-white placeholder-slate-500 font-medium 
+                                                ${focusField === 'time_spent' ? 'border-pink-500 shadow-xl shadow-pink-500/30' : 'border-slate-700'} ${errors.time_spent ? 'border-red-500 ' : ''}
+                                                hover:border-pink-400/70 hover:bg-slate-800/80 `} placeholder="3 weeks ~60 hours" required />
+                                        {errors.time_spent && (
+                                            <p className="text-xs text-red-400  flex items-center gap-1 mt-1" >
+                                                <AlertCircle className="w-3 h-3" />{errors.time_spent}
+                                            </p>
+                                        )}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
 
                         </div>
 
