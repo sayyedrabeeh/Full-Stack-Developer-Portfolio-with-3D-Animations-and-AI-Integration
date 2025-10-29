@@ -32,7 +32,7 @@ export default function Add_Project() {
         return ()=> clearTimeout(timer)
     },[formData])    
 
-    const validatefield = (name, value) => {
+    const validateField = (name, value) => {
      
         const new_error = { ...errors }
         if (name === 'name' && value.length < 3) {
@@ -47,8 +47,37 @@ export default function Add_Project() {
             delete new_error[name]
         }
     }    
+    const handleChange = (e) => {
+        const { name, value } = e.target
+        setFormData({ ...formData, [name]: value })
+        validateField(name,value)
+    }
+
+    const handleFileChange = (e) => {
+        
+        const selectedFiles = e.target.files
+        if (!selectedFiles) return;
+
+        if (formData.media_type === 'image') {
+            const validFiles = Array.from(selectedFiles).filter((file) => file.type.startswith('image/') && file.size <= 10 * 1024 * 1024)
+             setFiles(validFiles)
+        } else {
+            const file = selectedFiles[0]
+            if (file && file.type.startswith('video/') && file.size <= 100 * 1024 * 1024) {
+                setVideo(file)
+            }
+        }
+
+    }
+
+    const removeFile = (index) => {
+        setFiles(files.filter((_,i) => i !== index ))
+    }
+
+    const removeVideo = () => setVideo(null)
+
     
-    
+
 
 
 
