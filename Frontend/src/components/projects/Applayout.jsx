@@ -107,6 +107,13 @@ export default function AppLayout() {
             <LogOut size={18} />
             Logout
           </button>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 transition-all font-semibold text-white shadow-lg shadow-red-600/30"
+          >
+            <LogOut size={18} />
+            Logout
+          </button>
         </div>
      
       </aside>
