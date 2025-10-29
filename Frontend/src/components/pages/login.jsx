@@ -219,7 +219,7 @@ export default function Login3D() {
         localStorage.setItem('refresh', res.data.refresh)
         
       }
-      console.log(res)
+     
       setMessage(res.data.message || 'success')
       navigate('/')
       
