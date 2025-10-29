@@ -291,13 +291,100 @@ export default function Add_Project() {
                                             </p>
                                         )}
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="lg-col-span-1">
+                            <div className="bg-slate-900/70 backdrop-blur-2xl rounded-3xl border border-slate-800/60 p-8 shadow-2xl lg:sticky lg:top-24" >
+                                <div className="flex items-centre gap-3 mb-7 pb-5 border-b border-slate-500/50" >
+                                    <Upload className="w-6 h-6 text-cyan-400" />
+                                    <h2 className="text-2xl text-white font-bold">Media</h2>
+                                </div>
+
+                                <div className="space-y-4 mb-7 " >
+                                    <label className="text-sm  font-semibold text-slate-300" >
+                                        Media Type
+                                    </label>
+                                    <div className="grid grid-cols-2 gap-3" >
+                                        {['image', 'video'].map((type) => (
+                                            <button
+                                                key={type}
+                                                type="button"
+                                                onClick={() => {
+                                                    setFormData({ ...formData, media_type: type })
+                                                    setFiles([])
+                                                    setVideo(null)
+                                                }}
+                                                className={`flex flex-col items-center justify-center gap-2.5 px-5 py-7 rounded-2xl border-2 transition-all duration-300 
+                                                font-semibold text-sm backdrop-blur-sm  ${formData.media_type === type ? 'border-cyan-500 bg-cyan-500/10 text-cyan-400 shadow-2xl shadow-cyan-500/30' :
+                                                    'border-slate-700 bg-slate-800/40 text-slate-400  hover:border-slate-600 hover:bg-slate-800/60'
+                                                    }`}>
+                                                {type === 'image' ? <Image className="w-7 h-7" /> : <Video className="w-7 h-7" />}
+                                                <span className="capitalize">{ type === 'image'?'Images':'video' }</span>
+                                                </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+
+                                <div className="space-y-4" >
+                                    <label className="text-sm font-semibold text-slate-300">
+                                        { formData.media_type === 'image'? 'Upload Images':'Upload Video' }
+                                    </label>
+                                    <div className="relative group">
+                                        <input
+                                            type="file"
+                                            accept={formData.media_type === 'image' ? 'image/*' : 'video/*'}
+                                            multiple={formData.media_type === 'image'}
+                                            onChange={handleFileChange}
+                                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                        />
+                                        <div className={`flex flex-col items-center justify-center gap-4 px-6 py-14 border-2 border-dashed rounded-2xl 
+                                        transition-all duration-300 cursor-pointer ${files.length > 0 || video ? 'border-emerald-500/50 bg-emerald-500/5' :
+                                            'border-slate-700/60 bg-slate-800/40  group-hover :border-cyan-500/60  group-hover:bg-slate-800/60'
+                                            } `} >
+                                                
+                                            <Upload className={`w-10 h-10 transition-colors duration-300 ${files.length > 0 || video ? 'text-emerald-400' : 'text-slate-500 group-hover:text-cyan-400 '}`} />
+                                            <div className="text-center">
+                                                <p className={`text-sm font-medium transition-colors duration-300 ${files.length > 0 || video ? 'text-emerald-400' : 'text-slate-300 group-hover:text-cyan-400'} `} >
+                                                    { files.length > 0 || video ?'Files Ready' :'Drop Files Here Or Click To Browse' }
+                                                </p>
+                                            
+                                                <p className="text-xs text-slate-500 mt-1" >
+                                                     { formData.media_type==='image'?'PNG, JPG, GIF Max 10MB each' :'MP4 WebM Max 100MB ' }
+                                                </p>
+                                            </div>                                            
+                                        </div>
+                                    </div>
+
+                                    {formData.media_type === 'image' && files.length > 0 && (
+                                        <div className="grid grid-cols-3 gap-3 mt-4">
+                                            {files.map((file, i) => (
+                                                <div key={i} className="relative group rounded-xl overflow-hidden">
+                                                    <img
+                                                        src={URL.createObjectURL(file)}
+                                                        alt={`preview ${i + 1}`}
+                                                        className="w-full h-24 object-cover" />  
+                                                    <button onClick={() => removeFile(i)}
+                                                        className="absolute top-1 right-1 p1 bg-red-500/80 rounded-full opacity-0 group-hover:opacity-100  transition-opacity">
+                                                        <X className="w-3 h-3 text-white"/>
+                                                    </button>    
+                                                </div>
+                                             ) )}
+                                        </div>
+                                    ) }
 
                                 </div>
+
 
                             </div>
 
 
+
                         </div>
+                        
+
 
                     </div>
                 </form>
