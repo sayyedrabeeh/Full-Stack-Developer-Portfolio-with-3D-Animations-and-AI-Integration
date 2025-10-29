@@ -146,6 +146,55 @@ export default function Add_Project() {
                 <form onSubmit={handleSubmit} className="space-y-8">
 
                     <div className="grid lg:grid-cols-3 gap-8">
+                        <div className="lg:col-span-2 space-y-8 " >
+                            <div className="bg-slate-900/70  backdrop-blur-2xl rounded-3xl border border-slate-800/60 p-8 shadow-2xl" >
+                                <div className="flex items-center gap-3 mb-7 pb-5 border-b border-slate-800/50">
+                                    <CheckCircle2 className="w-6 h-6 text-blue-400" />
+                                    <h2 className="text-2xl font-bold text-white ">Basic Information</h2>
+                                </div>
+                                <div className="space-y-7">
+                                    <div className="relative space-y-2" >
+                                        <label className="flex items-center gap-2 text-sm font-semibold text-slate-300" >
+                                            Project Name <span className="text-red-400">*</span>
+                                        </label>
+                                        <input
+                                            type="text" name="name" value={formData.name} onChange={handleChange} onFocus={() => setFocusField('name')} onBlur={() => setFocusField(null)}
+                                            className={`w-full px-5 py-4 bg-slate-800/60 border-2 rounded-2xl transition-all duration-300 outline-none text-white placeholder-slate-500 font-medium 
+                                                ${focusField === 'name' ? 'border-blue-500 shadow-xl shadow-blue-500/30' : 'border-slate-700'} ${errors.name ? 'border-red-500 ' : ''}
+                                                hover:border-blue-400/70 hover:bg-slate-800/80 `} placeholder="Enter Project Name" required />
+                                        {errors.name && (
+                                            <p className="text-xs text-red-400  flex items-center gap-1 mt-1" >
+                                                <AlertCircle className="w-3 h-3"/>{errors.name}
+                                            </p>
+                                            )}
+                                    </div>
+                                    <div className="relative space-y-2" >
+                                        <div className="flex items-center justify-between" >
+                                        <label className="flex items-center    gap-2 text-sm font-semibold text-slate-300" >
+                                            Description <span className="text-red-400">*</span>
+                                        </label>
+                                        <span className="text-xs text-slate-500">
+                                            {formData.description.length}/1000
+                                            </span>
+                                        </div>
+                                        <textarea
+                                            name="description" value={formData.description} onChange={handleChange} onFocus={() => setFocusField('description')} onBlur={() => setFocusField(null)}
+                                            rows={6} maxLength={1000}
+                                            className={`w-full px-5 py-4 bg-slate-800/60 border-2 rounded-2xl transition-all duration-300 outline-none text-white placeholder-slate-500 font-medium 
+                                                ${focusField === 'description' ? 'border-purple-500 shadow-xl shadow-purple-500/30' : 'border-slate-700'} ${errors.description ? 'border-red-500 ' : ''}
+                                                hover:border-purple-400/70 hover:bg-slate-800/80 `} placeholder="Explain your project in detail: goals, challenges, solutions, tech used, and impact..." required />
+                                        {errors.description && (
+                                            <p className="text-xs text-red-400  flex items-center gap-1 mt-1" >
+                                                <AlertCircle className="w-3 h-3"/>{errors.description}
+                                            </p>
+                                            )}
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+
+                        </div>
 
                     </div>
                 </form>
@@ -153,16 +202,5 @@ export default function Add_Project() {
             </div>
         </div>
     )
-
-
-
-
-
-
-
-
-
-
-
 }
 
