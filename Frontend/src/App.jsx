@@ -7,6 +7,8 @@ import Projects from "./components/HeroProject";
 import Login3D from "./pages/login";
 import AppLayout from "./components/projects/Applayout";
 import PrivateRoute from "./api/PrivateRoute";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 
@@ -28,10 +30,15 @@ function App() {
 
   return (
     <>
-       
+             <ToastContainer 
+        position="top-right"
+        autoClose={3000}
+        theme="dark"
+        toastStyle={{ background: "#1e293b", color: "#fff" }}
+      />
       {!isLoginPage && !isProjectsPage && (
         <div className="min-h-screen text-white animate-gradient overflow-hidden">
-          <Navbar />
+           <Navbar />
           <HeroSection />
           <About />
           <Skills />
