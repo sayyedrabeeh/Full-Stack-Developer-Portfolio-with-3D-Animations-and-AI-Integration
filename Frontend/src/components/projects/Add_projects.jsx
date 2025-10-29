@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Upload,Video,Image,Loader2,CheckCircle2,ExternalLink,Github,Clock,Code,Sparkles,ArrowLeft,X,AlertCircle } from "lucide-react";
+import { toast } from "react-toastify";
 
 
 
@@ -54,22 +55,40 @@ export default function Add_Project() {
         validateField(name,value)
     }
 
+    
     const handleFileChange = (e) => {
-        
-        const selectedFiles = e.target.files
-        if (!selectedFiles) return;
+    const selectedFiles = e.target.files;
+    if (!selectedFiles) return;
 
-        if (formData.media_type === 'image') {
-            const validFiles = Array.from(selectedFiles).filter((file) => file.type.startswith('image/') && file.size <= 10 * 1024 * 1024)
-             setFiles(validFiles)
+    if (formData.media_type === "image") {
+        const validFiles = Array.from(selectedFiles).filter(
+        (file) => file.type.startsWith("image/") && file.size <= 10 * 1024 * 1024
+        );
+
+        if (validFiles.length !== selectedFiles.length) {
+        toast.error(" Some images are invalid or exceed 10MB!");
         } else {
-            const file = selectedFiles[0]
-            if (file && file.type.startswith('video/') && file.size <= 100 * 1024 * 1024) {
-                setVideo(file)
-            }
+        toast.success(" Images added successfully!");
         }
 
+        setFiles(validFiles);
+    } else {
+        const file = selectedFiles[0];
+        if (file) {
+        if (!file.type.startsWith("video/")) {
+            toast.error(" Please upload a valid video file!");
+        } else if (file.size > 100 * 1024 * 1024) {
+            toast.error(" Video exceeds 100MB limit!");
+        } else {
+            setVideo(file);
+            toast.success(" Video selected successfully!");
+        }
+        }
     }
+
+    e.target.value = "";
+    };
+
 
     const removeFile = (index) => {
         setFiles(files.filter((_,i) => i !== index ))
@@ -79,21 +98,22 @@ export default function Add_Project() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (Object.keys(errors).length > 0 || !formData.name || formData.description) {
-            alert('Fix errors Before Submitting ')
+        if (Object.keys(errors).length > 0 || !formData.name || !formData.description) {
+            toast.error('Fix errors Before Submitting ')
+            return 
         }
         setLoading(true)
-        const data = new formData()
+        const data = new FormData()
         Object.entries(formData).forEach(([key, value]) => data.append(key, value))
         
         if (formData.media_type === 'image') {
             files.forEach((file) => data.append('images',file))
         } else if (video) {
-            data.append('videos',video)
+            data.append('video',video)
         }
         try {
             await new Promise((resolve) => setTimeout(resolve, 2000))
-            alert('project published successfully ')
+            toast.success('project published successfully ')
             setFormData({
                 name: "",
                 description: "",
@@ -108,14 +128,14 @@ export default function Add_Project() {
               }
         catch(err) {
             console.error(err)
-            alert('failed to publish project ')
+            toast.error('failed to publish project ')
 
         } finally {
             setLoading(false)
         }
     }
 
-     const formateTime = (date) => {
+     const formatTime = (date) => {
             const minutes = Math.floor((new Date().getTime() - date.getTime()) / 60000)
             if (minutes < 1) return 'just now'
             if (minutes < 60) return `${minutes} min ago`
@@ -130,7 +150,7 @@ export default function Add_Project() {
             <div className="max-w-7xl mx-auto px-6 py-12" >
                 <div className="mb-12 ">
                     <div className="flex items-center gap-5 mb-6 ">
-                        <div className="p-4 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl shadow-2xl shadow-purple-500/30 animate-pluse" >
+                        <div className="p-4 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl shadow-2xl shadow-purple-500/30 animate-pulse" >
                             <Sparkles className="w-9 h-9 text-white"/>
                         </div>
                         <div>
@@ -295,9 +315,9 @@ export default function Add_Project() {
                             </div>
                         </div>
 
-                        <div className="lg-col-span-1">
+                        <div className="lg:col-span-1">
                             <div className="bg-slate-900/70 backdrop-blur-2xl rounded-3xl border border-slate-800/60 p-8 shadow-2xl lg:sticky lg:top-24" >
-                                <div className="flex items-centre gap-3 mb-7 pb-5 border-b border-slate-500/50" >
+                                <div className="flex items-center gap-3 mb-7 pb-5 border-b border-slate-500/50" >
                                     <Upload className="w-6 h-6 text-cyan-400" />
                                     <h2 className="text-2xl text-white font-bold">Media</h2>
                                 </div>
@@ -342,7 +362,7 @@ export default function Add_Project() {
                                         />
                                         <div className={`flex flex-col items-center justify-center gap-4 px-6 py-14 border-2 border-dashed rounded-2xl 
                                         transition-all duration-300 cursor-pointer ${files.length > 0 || video ? 'border-emerald-500/50 bg-emerald-500/5' :
-                                            'border-slate-700/60 bg-slate-800/40  group-hover :border-cyan-500/60  group-hover:bg-slate-800/60'
+                                            'border-slate-700/60 bg-slate-800/40  group-hover:border-cyan-500/60  group-hover:bg-slate-800/60'
                                             } `} >
                                                 
                                             <Upload className={`w-10 h-10 transition-colors duration-300 ${files.length > 0 || video ? 'text-emerald-400' : 'text-slate-500 group-hover:text-cyan-400 '}`} />
@@ -377,13 +397,13 @@ export default function Add_Project() {
                                     
                                     {formData.media_type === 'video' && video && (
                                      
-                                        <div className="mt-4 p-4 bg-slate-800/60  rounded 2xl border border-emerald-500/30 ">
+                                        <div className="mt-4 p-4 bg-slate-800/60  rounded-2xl border border-emerald-500/30 ">
                                             <video
                                                 src={URL.createObjectURL(video)}
                                                 controls
                                                 className="w-full rounded-xl" />
                                             <button onClick={removeVideo}
-                                                className="mt-2 text-xs text-red-400 hover:text-red-300 flex items-centre gap-1">
+                                                className="mt-2 text-xs text-red-400 hover:text-red-300 flex items-center gap-1">
                                                 <X className=" w-3 h-3"/>Remove Video
                                             </button>
                                         </div>
@@ -394,7 +414,7 @@ export default function Add_Project() {
 
                                 <button type="submit"
                                     disabled={loading || Object.keys(errors).length > 0 || !formData.name || !formData.description}
-                                    className="w-full mt-8 flex items-center justify-center gap-3 py-5 rounded-2xl bg-gradient-to-r form-cyan-600 via-blue-600 to-purple-600
+                                    className="w-full mt-8 flex items-center justify-center gap-3 py-5 rounded-2xl bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600
                                               hover:from-cyan-500 hover:via-blue-500 hover:to-purple-500 disabled:from-slate-700 disabled:to-slate-700 transition-all duration-300 font-bold text-white
                                               text-lg shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:hover:scale-100 disabled:opacity-50">
                                            
