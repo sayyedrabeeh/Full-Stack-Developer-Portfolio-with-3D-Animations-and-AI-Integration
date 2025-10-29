@@ -22,4 +22,27 @@ class Project(models.Model):
     def __str__(self):
         return self.name
     
+
+class ProjectImage(models.Model):
+
+    project = models.ForeignKey(Project,on_delete=models.CASCADE,related_name='images')
+    image = models.ImageField(upload_to='project_images/')
+
+    def __str__(self):
+        return f'image for {self.project.name}'
+    
+
+
+class ProjectVideo(models.Model):
+
+    project = models.OneToOneField(Project,on_delete=models.CASCADE,related_name='video')
+    video = models.FileField(upload_to='project_video/')
+
+    def __str__(self):
+        return f'video for {self.project.name}'
+    
+
+
+
+
     
