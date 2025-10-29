@@ -373,22 +373,48 @@ export default function Add_Project() {
                                                 </div>
                                              ) )}
                                         </div>
-                                    ) }
+                                    )}
+                                    
+                                    {formData.media_type === 'video' && video && (
+                                     
+                                        <div className="mt-4 p-4 bg-slate-800/60  rounded 2xl border border-emerald-500/30 ">
+                                            <video
+                                                src={URL.createObjectURL(video)}
+                                                controls
+                                                className="w-full rounded-xl" />
+                                            <button onClick={removeVideo}
+                                                className="mt-2 text-xs text-red-400 hover:text-red-300 flex items-centre gap-1">
+                                                <X className=" w-3 h-3"/>Remove Video
+                                            </button>
+                                        </div>
+                                    )}
 
                                 </div>
 
 
+                                <button type="submit"
+                                    disabled={loading || Object.keys(errors).length > 0 || !formData.name || !formData.description}
+                                    className="w-full mt-8 flex items-center justify-center gap-3 py-5 rounded-2xl bg-gradient-to-r form-cyan-600 via-blue-600 to-purple-600
+                                              hover:from-cyan-500 hover:via-blue-500 hover:to-purple-500 disabled:from-slate-700 disabled:to-slate-700 transition-all duration-300 font-bold text-white
+                                              text-lg shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:hover:scale-100 disabled:opacity-50">
+                                           
+                                            {loading ? (
+                                           <>
+                                             <Loader2 className="w-6 h-6 animate-spin" />
+                                            <span>Publishing Project...</span>
+                                           </>
+                                            ) :
+                                           (
+                                            <>
+                                            <CheckCircle2 className="w-6 h-6" />
+                                            <span>Publish Project </span>
+                                            </>
+                                              )}
+                                </button>
                             </div>
-
-
-
                         </div>
-                        
-
-
                     </div>
                 </form>
-
             </div>
         </div>
     )
