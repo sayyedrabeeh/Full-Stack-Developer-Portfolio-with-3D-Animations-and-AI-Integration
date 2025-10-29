@@ -55,7 +55,14 @@ def login(request):
         return Response({
             'message': 'Login successful',
             'refresh' : str(refresh),
-            'access':str(refresh.access_token)
+            'access':str(refresh.access_token),
+            "user": {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email,
+                "is_superuser": user.is_superuser,
+                "is_staff": user.is_staff,
+            }
         })
     else:
         return Response({'error':'Invalid credentials'},status=status.HTTP_401_UNAUTHORIZED)
