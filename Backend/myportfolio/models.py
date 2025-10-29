@@ -42,6 +42,34 @@ class ProjectVideo(models.Model):
         return f'video for {self.project.name}'
     
 
+class ProjectLike(models.Model):
+
+    project = models.ForeignKey(Project,on_delete=models.CASCADE,related_name='likes')
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    liked_at = models.DateField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('project','user')
+    
+    def __str__(self):
+        return f' {self.user.username} liked {self.project.name}'
+    
+
+    
+class ProjectComment(models.Model):
+
+    project = models.ForeignKey(Project,on_delete=models.CASCADE,related_name='comments')
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f'comment by {self.user.username} on {self.project.name}'
+    
+    
+
+
+
 
 
 
