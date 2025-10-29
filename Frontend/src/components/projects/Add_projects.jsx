@@ -124,11 +124,34 @@ export default function Add_Project() {
     }
     
     return (
-        <>
-        
-        
-        hii
-        </>
+        <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white ">
+
+            <div className="max-w-7xl mx-auto px-6 py-12" >
+                <div className="mb-12 ">
+                    <div className="flex items-center gap-5 mb-6 ">
+                        <div className="p-4 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl shadow-2xl shadow-purple-500/30 animate-pluse" >
+                            <Sparkles className="w-9 h-9 text-white"/>
+                        </div>
+                        <div>
+                            <h1 className="text-5xl font-extrabold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent leading-tight" >
+                                Create New Project
+                            </h1>
+                            <p className="text-slate-400 text-lg mt-2 max-w-2xl">
+                                Showcase your work with rich media, detailed descriptions, and live demos.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-8">
+
+                    <div className="grid lg:grid-cols-3 gap-8">
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
     )
 
 

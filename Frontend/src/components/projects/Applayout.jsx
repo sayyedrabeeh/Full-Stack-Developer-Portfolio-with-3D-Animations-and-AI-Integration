@@ -144,7 +144,7 @@ export default function AppLayout() {
             My Projects
           </h1>
         </header>
-        <section className="flex-1 overflow-y-auto p-8 bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 w-full">
+        <section className="flex-1 overflow-y-auto   bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 w-full">
           <Outlet />
         </section>
       </main>
