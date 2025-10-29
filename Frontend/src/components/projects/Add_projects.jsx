@@ -76,7 +76,62 @@ export default function Add_Project() {
 
     const removeVideo = () => setVideo(null)
 
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        if (Object.keys(errors).length > 0 || !formData.name || formData.description) {
+            alert('Fix errors Before Submitting ')
+        }
+        setLoading(true)
+        const data = new formData()
+        Object.entries(formData).forEach(([key, value]) => data.append(key, value))
+        
+        if (formData.media_type === 'image') {
+            files.forEach((file) => data.append('images',file))
+        } else if (video) {
+            data.append('videos',video)
+        }
+        try {
+            await new Promise((resolve) => setTimeout(resolve, 2000))
+            alert('project published successfully ')
+            setFormData({
+                name: "",
+                description: "",
+                live_link: "",
+                github_link: "",
+                tech_stack: "",
+                time_spent: "",
+                media_type: "image",
+            });
+            setFiles([])
+            setVideo(null)
+              }
+        catch(err) {
+            console.error(err)
+            alert('failed to publish project ')
+
+        } finally {
+            setLoading(false)
+        }
+    }
+
+     const formateTime = (date) => {
+            const minutes = Math.floor((new Date().getTime() - date.getTime()) / 60000)
+            if (minutes < 1) return 'just now'
+            if (minutes < 60) return `${minutes} min ago`
+            const hours = Math.floor(minutes / 60);
+            return `${hours} hour${hours > 1?'s':''}ago`
+
+    }
     
+    return (
+        <>
+        
+        
+        hii
+        </>
+    )
+
+
 
 
 
