@@ -219,6 +219,7 @@ export default function Login3D() {
       if (res.data.access) {
         localStorage.setItem('access', res.data.access)
         localStorage.setItem('refresh', res.data.refresh)
+        localStorage.setItem('user', JSON.stringify(res.data.user));
         
       }
       setMessage(res.data.message || 'success')

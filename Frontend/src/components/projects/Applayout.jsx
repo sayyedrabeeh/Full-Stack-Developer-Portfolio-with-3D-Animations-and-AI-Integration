@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { Home,Globe,Layers,Zap,Terminal,Brain,Puzzle,BookOpen,Github,Mail,Linkedin,Menu,X,LogOut } from "lucide-react";
+import React, { useState,useEffect } from "react";
+import { Home,Globe,Layers,Zap,Terminal,Brain,Puzzle,BookOpen,Github,Mail,Linkedin,Menu,X,LogOut,FolderPlus  } from "lucide-react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 export default function AppLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSuperUser, setIsSuperUser] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -23,6 +24,11 @@ export default function AppLayout() {
     localStorage.clear();
     navigate("/login");
   };
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'))
+    setIsSuperUser(user?.is_superuser || false )
+  },[])
 
   return (
     <div className="flex w-full bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white">
@@ -99,22 +105,33 @@ export default function AppLayout() {
             );
           })}
         </nav>
-        <div className="p-4 border-t border-gray-800">
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 transition-all font-semibold text-white shadow-lg shadow-red-600/30"
+       <div className="p-4 border-t border-gray-800 space-y-3">
+        {isSuperUser && (
+          <div
+            onClick={() => navigate("/projects/add_project")}
+            className="flex items-center justify-center gap-2 py-2 
+                      text-gray-200 font-semibold text-base 
+                      cursor-pointer hover:text-green-400 
+                      transition-all duration-200"
           >
-            <LogOut size={18} />
-            Logout
-          </button>
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 transition-all font-semibold text-white shadow-lg shadow-red-600/30"
-          >
-            <LogOut size={18} />
-            Logout
-          </button>
-        </div>
+            <FolderPlus size={18} className="text-green-400" />
+            <span>Add Project</span>
+          </div>
+        )}
+
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center justify-center gap-2 py-3 rounded-lg 
+                    bg-gradient-to-r from-red-600 to-pink-600 
+                    hover:from-red-500 hover:to-pink-500 
+                    transition-all font-semibold text-white 
+                    shadow-lg shadow-red-600/30"
+        >
+          <LogOut size={18} />
+          Logout
+        </button>
+      </div>
+
      
       </aside>
 

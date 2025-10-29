@@ -18,6 +18,7 @@ import Opencv from "./components/projects/opencv";
 import AI from "./components/projects/AI";
 import Learning from "./components/projects/Learning";
 import Miniprojects from "./components/projects/MiniProjects";
+import Add_Project from "./components/projects/Add_projects";
 
 
 function App() {
@@ -69,6 +70,7 @@ function App() {
                 <Route path="ai" element={<AI />} />
                 <Route path="learnings" element={<Learning />} />
                 <Route path="miniprojects" element={<Miniprojects/>}/>
+                <Route path="add_project" element={<Add_Project/>}/>
               </Route>
             </Routes>
           
