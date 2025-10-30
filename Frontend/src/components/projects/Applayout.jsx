@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import { Home,Globe,Layers,Zap,Terminal,Brain,Puzzle,BookOpen,Github,Mail,Linkedin,Menu,X,LogOut,FolderPlus,ArrowLeft  } from "lucide-react";
+import { Home,Globe,Layers,Zap,Terminal,Brain,Puzzle,BookOpen,Github,Mail, TrendingUp, Linkedin,Menu,X,LogOut,FolderPlus,ArrowLeft  } from "lucide-react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 export default function AppLayout() {
@@ -26,6 +26,8 @@ export default function AppLayout() {
     opencv: 0,
     ai: 0,
     miniprojects: 0,
+    learning:0
+
   });
   const handleLogout = () => {
  
@@ -50,12 +52,12 @@ export default function AppLayout() {
     <div className="flex w-full bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white ">
        <aside
         className={`fixed top-0 left-0 ${
-          isSidebarOpen ? "w-72" : "w-0"
+          isSidebarOpen ? "w-64" : "w-0"
         } bg-gray-900/70 backdrop-blur-md border-r border-gray-800 transition-all duration-300 overflow-hidden   flex flex-col h-screen`}
       >
        <div className="p-6 border-b border-gray-800">
         <div className="flex items-center gap-4 mb-1">
-          <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-bold">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-bold">
             SR
           </div>
           <div>
@@ -131,24 +133,10 @@ export default function AppLayout() {
             <span>Add Project</span>
           </div>
         )}
-
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-2 py-3 rounded-lg 
-                    bg-gradient-to-r from-red-600 to-pink-600 
-                    hover:from-red-500 hover:to-pink-500 
-                    transition-all font-semibold text-white 
-                    shadow-lg shadow-red-600/30"
-        >
-          <LogOut size={18} />
-          Logout
-        </button>
       </div>
+    </aside>
 
-     
-      </aside>
-
-      <main className={`flex-1 flex flex-col ml-${isSidebarOpen ? "72" : "0"} transition-all duration-300`}>
+      <main className={`flex-1 flex flex-col ml-${isSidebarOpen ? "64" : "0"} transition-all duration-300`}>
        <header className="sticky top-0 z-50 bg-gray-900/80 backdrop-blur-xl border-b border-gray-800 px-4 py-3 flex items-center justify-between w-full">
  
         <div className="flex items-center gap-3">
@@ -176,23 +164,121 @@ export default function AppLayout() {
           <h1 className="text-xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent ml-10">
             My Projects
           </h1>
-        </div>
-        <div className="hidden md:flex flex-wrap gap-2 text-xs font-medium">
-            {counts.total > 0 && <span className="px-2 py-1 bg-blue-900 text-blue-300 rounded-full border border-blue-800/50">Total {counts.total}</span>}
-            {counts.fullstack > 0 && <span className="px-2 py-1 bg-purple-900 text-purple-300 rounded-full border border-purple-800/50">Fullstack {counts.fullstack}</span>}
-            {counts.django > 0 && <span className="px-2 py-1 bg-emerald-900 text-emerald-300 rounded-full border border-emerald-800/50">Django {counts.django}</span>}
-            {counts.react > 0 && <span className="px-2 py-1 bg-cyan-900 text-cyan-300 rounded-full border border-cyan-800/50">React {counts.react}</span>}
-            {counts.opencv > 0 && <span className="px-2 py-1 bg-indigo-900 text-indigo-300 rounded-full border border-indigo-800/50">CV {counts.opencv}</span>}
-            {counts.ai > 0 && <span className="px-2 py-1 bg-pink-900 text-pink-300 rounded-full border border-pink-800/50">AI {counts.ai}</span>}
-            {counts.miniprojects > 0 && <span className="px-2 py-1 bg-yellow-900 text-yellow-300 rounded-full border border-yellow-800/50">Mini {counts.miniprojects}</span>}
-            {counts.learning > 0 && <span className="px-2 py-1 bg-sky-900 text-sky-300 rounded-full border border-sky-800/50">Learning {counts.learning}</span>}
           </div>
+          
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg 
+                    bg-gradient-to-r from-red-600 to-pink-600 
+                    hover:from-red-500 hover:to-pink-500 
+                    transition-all font-semibold text-white 
+                    shadow-lg shadow-red-600/30"
+        >
+          <LogOut size={16} />
+          Logout
+        </button>
 
-        </header>
-        <section className="flex-1 overflow-y-auto   bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 w-full">
-          <Outlet />
+
+      </header>
+
+        <section className="flex-1 flex">
+          <div className="flex-1 overflow-y-auto bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950">
+            <Outlet />
+          </div>  
         </section>
       </main>
+
+      <aside className="hidden lg:block w-80 bg-gray-900/70 backdrop-blur-md border-1 border-gray-800 mt-10 p-4 space-y-4 overflow-y-auto " >
+        <div className="bg-gray-800/50 backdrop-blur  rounded-2xl p-5 border border-gray-700">
+          <h3 className="text-lg font-bold mb-4 flex items-centre gap-2" >
+            <TrendingUp size={18} className="text-blue-400" />
+            Project Stats
+          </h3>
+          <div className="space-y-2 text-sm" >
+            <div className="flex justify-between  items-center p-2  rounded-lg bg-blue-900/30 border border-blue-800/50 " >
+              <span className="text-blue-300">Total Projects</span>
+              <span className="font-bold text-blue-200 "> {counts.total}</span>
+            </div>
+            <div className="flex justify-between  items-center p-2  rounded-lg bg-purple-900/30 border border-purple-800/50 " >
+              <span className="text-purple-300">Full Stack</span>
+              <span className="font-bold text-purple-200 "> {counts.fullstack}</span>
+            </div>
+            <div className="flex justify-between  items-center p-2  rounded-lg bg-emerald-900/30 border border-emerald-800/50 " >
+              <span className="text-emerald-300">Django</span>
+              <span className="font-bold text-emerald-200 "> {counts.django}</span>
+            </div>
+            <div className="flex justify-between  items-center p-2  rounded-lg bg-cyan-900/30 border border-cyan-800/50 " >
+              <span className="text-emerald-300">React</span>
+              <span className="font-bold text-emerald-200 "> {counts.react}</span>
+            </div>
+            
+            <div className="flex justify-between  items-center p-2  rounded-lg bg-indigo-900/30 border border-indigo-800/50 " >
+              <span className="text-indigo-300">CV</span>
+              <span className="font-bold text-indigo-200 "> {counts.opencv}</span>
+            </div>
+            
+            <div className="flex justify-between  items-center p-2  rounded-lg bg-pink-900/30 border border-pink-800/50 " >
+              <span className="text-pink-300">AI</span>
+              <span className="font-bold text-pink-200 "> {counts.ai}</span>
+            </div>
+            
+            
+            <div className="flex justify-between  items-center p-2  rounded-lg bg-yellow-900/30 border border-yellow-800/50 " >
+              <span className="text-yellow-300">Mini Projects</span>
+              <span className="font-bold text-yellow-200 "> {counts.miniprojects}</span>
+            </div>
+            
+            <div className="flex justify-between  items-center p-2  rounded-lg bg-sky-900/30 border border-sky-800/50 " >
+              <span className="text-sky-300">Learnings</span>
+              <span className="font-bold text-sky-200 "> {counts.learning }</span>
+            </div>
+          </div>
+        </div>
+        
+
+
+              
+      <div className="bg-gray-800/50 backdrop-blur rounded-2xl p-5 border border-gray-700">
+        <h3 className="text-lg font-bold mb-3">Developer Toolkit</h3>
+
+        <div className="space-y-2 text-sm">
+          <button 
+            onClick={() => window.open("https://github.com/sayyedrabeeh","_blank")}
+            className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700/70 transition-all"
+          >
+            <Github size={16} className="text-gray-300" />
+            <span>GitHub Profile</span>
+          </button>
+
+          <button 
+            onClick={() => navigate("/resume")}
+            className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700/70 transition-all"
+          >
+            <BookOpen size={16} className="text-gray-300" />
+            <span>My Resume</span>
+          </button>
+
+          <button
+            onClick={() => window.open("https://www.linkedin.com/in/sayyedrabeeh", "_blank")}
+            className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700/70 transition-all"
+          >
+            <Linkedin size={16} className="text-blue-400" />
+            <span>LinkedIn Profile</span>
+          </button>
+
+          <button
+            onClick={() => window.open("https://leetcode.com/sayyedrabeeh", "_blank")}
+            className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700/70 transition-all"
+          >
+            <Zap size={16} className="text-yellow-400" />
+            <span>LeetCode Practice</span>
+          </button>
+        </div>
+      </div>
+
+
+    </aside> 
+    
     </div>
   );
 }
