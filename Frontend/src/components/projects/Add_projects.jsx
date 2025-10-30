@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Upload,Video,Image,Loader2,CheckCircle2,ExternalLink,Github,Clock,Code,Sparkles,ArrowLeft,X,AlertCircle } from "lucide-react";
+import { Upload,Video,Image,Loader2,CheckCircle2,ExternalLink,Github,Clock,Code,Sparkles,ArrowLeft,X,AlertCircle,ChevronDown } from "lucide-react";
 import { toast } from "react-toastify";
 
 
@@ -13,7 +13,8 @@ export default function Add_Project() {
         live_link : '',
         github_link : '',
         tech_stack : '',
-        time_spent : '',
+        time_spent: '',
+        project_type: "",
         media_type : 'image' 
     })
 
@@ -40,9 +41,9 @@ export default function Add_Project() {
             new_error.name = ' Project Name Must Be At Least 3 Characters '
         } else if (name === 'description' && value.length < 50) {
             new_error.description = 'Project Description Must Be At Least 50 Characters '
-        } else if (name === 'live_link' && value && !/^http?:\/\//.test(value)) {
+        } else if (name === 'live_link' && value && !/^https?:\/\//.test(value)) {
             new_error.live_link = 'Live Link Must Be Start With http://'
-        } else if (name === 'github_link' && value && !/^http?:\/\/(github\.com|gitlab\.com)/.test(value)) {
+        } else if (name === 'github_link' && value && !/^https?:\/\/(github\.com|gitlab\.com)/.test(value)) {
             new_error.github_link = 'Must Be Valid Github/Gitlab Url'
         } else {
             delete new_error[name]
@@ -98,9 +99,18 @@ export default function Add_Project() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (Object.keys(errors).length > 0 || !formData.name || !formData.description) {
+        if (Object.keys(errors).length > 0 || !formData.name || !formData.description || !formData.github_link || !formData.media_type ||!formData.project_type || !formData.tech_stack  ) {
             toast.error('Fix errors Before Submitting ')
             return 
+        }
+        if (formData.media_type === 'image' && files.length === 0) {
+            toast.error('Please upload at least 1 project image')
+            return
+        }
+
+        if (formData.media_type === 'video' && !video) {
+            toast.error('Please upload a project video')
+            return
         }
         setLoading(true)
         const data = new FormData()
@@ -304,7 +314,7 @@ export default function Add_Project() {
                                             
                                             className={`w-full px-5 py-4 bg-slate-800/60 border-2 rounded-2xl transition-all duration-300 outline-none text-white placeholder-slate-500 font-medium 
                                                 ${focusField === 'time_spent' ? 'border-pink-500 shadow-xl shadow-pink-500/30' : 'border-slate-700'} ${errors.time_spent ? 'border-red-500 ' : ''}
-                                                hover:border-pink-400/70 hover:bg-slate-800/80 `} placeholder="3 weeks ~60 hours" required />
+                                                hover:border-pink-400/70 hover:bg-slate-800/80 `} placeholder="3 weeks ~60 hours"   />
                                         {errors.time_spent && (
                                             <p className="text-xs text-red-400  flex items-center gap-1 mt-1" >
                                                 <AlertCircle className="w-3 h-3" />{errors.time_spent}
@@ -312,6 +322,51 @@ export default function Add_Project() {
                                         )}
                                     </div>
                                 </div>
+
+                             
+                              <div className="space-y-2 mt-5">
+                        <label className="flex items-center gap-2 text-sm font-semibold text-slate-300">
+                            <Code className="w-4 h-4 text-cyan-400" /> Project Type
+                        </label>
+
+                        <div className="relative">
+                            <select
+                                name="project_type"
+                                value={formData.project_type}
+                                onChange={handleChange}
+                                onFocus={() => setFocusField('project_type')}
+                                onBlur={() => setFocusField(null)}
+                                className={`w-full px-5 py-4 bg-slate-800/60 border-2 rounded-2xl appearance-none cursor-pointer text-white font-medium transition-all duration-300 outline-none
+                                    ${focusField === 'project_type' 
+                                        ? 'border-cyan-500 shadow-xl shadow-cyan-500/30' 
+                                        : 'border-slate-700'
+                                    }
+                                    ${errors.project_type ? 'border-red-500' : ''}
+                                    hover:border-cyan-400/70 hover:bg-slate-800/80
+                                `}
+                                required
+                            >
+                                <option value="" className="text-slate-500">Select Project Type</option>
+                                <option value="Fullstack">Fullstack</option>
+                                <option value="Django">Django</option>
+                                <option value="React">React</option>
+                                <option value="OpenCV">OpenCV</option>
+                                <option value="AI">AI / Machine Learning</option>
+                                <option value="Mini Project">Mini Project</option>
+                                <option value="Learning">Learning / Practice</option>
+                            </select>
+
+                            
+                            <ChevronDown className="absolute right-4 top-4 w-5 h-5 text-slate-400 pointer-events-none" />
+                        </div>
+
+                        {errors.project_type && (
+                            <p className="text-xs text-red-400 flex items-center gap-1 mt-1">
+                                <AlertCircle className="w-3 h-3" /> {errors.project_type}
+                            </p>
+                        )}
+                    </div>
+
                             </div>
                         </div>
 
@@ -413,7 +468,7 @@ export default function Add_Project() {
 
 
                                 <button type="submit"
-                                    disabled={loading || Object.keys(errors).length > 0 || !formData.name || !formData.description}
+                                    disabled={loading || Object.keys(errors).length > 0 || !formData.name || !formData.description || !formData.github_link || !formData.media_type ||!formData.project_type || !formData.tech_stack }
                                     className="w-full mt-8 flex items-center justify-center gap-3 py-5 rounded-2xl bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600
                                               hover:from-cyan-500 hover:via-blue-500 hover:to-purple-500 disabled:from-slate-700 disabled:to-slate-700 transition-all duration-300 font-bold text-white
                                               text-lg shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:hover:scale-100 disabled:opacity-50">
