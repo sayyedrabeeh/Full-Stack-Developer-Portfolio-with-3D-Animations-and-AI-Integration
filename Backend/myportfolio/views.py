@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework.decorators import api_view,parser_classes
+from rest_framework.decorators import api_view,parser_classes,permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser,FormParser
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
@@ -80,12 +81,12 @@ def create_project(request):
         name = request.data.get('name'),
         description = request.data.get('description'),
         live_link = request.data.get('live_link',''),
-        github_link = request.data.get('github_link',' '),
+        github_link = request.data.get('github_link',''),
         tech_stack = request.data.get('tech_stack'),
         project_type = request.data.get('project_type'),
         media_type  = request.data.get('media_type',''),
         time_spent  = request.data.get('time_spent',''),
-        user = request.user
+        
     )
 
     if request.data.get('media_type') == 'image':
@@ -97,4 +98,18 @@ def create_project(request):
 
 
 
-
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def project_counts(request):
+    user = request.user
+    counts={
+        'total':Project.objects.count(),
+        'fullstack':Project.objects.filter(project_type = 'fullstack').count(),
+        'django':Project.objects.filter(project_type = 'django').count(),
+        'react':Project.objects.filter(project_type = 'react').count(),
+        'opencv':Project.objects.filter(project_type = 'opencv').count(),
+        'ai':Project.objects.filter(project_type = 'ai').count(),
+        'miniprojects':Project.objects.filter(project_type = 'miniprojects').count(),
+        'learning':Project.objects.filter(project_type = 'learning').count(),
+    }
+    return Response(counts)
