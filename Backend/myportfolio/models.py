@@ -18,7 +18,7 @@ class Project(models.Model):
         ('miniprojects','MiniProjects'),
         ('learning','Learning')
     ]
-    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='projects')
+     
     name =models.CharField(max_length=200)
     description = models.TextField()
     live_link = models.URLField(blank=True,null=True)
