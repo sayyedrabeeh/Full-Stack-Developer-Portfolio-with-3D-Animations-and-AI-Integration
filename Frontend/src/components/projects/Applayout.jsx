@@ -37,7 +37,7 @@ export default function AppLayout() {
     const user = JSON.parse(localStorage.getItem('user'))
     setIsSuperUser(user?.is_superuser || false)
     
-    fetch("http://127.0.0.1:8000/api/projects/counts/")
+    fetch("http://127.0.0.1:8000/api/accounts/counts/")
       .then(res => res.json())
       .then(data => setCounts(data))
     .catch(err => confirm.log(err))

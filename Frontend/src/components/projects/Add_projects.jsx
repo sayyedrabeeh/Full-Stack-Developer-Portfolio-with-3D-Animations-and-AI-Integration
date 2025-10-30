@@ -345,13 +345,14 @@ export default function Add_Project() {
                                 required
                             >
                                 <option value="" className="text-slate-500">Select Project Type</option>
-                                <option value="Fullstack">Fullstack</option>
-                                <option value="Django">Django</option>
-                                <option value="React">React</option>
-                                <option value="OpenCV">OpenCV</option>
-                                <option value="AI">AI / Machine Learning</option>
-                                <option value="Mini Project">Mini Project</option>
-                                <option value="Learning">Learning / Practice</option>
+                                <option value="fullstack">Fullstack</option>
+                                <option value="django">Django</option>
+                                <option value="react">React</option>
+                                <option value="opencv">OpenCV</option>
+                                <option value="ai">AI / Machine Learning</option>
+                                <option value="miniprojects">Mini Projects</option>
+                                <option value="learning">Learning / Practice</option>
+
                             </select>
 
                             
