@@ -177,34 +177,17 @@ export default function AppLayout() {
             My Projects
           </h1>
         </div>
-        <div className="hidden md:flex items-center gap-2 text-xs font-medium">
-          <span className="px-3 py-1.5 bg-blue-900/60 text-blue-300 rounded-full border border-blue-800/50">
-            Total: <span className="font-bold">{counts.total}</span>
-          </span>
-          <span className="px-3 py-1.5 bg-purple-900/60 text-purple-300 rounded-full border border-purple-800/50">
-            Fullstack: <span className="font-bold">{counts.fullstack}</span>
-          </span>
-          <span className="px-3 py-1.5 bg-emerald-900/60 text-emerald-300 rounded-full border border-emerald-800/50">
-            Django: <span className="font-bold">{counts.django}</span>
-          </span>
-          <span className="px-3 py-1.5 bg-cyan-900/60 text-cyan-300 rounded-full border border-cyan-800/50">
-            React: <span className="font-bold">{counts.react}</span>
-          </span>
-          <span className="px-3 py-1.5 bg-indigo-900/60 text-indigo-300 rounded-full border border-indigo-800/50">
-            CV: <span className="font-bold">{counts.opencv}</span>
-          </span>
-          <span className="px-3 py-1.5 bg-pink-900/60 text-pink-300 rounded-full border border-pink-800/50">
-            AI: <span className="font-bold">{counts.ai}</span>
-          </span>
-          <span className="px-3 py-1.5 bg-yellow-900/60 text-yellow-300 rounded-full border border-yellow-800/50">
-            Mini: <span className="font-bold">{counts.miniprojects}</span>
-          </span>
+        <div className="hidden md:flex flex-wrap gap-2 text-xs font-medium">
+            {counts.total > 0 && <span className="px-2 py-1 bg-blue-900 text-blue-300 rounded-full border border-blue-800/50">Total {counts.total}</span>}
+            {counts.fullstack > 0 && <span className="px-2 py-1 bg-purple-900 text-purple-300 rounded-full border border-purple-800/50">Fullstack {counts.fullstack}</span>}
+            {counts.django > 0 && <span className="px-2 py-1 bg-emerald-900 text-emerald-300 rounded-full border border-emerald-800/50">Django {counts.django}</span>}
+            {counts.react > 0 && <span className="px-2 py-1 bg-cyan-900 text-cyan-300 rounded-full border border-cyan-800/50">React {counts.react}</span>}
+            {counts.opencv > 0 && <span className="px-2 py-1 bg-indigo-900 text-indigo-300 rounded-full border border-indigo-800/50">CV {counts.opencv}</span>}
+            {counts.ai > 0 && <span className="px-2 py-1 bg-pink-900 text-pink-300 rounded-full border border-pink-800/50">AI {counts.ai}</span>}
+            {counts.miniprojects > 0 && <span className="px-2 py-1 bg-yellow-900 text-yellow-300 rounded-full border border-yellow-800/50">Mini {counts.miniprojects}</span>}
+            {counts.learning > 0 && <span className="px-2 py-1 bg-sky-900 text-sky-300 rounded-full border border-sky-800/50">Learning {counts.learning}</span>}
+          </div>
 
-          <span className="px-3 py-1.5 bg-sky-900/60 text-sky-300 rounded-full border border-sky-800/50">
-            Learn: <span className="font-bold">{counts.learning}</span>
-          </span>
-  
-        </div>
         </header>
         <section className="flex-1 overflow-y-auto   bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 w-full">
           <Outlet />
