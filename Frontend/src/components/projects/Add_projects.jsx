@@ -43,8 +43,8 @@ export default function Add_Project() {
             new_error.description = 'Project Description Must Be At Least 50 Characters '
         } else if (name === 'live_link' && value && !/^https?:\/\//.test(value)) {
             new_error.live_link = 'Live Link Must Be Start With http://'
-        } else if (name === 'github_link' && value && !/^https?:\/\/(github\.com|gitlab\.com)/.test(value)) {
-            new_error.github_link = 'Must Be Valid Github/Gitlab Url'
+        } else if (name === 'github_link' && value && !/^https:\/\/github\.com\/sayyedrabeeh(\/.*)?$/.test(value)) {
+            new_error.github_link = "Must Be Valid sayyedrabeeh's Gitlab Url"
         } else {
             delete new_error[name]
         }
