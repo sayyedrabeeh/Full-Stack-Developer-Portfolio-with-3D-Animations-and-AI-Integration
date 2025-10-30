@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import { Home,Globe,Layers,Zap,Terminal,Brain,Puzzle,BookOpen,Github,Mail,Linkedin,Menu,X,LogOut,FolderPlus  } from "lucide-react";
+import { Home,Globe,Layers,Zap,Terminal,Brain,Puzzle,BookOpen,Github,Mail,Linkedin,Menu,X,LogOut,FolderPlus,ArrowLeft  } from "lucide-react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 export default function AppLayout() {
@@ -18,7 +18,15 @@ export default function AppLayout() {
     { id: "miniprojects", name: "Mini Projects", icon: Puzzle, color: "bg-yellow-600" },
     { id: "learnings", name: "Learning & Docs", icon: BookOpen, color: "bg-sky-500" },
   ];
-
+  const [counts, setCounts] = useState({
+    total: 0,
+    fullstack: 0,
+    django: 0,
+    react: 0,
+    opencv: 0,
+    ai: 0,
+    miniprojects: 0,
+  });
   const handleLogout = () => {
  
     localStorage.clear();
@@ -27,8 +35,16 @@ export default function AppLayout() {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'))
-    setIsSuperUser(user?.is_superuser || false )
+    setIsSuperUser(user?.is_superuser || false)
+    
+    fetch("http://127.0.0.1:8000/api/projects/counts/")
+      .then(res => res.json())
+      .then(data => setCounts(data))
+    .catch(err => confirm.log(err))
+
   },[])
+
+  
 
   return (
     <div className="flex w-full bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white ">
@@ -133,16 +149,54 @@ export default function AppLayout() {
       </aside>
 
       <main className={`flex-1 flex flex-col ml-${isSidebarOpen ? "72" : "0"} transition-all duration-300`}>
-        <header className="bg-gray-900/60 border-b border-gray-800 p-4 flex items-center gap-4 backdrop-blur-md w-full">
+       <header className="sticky top-0 z-50 bg-gray-900/80 backdrop-blur-xl border-b border-gray-800 px-4 py-3 flex items-center justify-between w-full">
+ 
+        <div className="flex items-center gap-3">
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 rounded-lg hover:bg-gray-800/70 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+            aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
           >
-            {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+            {isSidebarOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-800/80 text-gray-200 text-sm font-medium rounded-lg hover:bg-gray-700/80 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+          >
+            <ArrowLeft size={16} />
+            Back
+          </button>
+          <button
+            onClick={() => navigate("/")}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-gray-300 text-sm font-medium rounded-lg hover:bg-gray-800/70 hover:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+          >
+            <Home size={16} />
+            Home
+          </button>
+          <h1 className="text-xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent ml-10">
             My Projects
           </h1>
+        </div>
+        <div className="hidden md:flex items-center gap-2 text-xs font-medium">
+          <span className="px-3 py-1.5 bg-blue-900/60 text-blue-300 rounded-full border border-blue-800/50">
+            Total: <span className="font-bold">{counts.total}</span>
+          </span>
+          <span className="px-3 py-1.5 bg-purple-900/60 text-purple-300 rounded-full border border-purple-800/50">
+            Fullstack: <span className="font-bold">{counts.fullstack}</span>
+          </span>
+          <span className="px-3 py-1.5 bg-emerald-900/60 text-emerald-300 rounded-full border border-emerald-800/50">
+            Django: <span className="font-bold">{counts.django}</span>
+          </span>
+          <span className="px-3 py-1.5 bg-cyan-900/60 text-cyan-300 rounded-full border border-cyan-800/50">
+            React: <span className="font-bold">{counts.react}</span>
+          </span>
+          <span className="px-3 py-1.5 bg-indigo-900/60 text-indigo-300 rounded-full border border-indigo-800/50">
+            CV: <span className="font-bold">{counts.opencv}</span>
+          </span>
+          <span className="px-3 py-1.5 bg-pink-900/60 text-pink-300 rounded-full border border-pink-800/50">
+            AI: <span className="font-bold">{counts.ai}</span>
+          </span>
+        </div>
         </header>
         <section className="flex-1 overflow-y-auto   bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 w-full">
           <Outlet />
