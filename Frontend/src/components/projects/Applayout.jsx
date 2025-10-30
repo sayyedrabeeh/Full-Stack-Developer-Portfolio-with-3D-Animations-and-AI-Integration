@@ -196,6 +196,14 @@ export default function AppLayout() {
           <span className="px-3 py-1.5 bg-pink-900/60 text-pink-300 rounded-full border border-pink-800/50">
             AI: <span className="font-bold">{counts.ai}</span>
           </span>
+          <span className="px-3 py-1.5 bg-yellow-900/60 text-yellow-300 rounded-full border border-yellow-800/50">
+            Mini: <span className="font-bold">{counts.miniprojects}</span>
+          </span>
+
+          <span className="px-3 py-1.5 bg-sky-900/60 text-sky-300 rounded-full border border-sky-800/50">
+            Learn: <span className="font-bold">{counts.learning}</span>
+          </span>
+  
         </div>
         </header>
         <section className="flex-1 overflow-y-auto   bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 w-full">
