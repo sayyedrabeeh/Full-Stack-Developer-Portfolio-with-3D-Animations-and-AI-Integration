@@ -183,17 +183,21 @@ export default function AppLayout() {
 
         <section className="flex-1 flex">
           <div className="flex-1 overflow-y-auto bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950">
-            <Outlet />
+            <Outlet context={{ isSidebarOpen }} />
           </div>  
         </section>
       </main>
 
       <aside className="hidden lg:block w-80 bg-gray-900/70 backdrop-blur-md border-l border-1 border-gray-800  p-4 space-y-4 overflow-y-auto " >
         <div className="bg-gray-800/50 backdrop-blur  rounded-2xl p-5 border border-gray-700">
+          <div className="flex justify-between" >
           <h3 className="text-lg font-bold mb-4 flex items-centre gap-2" >
             <TrendingUp size={18} className="text-blue-400" />
             Project Stats
+
           </h3>
+            <p className="font-semibold text-sm mt-1 " >counts</p>
+          </div>
           <div className="space-y-2 text-sm" >
             <div className="flex justify-between  items-center p-2  rounded-lg bg-blue-900/30 border border-blue-800/50 " >
               <span className="text-blue-300">Total Projects</span>
