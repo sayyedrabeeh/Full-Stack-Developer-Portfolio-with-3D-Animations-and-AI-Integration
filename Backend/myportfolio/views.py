@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,parser_classes
+from rest_framework.parsers import MultiPartParser,FormParser
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
+from .models import Project,ProjectImage,ProjectVideo
 
 
 
@@ -67,3 +69,32 @@ def login(request):
     else:
         return Response({'error':'Invalid credentials'},status=status.HTTP_401_UNAUTHORIZED)
     
+
+
+@api_view(['POST'])
+@parser_classes([MultiPartParser,FormParser])
+def create_project(request):
+    if not request.data.get('name') or not request.data.get('description ') or not request.data.get('github_link ') or not request.data.get('tech_stack ') or not request.data.get('project_type'):
+        return Response({'error':'All Fields Are Required '},status=status.HTTP_400_BAD_REQUEST)
+    projects = Project.objects.create(
+        name = request.data.get('name'),
+        description = request.data.get('description'),
+        live_link = request.data.get('live_link'),
+        github_link = request.data.get('github_link'),
+        tech_stack = request.data.get('tech_stack'),
+        project_type = request.data.get('project_type'),
+        media_type  = request.data.get('media_type',''),
+        time_spent  = request.data.get('time_spent',''),
+        user = request.user
+    )
+
+    if request.data.get('media_type') == 'image':
+        for img in request.FILES.getlist('images'):
+            ProjectImage.objects.create(project =projects,image = img )
+    elif request.data.get('media_type') == 'video':
+        ProjectVideo.objects.create(project = projects , video = request.FILES['video'])
+    return Response({'message': 'Project Created Successfully'},status=status.HTTP_201_CREATED)
+
+
+
+
