@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Upload,Video,Image,Loader2,CheckCircle2,ExternalLink,Github,Clock,Code,Sparkles,ArrowLeft,X,AlertCircle,ChevronDown } from "lucide-react";
 import { toast } from "react-toastify";
-
+import api from "../../api/axios";
 
 
 
@@ -122,7 +122,9 @@ export default function Add_Project() {
             data.append('video',video)
         }
         try {
-            await new Promise((resolve) => setTimeout(resolve, 2000))
+            await api.post(`/api/projects/`, data, {
+    headers: { "Content-Type": "multipart/form-data" },
+})
             toast.success('project published successfully ')
             setFormData({
                 name: "",
