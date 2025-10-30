@@ -74,12 +74,12 @@ def login(request):
 @api_view(['POST'])
 @parser_classes([MultiPartParser,FormParser])
 def create_project(request):
-    if not request.data.get('name') or not request.data.get('description ') or not request.data.get('github_link ') or not request.data.get('tech_stack ') or not request.data.get('project_type'):
+    if not request.data.get('name') or not request.data.get('description') or not request.data.get('github_link') or not request.data.get('tech_stack') or not request.data.get('project_type'):
         return Response({'error':'All Fields Are Required '},status=status.HTTP_400_BAD_REQUEST)
     projects = Project.objects.create(
         name = request.data.get('name'),
         description = request.data.get('description'),
-        live_link = request.data.get('live_link'),
+        live_link = request.data.get('live_link',''),
         github_link = request.data.get('github_link'),
         tech_stack = request.data.get('tech_stack'),
         project_type = request.data.get('project_type'),
