@@ -122,10 +122,14 @@ export default function Add_Project() {
             data.append('video',video)
         }
         try {
-            await api.post(`/api/projects/`, data, {
-    headers: { "Content-Type": "multipart/form-data" },
-})
-            toast.success('project published successfully ')
+            const res = await api.post("/api/accounts/create_project/", data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${localStorage.getItem("access")}`,
+            },
+            });
+
+            toast.success(res.data.message)
             setFormData({
                 name: "",
                 description: "",
@@ -140,22 +144,14 @@ export default function Add_Project() {
               }
         catch(err) {
             console.error(err)
-            toast.error('failed to publish project ')
+            toast.error(err.response?.data?.error||'failed to publish project ')
 
         } finally {
             setLoading(false)
         }
     }
 
-     const formatTime = (date) => {
-            const minutes = Math.floor((new Date().getTime() - date.getTime()) / 60000)
-            if (minutes < 1) return 'just now'
-            if (minutes < 60) return `${minutes} min ago`
-            const hours = Math.floor(minutes / 60);
-            return `${hours} hour${hours > 1?'s':''}ago`
-
-    }
-    
+      
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white ">
 
