@@ -80,7 +80,7 @@ def create_project(request):
         name = request.data.get('name'),
         description = request.data.get('description'),
         live_link = request.data.get('live_link',''),
-        github_link = request.data.get('github_link'),
+        github_link = request.data.get('github_link',' '),
         tech_stack = request.data.get('tech_stack'),
         project_type = request.data.get('project_type'),
         media_type  = request.data.get('media_type',''),
