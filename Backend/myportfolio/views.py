@@ -114,6 +114,7 @@ def project_counts(request):
     return Response(counts)
 
 
+ 
 @api_view(['GET'])
 def get_projects(request):
     project_type = request.GET.get('project_type',None)
@@ -146,3 +147,4 @@ def get_projects(request):
 
         data.append(item)
     return Response(data)
+ 
