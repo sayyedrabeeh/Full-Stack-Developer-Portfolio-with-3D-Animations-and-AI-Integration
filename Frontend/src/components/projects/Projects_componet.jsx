@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { ArrowLeft, Heart, MessageCircle, Share2, Github, ExternalLink, ChevronLeft, ChevronRight, Calendar } from "lucide-react"
+import { ArrowLeft, Heart, MessageCircle, Share2Icon, Github, ExternalLink, ChevronLeft, ChevronRight, Calendar } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 
@@ -19,6 +19,7 @@ export default function Project_Component({ Project_type }) {
         fetch(url)
             .then(r => r.json())
             .then((data) => {
+                console.log(data)
                 const sorted = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
                 setProject(sorted)
                 const idx = {}
@@ -66,10 +67,19 @@ export default function Project_Component({ Project_type }) {
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
             <header className="sticky top-0 z-10 bg-white  dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700" >
-                <div className="max-w-2xl mx-auto flex items-center justify-between px-4 py-3" >
-                    <h1 className="text-xl font-bold text-gray-800 dark:text-white">
-                        { Project_type }
+                <div className="max-w-2xl  mx-auto flex items-center justify-center px-4 py-3" >
+                <div className="mb flex flex-col items-center gap-1">
+                    <h1 className="text-[26px] font-extrabold text-gray-900 dark:text-white tracking-tight">
+                        {Project_type?.toUpperCase() || "ALL PROJECTS"}
                     </h1>
+
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                        curated feed of My work
+                    </p>
+
+                    <div className="mt-2 h-1 w-14 rounded-full bg-black/80 dark:bg-white/80"></div>
+                    </div>
+
                     <div className="w-8"/>                    
                 </div>
             </header>
@@ -104,7 +114,7 @@ export default function Project_Component({ Project_type }) {
                                                     {p.time_spent && (
                                                         <>
                                                         <span className="mx-1" >•</span>
-                                                            <span>{p.time_spent }</span>
+                                                           Completed Within  <span>{p.time_spent }</span>
                                                         </>
                                                     ) }
                                                 </div>
@@ -119,21 +129,21 @@ export default function Project_Component({ Project_type }) {
                                             />
                                             {manyImage && (
                                                 <>
-                                                    <button onClick={() => prevImag(p.id, p.image.length)}
+                                                    <button onClick={() => prevImag(p.id, p.images.length)}
                                                         className="absolute left-3 top-1/2 translate-y-1/2 bg-black/60  hover:bg-black/80 text-white p-2 rounded-full"
                                                         aria-label="Prev"    
                                                     >
                                                         <ChevronLeft className="w-5 h-5" />
                                                         
                                                     </button>                         
-                                                    <button onClick={() => nextImag(p.id, p.image.length)}
+                                                    <button onClick={() => nextImag(p.id, p.images.length)}
                                                         className="absolute right-3 top-1/2 translate-y-1/2 bg-black/60  hover:bg-black/80 text-white p-2 rounded-full"
                                                         aria-label="Next"    
                                                     >
-                                                        <ChevronLeft className="w-5 h-5" />
+                                                        <ChevronRight className="w-5 h-5" />
                                                     </button>                         
                                                     <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 " >
-                                                        {p.image.map((_, i) => (
+                                                        {p.images.map((_, i) => (
                                                             <div key={i}
                                                             className={`h-1 rounded-full transition-all ${i === imgIdx ? 'bg-white w-7 ': 'bg-white/50 w-2'}`}/>
 
@@ -176,7 +186,7 @@ export default function Project_Component({ Project_type }) {
                                     </button>
 
                                     <button className="flex items-center gap-1.5 text-gray-700 dark:text-gray-300 hover:scale-110 transition-all ml-auto">
-                                        <Share2 className="w-6 h-6" />
+                                        <Share2Icon className="w-6 h-6" />
                                         <span className="text-sm font-medium">{p.shares || 0}</span>
                                     </button>
                                     </div>
@@ -188,7 +198,7 @@ export default function Project_Component({ Project_type }) {
                                         </p>
                                         <div className="flex flex-wrap gap-1.5 " >
                                             {p.tech_stack?.split(',').map((t) => t.trim()).filter(Boolean).map((t, i) => (
-                                                 <span key={i} className="text-xs font-medium text-blue-600dark:text-blue-400">#{t.replace(/\s+/g, "")}</span>
+                                                 <span key={i} className="text-xs font-medium text-blue-600 dark:text-blue-400">#{t.replace(/\s+/g, "")}</span>
                                              )) }
                                         </div>
                                             
