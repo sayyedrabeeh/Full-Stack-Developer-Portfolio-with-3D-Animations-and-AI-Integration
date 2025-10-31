@@ -173,19 +173,20 @@ export default function AppLayout() {
           
         <button
           onClick={handleLogout}
-          className=" flex items-center   gap-2 px-4 py-2 rounded-lg 
-                    bg-gradient-to-r from-red-600 to-pink-600 
-                    hover:from-red-500 hover:to-pink-500 
-                    transition-all font-semibold text-white text-sm
-                    shadow-lg shadow-red-600/30"
+          className="
+            flex items-center gap-2 px-4 py-2
+            rounded-lg font-semibold text-sm
+            text-red-400 
+            bg-gray-800/30 border border-gray-700/40 backdrop-blur
+            hover:bg-red-500/10 hover:text-red-300 hover:border-red-500/40
+            transition-all duration-300
+            shadow-sm hover:shadow-red-500/20
+          "
         >
-          <LogOut size={16} />
+          <LogOut size={16} className="text-red-400 group-hover:text-red-300" />
           Logout
         </button>
-
-
       </header>
-
         <section className="flex-1 flex">
           <div className="flex-1 overflow-y-auto bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950">
             <Outlet context={{ isSidebarOpen,refreshCounts }} />

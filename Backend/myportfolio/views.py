@@ -112,3 +112,5 @@ def project_counts(request):
         'learning':Project.objects.filter(project_type = 'learning').count(),
     }
     return Response(counts)
+
+
