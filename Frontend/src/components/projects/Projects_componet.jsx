@@ -11,8 +11,12 @@ export default function Project_Component({ Project_type }) {
     const [liked, setLiked] = useState({})
     const baseURL = "http://127.0.0.1:8000"
 
+
     useEffect(() => {
-        fetch(`${baseURL}/api/accounts/projects?project_type=${Project_type}`)
+        const url = Project_type 
+      ? `http://127.0.0.1:8000/api/accounts/projects?project_type=${Project_type}`
+      : `http://127.0.0.1:8000/api/accounts/projects`;
+        fetch(url)
             .then(r => r.json())
             .then((data) => {
                 const sorted = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
