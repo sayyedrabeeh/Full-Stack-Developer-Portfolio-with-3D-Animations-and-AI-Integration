@@ -15,21 +15,3 @@ export default function Learning() {
 
 
  
-
-
-
- 
-    
-      
- 
-
-
-
-
-
- 
-
-
-
-
- 
