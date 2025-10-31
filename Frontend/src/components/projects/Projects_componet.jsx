@@ -114,7 +114,7 @@ export default function Project_Component({ Project_type }) {
                                                     {p.time_spent && (
                                                         <>
                                                         <span className="mx-1" >•</span>
-                                                            <span>{p.time_spent }</span>
+                                                           Completed Within  <span>{p.time_spent }</span>
                                                         </>
                                                     ) }
                                                 </div>
