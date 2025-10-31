@@ -123,7 +123,7 @@ def get_projects(request):
         projects = Project.objects.filter(project_type= project_type)
     else:
         projects = Project.objects.all()
-    
+    user = request.user if request.user.is_authenticated else None
     data = []
     for p in projects:
         item ={
@@ -137,7 +137,10 @@ def get_projects(request):
             'time_spent':p.time_spent,
             'media_type':p.media_type,
             'created_at':p.created_at,
-            'images':[{'image':img.image.url}for img in p.images.all()]
+            'images':[{'image':img.image.url}for img in p.images.all()],
+            "likes": p.likes.count(),
+            "comments": p.comments.count(),
+            "userLiked": True if user and p.likes.filter(user=user).exists() else False
     }
         if hasattr(p,'video') and p.video:
             item['video'] = {'video': p.video.video.url}
@@ -183,4 +186,4 @@ def add_comment(request,pk):
         'comments':comment_count
     })
  
- 
+
