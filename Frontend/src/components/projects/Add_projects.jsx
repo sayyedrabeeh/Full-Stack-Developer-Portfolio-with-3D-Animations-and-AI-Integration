@@ -1,278 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useCallback,memo } from "react";
 import { Upload,Video,Image,Loader2,CheckCircle2,ExternalLink,Github,Clock,Code,Sparkles,ArrowLeft,X,AlertCircle,ChevronDown } from "lucide-react";
 import { toast } from "react-toastify";
 import api from "../../api/axios";
 import { useOutletContext } from "react-router-dom";
 
 
-
-export default function Add_Project() {
-    const { isSidebarOpen } = useOutletContext()
-    const [formData, setFormData] = useState({
-        name : '',
-        description : '',
-        live_link : '',
-        github_link : '',
-        tech_stack : '',
-        time_spent: '',
-        project_type: "",
-        media_type : 'image' 
-    })
-
-    const [files, setFiles] = useState([])
-    const [video, setVideo] = useState(null)
-    const [loading, setLoading] = useState(false)
-    const [focusField, setFocusField] = useState(null)
-    const [errors, setErrors] = useState({})
-    const [lastSaved, setLastSaved] = useState(null)
-    
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if (formData.name || formData.description) {
-                setLastSaved(new Date())
-            }
-        }, 3000)
-        return ()=> clearTimeout(timer)
-    },[formData])    
-
-    const validateField = (name, value) => {
-     
-        const new_error = { ...errors }
-        if (name === 'name' && value.length < 3) {
-            new_error.name = ' Project Name Must Be At Least 3 Characters '
-        } else if (name === 'description' && value.length < 50) {
-            new_error.description = 'Project Description Must Be At Least 50 Characters '
-        } else if (name === 'live_link' && value && !/^https?:\/\//.test(value)) {
-            new_error.live_link = 'Live Link Must Be Start With http://'
-        } else if (name === 'github_link' && value && !/^https:\/\/github\.com\/sayyedrabeeh(\/.*)?$/.test(value)) {
-            new_error.github_link = "Must Be Valid sayyedrabeeh's Gitlab Url"
-        } else {
-            delete new_error[name]
-        }
-    setErrors(new_error)
-    }    
-    const handleChange = (e) => {
-        const { name, value } = e.target
-        setFormData({ ...formData, [name]: value })
-        validateField(name,value)
-    }
-
-    
-    const handleFileChange = (e) => {
-    const selectedFiles = e.target.files;
-    if (!selectedFiles) return;
-
-    if (formData.media_type === "image") {
-        const validFiles = Array.from(selectedFiles).filter(
-        (file) => file.type.startsWith("image/") && file.size <= 10 * 1024 * 1024
-        );
-
-        if (validFiles.length !== selectedFiles.length) {
-        toast.error(" Some images are invalid or exceed 10MB!");
-        } else {
-        toast.success(" Images added successfully!");
-        }
-
-        setFiles(validFiles);
-    } else {
-        const file = selectedFiles[0];
-        if (file) {
-        if (!file.type.startsWith("video/")) {
-            toast.error(" Please upload a valid video file!");
-        } else if (file.size > 100 * 1024 * 1024) {
-            toast.error(" Video exceeds 100MB limit!");
-        } else {
-            setVideo(file);
-            toast.success(" Video selected successfully!");
-        }
-        }
-    }
-
-    e.target.value = "";
-    };
-
-
-    const removeFile = (index) => {
-        setFiles(files.filter((_,i) => i !== index ))
-    }
-
-    const removeVideo = () => setVideo(null)
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        if (Object.keys(errors).length > 0 || !formData.name || !formData.description || !formData.github_link || !formData.media_type ||!formData.project_type || !formData.tech_stack  ) {
-            toast.error('Fix errors Before Submitting ')
-            return 
-        }
-        if (formData.media_type === 'image' && files.length === 0) {
-            toast.error('Please upload at least 1 project image')
-            return
-        }
-
-        if (formData.media_type === 'video' && !video) {
-            toast.error('Please upload a project video')
-            return
-        }
-        setLoading(true)
-        const data = new FormData()
-        Object.entries(formData).forEach(([key, value]) => data.append(key, value))
-        
-        if (formData.media_type === 'image') {
-            files.forEach((file) => data.append('images',file))
-        } else if (video) {
-            data.append('video',video)
-        }
-        try {
-            const res = await api.post("/api/accounts/create_project/", data, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-                Authorization: `Bearer ${localStorage.getItem("access")}`,
-            },
-            });
-
-            toast.success(res.data.message)
-            setFormData({
-                name: "",
-                description: "",
-                live_link: "",
-                github_link: "",
-                tech_stack: "",
-                time_spent: "",
-                media_type: "image",
-            });
-            setFiles([])
-            setVideo(null)
-              }
-        catch(err) {
-            console.error(err)
-            toast.error(err.response?.data?.error||'failed to publish project ')
-
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    const Media_section = () => (
-        <div className="bg-slate-900/70 backdrop-blur-2xl rounded-3xl border border-slate-800/60 p-8 shadow-2xl lg:sticky lg:top-24" >
-            <div className="flex items-center gap-3 mb-7 pb-5 border-b border-slate-500/50" >
-                <Upload className="w-6 h-6 text-cyan-400" />
-                <h2 className="text-2xl text-white font-bold">Media</h2>
-            </div>
-
-            <div className="space-y-4 mb-7 " >
-                <label className="text-sm  font-semibold text-slate-300" >
-                    Media Type
-                </label>
-                <div className="grid grid-cols-2 gap-3" >
-                    {['image', 'video'].map((type) => (
-                        <button
-                            key={type}
-                            type="button"
-                            onClick={() => {
-                                setFormData({ ...formData, media_type: type })
-                                setFiles([])
-                                setVideo(null)
-                            }}
-                            className={`flex flex-col items-center justify-center gap-2.5 px-5 py-7 rounded-2xl border-2 transition-all duration-300 
-                                                font-semibold text-sm backdrop-blur-sm  ${formData.media_type === type ? 'border-cyan-500 bg-cyan-500/10 text-cyan-400 shadow-2xl shadow-cyan-500/30' :
-                                    'border-slate-700 bg-slate-800/40 text-slate-400  hover:border-slate-600 hover:bg-slate-800/60'
-                                }`}>
-                            {type === 'image' ? <Image className="w-7 h-7" /> : <Video className="w-7 h-7" />}
-                            <span className="capitalize">{type === 'image' ? 'Images' : 'video'}</span>
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-
-            <div className="space-y-4" >
-                <label className="text-sm font-semibold text-slate-300">
-                    {formData.media_type === 'image' ? 'Upload Images' : 'Upload Video'}
-                </label>
-                <div className="relative group">
-                    <input
-                        type="file"
-                        accept={formData.media_type === 'image' ? 'image/*' : 'video/*'}
-                        multiple={formData.media_type === 'image'}
-                        onChange={handleFileChange}
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                    />
-                    <div className={`flex flex-col items-center justify-center gap-4 px-6 py-14 border-2 border-dashed rounded-2xl 
-                                        transition-all duration-300 cursor-pointer ${files.length > 0 || video ? 'border-emerald-500/50 bg-emerald-500/5' :
-                            'border-slate-700/60 bg-slate-800/40  group-hover:border-cyan-500/60  group-hover:bg-slate-800/60'
-                        } `} >
-                                                
-                        <Upload className={`w-10 h-10 transition-colors duration-300 ${files.length > 0 || video ? 'text-emerald-400' : 'text-slate-500 group-hover:text-cyan-400 '}`} />
-                        <div className="text-center">
-                            <p className={`text-sm font-medium transition-colors duration-300 ${files.length > 0 || video ? 'text-emerald-400' : 'text-slate-300 group-hover:text-cyan-400'} `} >
-                                {files.length > 0 || video ? 'Files Ready' : 'Drop Files Here Or Click To Browse'}
-                            </p>
-                                            
-                            <p className="text-xs text-slate-500 mt-1" >
-                                {formData.media_type === 'image' ? 'PNG, JPG, GIF Max 10MB each' : 'MP4 WebM Max 100MB '}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                {formData.media_type === 'image' && files.length > 0 && (
-                    <div className="grid grid-cols-3 gap-3 mt-4">
-                        {files.map((file, i) => (
-                            <div key={i} className="relative group rounded-xl overflow-hidden">
-                                <img
-                                    src={URL.createObjectURL(file)}
-                                    alt={`preview ${i + 1}`}
-                                    className="w-full h-24 object-cover" />
-                                <button onClick={() => removeFile(i)}
-                                    className="absolute top-1 right-1 p1 bg-red-500/80 rounded-full opacity-0 group-hover:opacity-100  transition-opacity">
-                                    <X className="w-3 h-3 text-white" />
-                                </button>
-                            </div>
-                        ))}
-                    </div>
-                )}
-                                    
-                {formData.media_type === 'video' && video && (
-                                     
-                    <div className="mt-4 p-4 bg-slate-800/60  rounded-2xl border border-emerald-500/30 ">
-                        <video
-                            src={URL.createObjectURL(video)}
-                            controls
-                            className="w-full rounded-xl" />
-                        <button onClick={removeVideo}
-                            className="mt-2 text-xs text-red-400 hover:text-red-300 flex items-center gap-1">
-                            <X className=" w-3 h-3" />Remove Video
-                        </button>
-                    </div>
-                )}
-
-            </div>
-
-
-            <button type="submit"
-                disabled={loading || Object.keys(errors).length > 0 || !formData.name || !formData.description || !formData.github_link || !formData.media_type || !formData.project_type || !formData.tech_stack}
-                className="w-full mt-8 flex items-center justify-center gap-3 py-5 rounded-2xl bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600
-                                              hover:from-cyan-500 hover:via-blue-500 hover:to-purple-500 disabled:from-slate-700 disabled:to-slate-700 transition-all duration-300 font-bold text-white
-                                              text-lg shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:hover:scale-100 disabled:opacity-50">
-                                           
-                {loading ? (
-                    <>
-                        <Loader2 className="w-6 h-6 animate-spin" />
-                        <span>Publishing Project...</span>
-                    </>
-                ) :
-                    (
-                        <>
-                            <CheckCircle2 className="w-6 h-6" />
-                            <span>Publish Project </span>
-                        </>
-                    )}
-            </button>
-        </div>
-    );
-      
-
-    const Content_card = () => (
+    const Content_card = memo(function Content_card({
+                        formData,
+                        handleChange,
+                        focusField,
+                        setFocusField,
+                        errors
+    }) {
+        return(
         <>
             <div className="bg-slate-900/70  backdrop-blur-2xl rounded-3xl border border-slate-800/60 p-8 shadow-2xl" >
                 <div className="flex items-center gap-3 mb-7 pb-5 border-b border-slate-800/50">
@@ -467,7 +207,294 @@ export default function Add_Project() {
             </div>
         
         </>
-    );
+    )})
+
+
+const Media_section = memo(function Media_section({
+    formData,
+    setFormData,
+    files,
+    setFiles,
+    video,
+    setVideo,
+    handleFileChange,
+    removeFile,
+    removeVideo,
+    handleSubmit,
+    loading,errors
+}) {
+        return (
+            <div className="bg-slate-900/70 backdrop-blur-2xl rounded-3xl border border-slate-800/60 p-8 shadow-2xl lg:sticky lg:top-24" >
+                <div className="flex items-center gap-3 mb-7 pb-5 border-b border-slate-500/50" >
+                    <Upload className="w-6 h-6 text-cyan-400" />
+                    <h2 className="text-2xl text-white font-bold">Media</h2>
+                </div>
+
+                <div className="space-y-4 mb-7 " >
+                    <label className="text-sm  font-semibold text-slate-300" >
+                        Media Type
+                    </label>
+                    <div className="grid grid-cols-2 gap-3" >
+                        {['image', 'video'].map((type) => (
+                            <button
+                                key={type}
+                                type="button"
+                                onClick={() => {
+                                    setFormData({ ...formData, media_type: type })
+                                    setFiles([])
+                                    setVideo(null)
+                                }}
+                                className={`flex flex-col items-center justify-center gap-2.5 px-5 py-7 rounded-2xl border-2 transition-all duration-300 
+                                                font-semibold text-sm backdrop-blur-sm  ${formData.media_type === type ? 'border-cyan-500 bg-cyan-500/10 text-cyan-400 shadow-2xl shadow-cyan-500/30' :
+                                        'border-slate-700 bg-slate-800/40 text-slate-400  hover:border-slate-600 hover:bg-slate-800/60'
+                                    }`}>
+                                {type === 'image' ? <Image className="w-7 h-7" /> : <Video className="w-7 h-7" />}
+                                <span className="capitalize">{type === 'image' ? 'Images' : 'video'}</span>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+
+                <div className="space-y-4" >
+                    <label className="text-sm font-semibold text-slate-300">
+                        {formData.media_type === 'image' ? 'Upload Images' : 'Upload Video'}
+                    </label>
+                    <div className="relative group">
+                        <input
+                            type="file"
+                            accept={formData.media_type === 'image' ? 'image/*' : 'video/*'}
+                            multiple={formData.media_type === 'image'}
+                            onChange={handleFileChange}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                        />
+                        <div className={`flex flex-col items-center justify-center gap-4 px-6 py-14 border-2 border-dashed rounded-2xl 
+                                        transition-all duration-300 cursor-pointer ${files.length > 0 || video ? 'border-emerald-500/50 bg-emerald-500/5' :
+                                'border-slate-700/60 bg-slate-800/40  group-hover:border-cyan-500/60  group-hover:bg-slate-800/60'
+                            } `} >
+                                                
+                            <Upload className={`w-10 h-10 transition-colors duration-300 ${files.length > 0 || video ? 'text-emerald-400' : 'text-slate-500 group-hover:text-cyan-400 '}`} />
+                            <div className="text-center">
+                                <p className={`text-sm font-medium transition-colors duration-300 ${files.length > 0 || video ? 'text-emerald-400' : 'text-slate-300 group-hover:text-cyan-400'} `} >
+                                    {files.length > 0 || video ? 'Files Ready' : 'Drop Files Here Or Click To Browse'}
+                                </p>
+                                            
+                                <p className="text-xs text-slate-500 mt-1" >
+                                    {formData.media_type === 'image' ? 'PNG, JPG, GIF Max 10MB each' : 'MP4 WebM Max 100MB '}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {formData.media_type === 'image' && files.length > 0 && (
+                        <div className="grid grid-cols-3 gap-3 mt-4">
+                            {files.map((file, i) => (
+                                <div key={i} className="relative group rounded-xl overflow-hidden">
+                                    <img
+                                        src={URL.createObjectURL(file)}
+                                        alt={`preview ${i + 1}`}
+                                        className="w-full h-24 object-cover" />
+                                    <button onClick={() => removeFile(i)}
+                                        className="absolute top-1 right-1 p1 bg-red-500/80 rounded-full opacity-0 group-hover:opacity-100  transition-opacity">
+                                        <X className="w-3 h-3 text-white" />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                                    
+                    {formData.media_type === 'video' && video && (
+                                     
+                        <div className="mt-4 p-4 bg-slate-800/60  rounded-2xl border border-emerald-500/30 ">
+                            <video
+                                src={URL.createObjectURL(video)}
+                                controls
+                                className="w-full rounded-xl" />
+                            <button onClick={removeVideo}
+                                className="mt-2 text-xs text-red-400 hover:text-red-300 flex items-center gap-1">
+                                <X className=" w-3 h-3" />Remove Video
+                            </button>
+                        </div>
+                    )}
+
+                </div>
+
+
+                <button type="submit"
+                    disabled={loading || Object.keys(errors).length > 0 || !formData.name || !formData.description || !formData.github_link || !formData.media_type || !formData.project_type || !formData.tech_stack}
+                    className="w-full mt-8 flex items-center justify-center gap-3 py-5 rounded-2xl bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600
+                                              hover:from-cyan-500 hover:via-blue-500 hover:to-purple-500 disabled:from-slate-700 disabled:to-slate-700 transition-all duration-300 font-bold text-white
+                                              text-lg shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:hover:scale-100 disabled:opacity-50">
+                                           
+                    {loading ? (
+                        <>
+                            <Loader2 className="w-6 h-6 animate-spin" />
+                            <span>Publishing Project...</span>
+                        </>
+                    ) :
+                        (
+                            <>
+                                <CheckCircle2 className="w-6 h-6" />
+                                <span>Publish Project </span>
+                            </>
+                        )}
+                </button>
+            </div>
+        );
+    })
+
+
+
+export default function Add_Project() {
+    const { isSidebarOpen,refreshCounts  } = useOutletContext()
+    const [formData, setFormData] = useState({
+        name : '',
+        description : '',
+        live_link : '',
+        github_link : '',
+        tech_stack : '',
+        time_spent: '',
+        project_type: "",
+        media_type : 'image' 
+    })
+
+    const [files, setFiles] = useState([])
+    const [video, setVideo] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const [focusField, setFocusField] = useState(null)
+    const [errors, setErrors] = useState({})
+    const [lastSaved, setLastSaved] = useState(null)
+    
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (formData.name || formData.description) {
+                setLastSaved(new Date())
+            }
+        }, 3000)
+        return ()=> clearTimeout(timer)
+    },[formData])    
+
+    const validateField = (name, value) => {
+     
+        const new_error = { ...errors }
+        if (name === 'name' && value.length < 3) {
+            new_error.name = ' Project Name Must Be At Least 3 Characters '
+        } else if (name === 'description' && value.length < 50) {
+            new_error.description = 'Project Description Must Be At Least 50 Characters '
+        } else if (name === 'live_link' && value && !/^https?:\/\//.test(value)) {
+            new_error.live_link = 'Live Link Must Be Start With http://'
+        } else if (name === 'github_link' && value && !/^https:\/\/github\.com\/sayyedrabeeh(\/.*)?$/.test(value)) {
+            new_error.github_link = "Must Be Valid sayyedrabeeh's Gitlab Url"
+        } else {
+            delete new_error[name]
+        }
+    setErrors(new_error)
+    }    
+    const handleChange = (e) => {
+        const { name, value } = e.target
+        setFormData({ ...formData, [name]: value })
+        validateField(name,value)
+    }
+
+    
+    const handleFileChange = (e) => {
+    const selectedFiles = e.target.files;
+    if (!selectedFiles) return;
+
+    if (formData.media_type === "image") {
+        const validFiles = Array.from(selectedFiles).filter(
+        (file) => file.type.startsWith("image/") && file.size <= 10 * 1024 * 1024
+        );
+
+        if (validFiles.length !== selectedFiles.length) {
+        toast.error(" Some images are invalid or exceed 10MB!");
+        } else {
+        toast.success(" Images added successfully!");
+        }
+
+        setFiles(validFiles);
+    } else {
+        const file = selectedFiles[0];
+        if (file) {
+        if (!file.type.startsWith("video/")) {
+            toast.error(" Please upload a valid video file!");
+        } else if (file.size > 100 * 1024 * 1024) {
+            toast.error(" Video exceeds 100MB limit!");
+        } else {
+            setVideo(file);
+            toast.success(" Video selected successfully!");
+        }
+        }
+    }
+
+    e.target.value = "";
+    };
+
+
+    const removeFile = (index) => {
+        setFiles(files.filter((_,i) => i !== index ))
+    }
+
+    const removeVideo = () => setVideo(null)
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        if (Object.keys(errors).length > 0 || !formData.name || !formData.description || !formData.github_link || !formData.media_type ||!formData.project_type || !formData.tech_stack  ) {
+            toast.error('Fix errors Before Submitting ')
+            return 
+        }
+        if (formData.media_type === 'image' && files.length === 0) {
+            toast.error('Please upload at least 1 project image')
+            return
+        }
+
+        if (formData.media_type === 'video' && !video) {
+            toast.error('Please upload a project video')
+            return
+        }
+        setLoading(true)
+        const data = new FormData()
+        Object.entries(formData).forEach(([key, value]) => data.append(key, value))
+        
+        if (formData.media_type === 'image') {
+            files.forEach((file) => data.append('images',file))
+        } else if (video) {
+            data.append('video',video)
+        }
+        try {
+            const res = await api.post("/api/accounts/create_project/", data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${localStorage.getItem("access")}`,
+            },
+            });
+
+            toast.success(res.data.message)
+            refreshCounts() 
+            setFormData({
+                name: "",
+                description: "",
+                live_link: "",
+                github_link: "",
+                tech_stack: "",
+                time_spent: "",
+                media_type: "image",
+            });
+            setFiles([])
+            setVideo(null)
+              }
+        catch(err) {
+            console.error(err)
+            toast.error(err.response?.data?.error||'failed to publish project ')
+
+        } finally {
+            setLoading(false)
+        }
+    }
+
+   
+
+  
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white ">
@@ -493,16 +520,57 @@ export default function Add_Project() {
 
                     {isSidebarOpen ? (
                         <div className="space-y-8" >
-                            <Content_card />
-                            <Media_section/>
+                            <Content_card
+                                formData={formData}
+                                handleChange={handleChange}
+                                focusField={focusField}
+                                setFocusField={setFocusField}
+                                errors = {errors}
+                            />
+                            <Media_section
+                                formData={formData}
+                                setFormData={setFormData}
+                                files={files}
+                                setFiles={setFiles}
+                                video={video}
+                                setVideo={setVideo}
+                                handleFileChange={handleFileChange}
+                                removeFile={removeFile}
+                                removeVideo={removeVideo}
+                                handleSubmit={handleSubmit}
+                                loading={loading}
+                                errors={errors}
+                                
+                            />
                         </div>
                     ) : (
                             <div className="grid lg:grid-cols-3 gap-8">
                                 <div className="lg:col-span-2 space-y-8 " >
-                                    <Content_card/>
+                                    <Content_card
+                                        formData={formData}
+                                        handleChange={handleChange}
+                                        focusField={focusField}
+                                        setFocusField={setFocusField}
+                                        errors = {errors}
+                                    />
                                 </div>    
                                 <div className="lg:col-span-1">
-                                    <Media_section />
+                                    <Media_section
+                                        formData={formData}
+                                        setFormData={setFormData}
+                                        files={files}
+                                        setFiles={setFiles}
+                                        video={video}
+                                        setVideo={setVideo}
+                                        handleFileChange={handleFileChange}
+                                        removeFile={removeFile}
+                                        removeVideo={removeVideo}
+                                        handleSubmit={handleSubmit}
+                                        loading={loading}
+                                        errors={errors}
+                                        
+                                    />
+
                                 </div>
                             </div>
                     )}

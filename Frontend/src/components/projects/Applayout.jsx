@@ -35,14 +35,19 @@ export default function AppLayout() {
     navigate("/login");
   };
 
+  const refreshCounts = () => {
+  fetch("http://127.0.0.1:8000/api/accounts/counts/")
+    .then(res => res.json())
+    .then(data => setCounts(data))
+    .catch(err => console.log(err));
+};
+
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'))
     setIsSuperUser(user?.is_superuser || false)
-    
-    fetch("http://127.0.0.1:8000/api/accounts/counts/")
-      .then(res => res.json())
-      .then(data => setCounts(data))
-    .catch(err => confirm.log(err))
+     
+    refreshCounts()
 
   },[])
 
@@ -183,7 +188,7 @@ export default function AppLayout() {
 
         <section className="flex-1 flex">
           <div className="flex-1 overflow-y-auto bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950">
-            <Outlet context={{ isSidebarOpen }} />
+            <Outlet context={{ isSidebarOpen,refreshCounts }} />
           </div>  
         </section>
       </main>
@@ -263,7 +268,7 @@ export default function AppLayout() {
           </button>
 
           <button
-            onClick={() => window.open("https://www.linkedin.com/in/sayyedrabeeh", "_blank")}
+            onClick={() => window.open("https://www.linkedin.com/in/sayyed-rabeeh/", "_blank")}
             className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700/70 transition-all"
           >
             <Linkedin size={16} className="text-blue-400" />
@@ -271,7 +276,7 @@ export default function AppLayout() {
           </button>
 
           <button
-            onClick={() => window.open("https://leetcode.com/sayyedrabeeh", "_blank")}
+            onClick={() => window.open("https://leetcode.com/u/sayyed-rabeeh/", "_blank")}
             className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700/70 transition-all"
           >
             <Zap size={16} className="text-yellow-400" />
