@@ -15,6 +15,8 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('create_project/',create_project,name='create_project'),
     path('counts/',project_counts,name='project_counts'),
+ 
      path('projects/', get_projects),
+
  
 ]
