@@ -74,7 +74,7 @@ export default function Project_Component({ Project_type }) {
                     </h1>
 
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                        curated feed of your work
+                        curated feed of My work
                     </p>
 
                     <div className="mt-2 h-1 w-14 rounded-full bg-black/80 dark:bg-white/80"></div>
