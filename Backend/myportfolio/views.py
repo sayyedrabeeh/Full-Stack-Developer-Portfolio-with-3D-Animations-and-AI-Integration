@@ -167,4 +167,20 @@ def toggle_like(request,pk):
         'liked':liked,
         'likes':like_count
     })
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_comment(request,pk):
+    user = request.user
+    project = get_object_or_404(Project,id)
+    text = request.data.get('text')
+    if not text:
+        return Response({'error':'Comment text required'},status=status.HTTP_400_BAD_REQUEST)
+    ProjectComment.objects.create(project=project,user=user,text=text)
+    comment_count = ProjectComment.objects.filter(project=project).count()
+    return Response({
+        'message':'Comment Added Successfully',
+        'comments':comment_count
+    })
+ 
  
