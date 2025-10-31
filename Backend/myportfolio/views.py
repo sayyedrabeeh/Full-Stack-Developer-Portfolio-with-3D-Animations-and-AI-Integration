@@ -123,6 +123,7 @@ def get_projects(request):
         projects = Project.objects.filter(project_type= project_type)
     else:
         projects = Project.objects.all()
+        
     
     data = []
     for p in projects:
