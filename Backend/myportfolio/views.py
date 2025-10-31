@@ -140,12 +140,12 @@ def get_projects(request):
             'created_at':p.created_at,
             'images':[{'image':img.image.url}for img in p.images.all()]
     }
-    if hasattr(p,'video') and p.video:
-        item['video'] = {'video': p.video.video.url}
-    else:
-        item['video'] = None
+        if hasattr(p,'video') and p.video:
+            item['video'] = {'video': p.video.video.url}
+        else:
+            item['video'] = None
 
 
-    data.append(item)
+        data.append(item)
     return Response(data)
  

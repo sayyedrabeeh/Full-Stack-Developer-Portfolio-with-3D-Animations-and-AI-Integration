@@ -67,10 +67,19 @@ export default function Project_Component({ Project_type }) {
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
             <header className="sticky top-0 z-10 bg-white  dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700" >
-                <div className="max-w-2xl  mx-auto flex items-center justify-between px-4 py-3" >
-                    <h1 className="text-xl font-bold text-gray-800 dark:text-white">
-                        { Project_type || 'ALL Projects' }
+                <div className="max-w-2xl  mx-auto flex items-center justify-center px-4 py-3" >
+                <div className="mb flex flex-col items-center gap-1">
+                    <h1 className="text-[26px] font-extrabold text-gray-900 dark:text-white tracking-tight">
+                        {Project_type?.toUpperCase() || "ALL PROJECTS"}
                     </h1>
+
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                        curated feed of your work
+                    </p>
+
+                    <div className="mt-2 h-1 w-14 rounded-full bg-black/80 dark:bg-white/80"></div>
+                    </div>
+
                     <div className="w-8"/>                    
                 </div>
             </header>
