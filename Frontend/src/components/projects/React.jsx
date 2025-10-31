@@ -1,11 +1,14 @@
+import Project_Component from "./Projects_componet"
 
 
 
 export default function React() {
     
-    return (
-        <>
-        React
-        </>
-    )
+    return <Project_Component Project_type='react'/>
+    
 }
+
+
+
+
+ 

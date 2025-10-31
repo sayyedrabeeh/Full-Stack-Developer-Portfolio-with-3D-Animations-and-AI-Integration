@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react"
+import Project_Component from "./Projects_componet"
 
 
 
 export default function Fullstack() {
     
-    return (
-        <>
-    
-        </>
-    )
+   return <Project_Component Project_type='fullstack'/>
 
 
 }
+
+
+
+
+ 
