@@ -7,8 +7,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Project,ProjectImage,ProjectVideo
-
+from .models import Project,ProjectImage,ProjectVideo,ProjectComment,ProjectLike
+from django.shortcuts import get_object_or_404
 
 
 
@@ -123,8 +123,9 @@ def get_projects(request):
         projects = Project.objects.filter(project_type= project_type)
     else:
         projects = Project.objects.all()
-        
-    
+ 
+    user = request.user if request.user.is_authenticated else None
+ 
     data = []
     for p in projects:
         item ={
@@ -138,7 +139,10 @@ def get_projects(request):
             'time_spent':p.time_spent,
             'media_type':p.media_type,
             'created_at':p.created_at,
-            'images':[{'image':img.image.url}for img in p.images.all()]
+            'images':[{'image':img.image.url}for img in p.images.all()],
+            "likes": p.likes.count(),
+            "comments": p.comments.count(),
+            "userLiked": True if user and p.likes.filter(user=user).exists() else False
     }
         if hasattr(p,'video') and p.video:
             item['video'] = {'video': p.video.video.url}
@@ -148,4 +152,40 @@ def get_projects(request):
 
         data.append(item)
     return Response(data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def toggle_like(request,pk):
+    user = request.user
+    project = get_object_or_404(Project,id =pk)
+    existing_like = ProjectLike.objects.filter(project = project,user=user).first()
+    if existing_like:
+        existing_like.delete()
+        liked =False
+    else:
+        ProjectLike.objects.create(project=project,user=user)
+        liked = True
+    
+    like_count = ProjectLike.objects.filter(project=project).count()
+    return Response({
+        'liked':liked,
+        'likes':like_count
+    })
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_comment(request,pk):
+    user = request.user
+    project = get_object_or_404(Project,id)
+    text = request.data.get('text')
+    if not text:
+        return Response({'error':'Comment text required'},status=status.HTTP_400_BAD_REQUEST)
+    ProjectComment.objects.create(project=project,user=user,text=text)
+    comment_count = ProjectComment.objects.filter(project=project).count()
+    return Response({
+        'message':'Comment Added Successfully',
+        'comments':comment_count
+    })
  
+
