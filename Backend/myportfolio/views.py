@@ -112,3 +112,37 @@ def project_counts(request):
         'learning':Project.objects.filter(project_type = 'learning').count(),
     }
     return Response(counts)
+
+
+@api_view(['GET'])
+def get_projects(request):
+    project_type = request.GET.get('project_type',None)
+
+    if project_type:
+        projects = Project.objects.filter(project_type= project_type)
+    else:
+        projects = Project.objects.all()
+    
+    data = []
+    for p in projects:
+        item ={
+            'id':p.id,
+            'name':p.name,
+            'description':p.description,
+            'live_link':p.live_link,
+            'github_link':p.github_link,
+            'tech_stack':p.tech_stack,
+            'project_type':p.project_type,
+            'time_spent':p.time_spent,
+            'media_type':p.media_type,
+            'created_at':p.created_at,
+            'images':[{'image':img.image.url}for img in p.images.all()]
+    }
+    if hasattr(p,'video') and p.video:
+        item['video'] = {'video': p.video.video.url}
+    else:
+        item['video'] = None
+
+
+    data.append(item)
+    return Response(data)
