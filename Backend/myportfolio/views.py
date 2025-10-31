@@ -7,8 +7,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Project,ProjectImage,ProjectVideo
-
+from .models import Project,ProjectImage,ProjectVideo,ProjectComment,ProjectLike
+from django.shortcuts import get_object_or_404
 
 
 
@@ -147,4 +147,24 @@ def get_projects(request):
 
         data.append(item)
     return Response(data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def toggle_like(request,pk):
+    user = request.user
+    project = get_object_or_404(Project,id =pk)
+    existing_like = ProjectLike.objects.filter(project = project,user=user).first()
+    if existing_like:
+        existing_like.delete()
+        liked =False
+    else:
+        ProjectLike.objects.create(project=project,user=user)
+        liked = True
+    
+    like_count = ProjectLike.objects.filter(project=project).count()
+    return Response({
+        'liked':liked,
+        'likes':like_count
+    })
  
