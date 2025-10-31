@@ -139,8 +139,78 @@ export default function Project_Component({ Project_type }) {
                                             ) }
                                         </div>
                                     )}
-                                    
 
+                                    {p.media_type === 'video' && p.video && (
+                                        <div className="bg-black">
+                                            <video
+                                                controls
+                                                className="w-full max-h-96 object-contain"
+                                                poster={
+                                                p.video.thumbnail
+                                            ? `${baseURL}${p.video.thumbnail}`
+                                            : undefined
+                                            }>
+                                            <source src={`${baseURL}${p.video.video}`} type="video/mp4" />
+                                                Your browser does not support video.
+                                            </video>
+                                        </div>
+                                    )}
+                                    
+                                    <div className="flex items-center gap-5 p-3" >
+                                        <button onClick={() => toggleLike(p.id)}
+                                            className={`flex items-centre gap-1.5 transition-all ${isLiked ? 'text-red-500' : 'text-gray-700 dark:text-gray-300'} hover:scale-110`}
+                                        >
+                                            <Heart className={`w-6 h-6 ${isLiked ? 'fill-current animate-pluse' : ''}`} />
+                                                                <span className="text-sm font-medium">
+                                                                {isLiked ? (p.likes || 0) + 1 : p.likes || 0}
+                                                                </span>
+                                        </button>
+
+                                    <button className="flex items-center gap-1.5 text-gray-700 dark:text-gray-300 hover:scale-110 transition-all">
+                                        <MessageCircle className="w-6 h-6" />
+                                        <span className="text-sm font-medium">{p.comments || 0}</span>
+                                    </button>
+
+                                    <button className="flex items-center gap-1.5 text-gray-700 dark:text-gray-300 hover:scale-110 transition-all ml-auto">
+                                        <Share2 className="w-6 h-6" />
+                                        <span className="text-sm font-medium">{p.shares || 0}</span>
+                                    </button>
+                                    </div>
+
+
+                                    <div className="px-4 pb-3 space-y-2"  >
+                                        <p className="text-sm text-gray-900 dark:text-gray-100  leading-relaxed" >
+                                            { p.description  }
+                                        </p>
+                                        <div className="flex flex-wrap gap-1.5 " >
+                                            {p.tech_stack?.split(',').map((t) => t.trim()).filter(Boolean).map((t, i) => (
+                                                 <span key={i} className="text-xs font-medium text-blue-600dark:text-blue-400">#{t.replace(/\s+/g, "")}</span>
+                                             )) }
+                                        </div>
+                                            
+                                        <div className="flex gap-4 pt-2 text-xs">
+                                            {p.live_link && (
+                                                <a
+                                                    href={p.live_link}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="flex items-centre gap-1 text-blue-600 dark:text-blue-400 hover:underline font-medium ">
+                                                    <ExternalLink className="w-3.5 h-3.5" />
+                                                    live
+                                                </a>
+                                        )  }    
+                                            {p.github_link && (
+                                                <a
+                                                    href={p.github_link}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="flex items-centre gap-1 text-blue-600 dark:text-blue-400 hover:underline font-medium ">
+                                                    <Github className="w-3.5 h-3.5" />
+                                                    Code
+                                                </a>
+                                        )  }    
+                                        </div>
+                                    </div>
                                  </article>
                             )
 
