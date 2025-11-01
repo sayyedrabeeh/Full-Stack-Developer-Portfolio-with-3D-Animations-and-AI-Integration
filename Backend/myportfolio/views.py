@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Project,ProjectImage,ProjectVideo,ProjectComment,ProjectLike
+from .models import Project,ProjectImage,ProjectVideo,ProjectComment,ProjectLike,ProjectBookmark
 from django.shortcuts import get_object_or_404
 from django.utils.timezone import localtime
 
@@ -214,6 +214,28 @@ def get_comments(request,pk):
 
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def toggle_bookmark(request, pk):
+    project = get_object_or_404(Project, id=pk)
+    user = request.user
+
+    bookmark, created = ProjectBookmark.objects.get_or_create(
+        user=user, project=project
+    )
+
+    if not created:  
+        bookmark.delete()
+        status = "removed"
+    else:
+        status = "added"
+
+  
+
+    return Response({
+        "status": status,
+       
+    })
 
 
 
