@@ -123,7 +123,9 @@ def get_projects(request):
         projects = Project.objects.filter(project_type= project_type)
     else:
         projects = Project.objects.all()
+ 
     user = request.user if request.user.is_authenticated else None
+ 
     data = []
     for p in projects:
         item ={
