@@ -9,7 +9,7 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Project,ProjectImage,ProjectVideo,ProjectComment,ProjectLike
 from django.shortcuts import get_object_or_404
-
+from django.utils.timezone import localtime
 
 
 # Create your views here.
@@ -190,7 +190,7 @@ def add_comment(request,pk):
             "id": comment.id,
             "user": user.username,
             "text": text,
-            "created_at": comment.created_at.isoformat()
+            "created_at": localtime(comment.created_at).isoformat()
         }
     })
 
@@ -199,14 +199,14 @@ def add_comment(request,pk):
 def get_comments(request,pk):
 
     project = get_object_or_404(Project,id = pk)
-    comments = ProjectComment.objects.filter(project=project).order_by('created_at')
+    comments = ProjectComment.objects.filter(project=project).order_by('-created_at')
     data = []
     for c in comments:
         data.append({
             'id':c.id,
             'user':c.user.username,
             'text':c.text,
-            'created_at':c.created_at.isoformat()
+            'created_at':localtime(c.created_at).isoformat()
         })
     return Response({"comments": data})
 
