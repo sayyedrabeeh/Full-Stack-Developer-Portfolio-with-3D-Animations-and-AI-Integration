@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react"
+import React,{ useState,useEffect  } from "react";
 import { ArrowLeft, Heart, MessageCircle, Share2Icon, Github,Bookmark, BookmarkCheck, ExternalLink, X,ChevronLeft, ChevronRight, Calendar, Send } from "lucide-react"
 import moment from "moment";
 import api from "../../api/axios";
 import { toast } from "react-toastify";
 
- const safeJson = async (response) => {
+
+const safeJson = async (response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const text = await response.text();
          
@@ -15,28 +16,26 @@ import { toast } from "react-toastify";
             console.error("Parse failed:",e, text);
             return [];
         }
-    };
-
-export default function Project_Component({ Project_type }) {
+};
     
-     
+export default function Saved() {
+    
     const [project, setProject] = useState([])
     const [currentImgIdx, setCurrentImgIdx] = useState({})
     const [showCommentBox, setShowCommentBox] = useState(false)
     const [currentProjectId, setCurrentProjectId] = useState(null)
     const [commentText, setCommentText] = useState('')
     const [comments, setComments] = useState([])
-    
-     
-    const baseURL = "http://127.0.0.1:8000"
+        
 
+    const baseURL = "http://127.0.0.1:8000"
 
     useEffect(() => {
         const token = localStorage.getItem("access");
 
-        const url = Project_type 
-            ? `${baseURL}/api/accounts/projects?project_type=${Project_type}`
-            : `${baseURL}/api/accounts/projects`;
+         
+            const url= `${baseURL}/api/accounts/projects/saved`
+            
 
         fetch(url, {
             headers: token ? { Authorization: `Bearer ${token}` } : {}
@@ -58,9 +57,9 @@ export default function Project_Component({ Project_type }) {
             setCurrentImgIdx(idx)
             })
             .catch((e) => console.log('load error', e))
-        }, [Project_type])
+        }, [])
 
-    
+
     const nextImag = (id, total) => {
         setCurrentImgIdx((prev) => ({
             ...prev,
@@ -73,10 +72,7 @@ export default function Project_Component({ Project_type }) {
             [id]:(prev[id] - 1 + total )% total
         }))
     }
-
-  
-
-  const fmtDate = (d) => {
+    const fmtDate = (d) => {
     const date = new Date(d);
     const now = new Date();
     const diffH = (now - date) / (1000 * 60 * 60);
@@ -173,19 +169,17 @@ export default function Project_Component({ Project_type }) {
         }
 };
 
-
-   
     return (
-        <div className="min-h-screen  bg-gray-900">
+         <div className="min-h-screen  bg-gray-900">
             <header className="sticky top-0 z-10   bg-gray-800 border-b  border-gray-700" >
                 <div className="max-w-2xl  mx-auto flex items-center justify-center px-4 py-3" >
                 <div className="mb flex flex-col items-center gap-1">
                     <h1 className="text-[26px] font-extrabold  text-white tracking-tight">
-                        {Project_type?.toUpperCase() || "ALL PROJECTS"}
+                          SAVED PROJECTS
                     </h1>
 
                     <p className="text-sm  text-gray-400">
-                        curated feed of My work
+                        loved feed of My work
                     </p>
 
                     <div className="mt-2 h-1 w-14 rounded-full  bg-white/80"></div>
@@ -198,7 +192,7 @@ export default function Project_Component({ Project_type }) {
             <main className="max-w-2xl mx-auto px-4 py-4 space-y-6 pb-20 ">
                 {project.length === 0 ? (
                     <p className="text-center  text-gray-400 py-12" >
-                        No Projects Yet.
+                        No Saved Projects Yet.
                     </p>
                 ) : (
                         project.map((p) => {
@@ -426,11 +420,5 @@ export default function Project_Component({ Project_type }) {
             </main>
         
         </div>
-)
-
-
-
+    )
 }
-
-
-
