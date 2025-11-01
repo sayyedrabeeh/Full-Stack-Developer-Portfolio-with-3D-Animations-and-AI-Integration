@@ -202,7 +202,7 @@ def get_comments(request,pk):
             'text':c.text,
             'created_at': c.created_at.strftime("%Y-%m-%d")
         })
-    return Response(data)
+    return Response({"comments": data})
 
 
 
