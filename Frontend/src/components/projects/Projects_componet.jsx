@@ -8,32 +8,35 @@ export default function Project_Component({ Project_type }) {
     const navigate = useNavigate()
     const [project, setProject] = useState([])
     const [currentImgIdx, setCurrentImgIdx] = useState({})
+    const [showCommentBox, setShowCommentBox] = useState(false)
+    const [currentProjectId, setCurrentProjectId] = useState(null)
+    const [commentText,setCommentText] = useState('')
      
     const baseURL = "http://127.0.0.1:8000"
 
 
     useEffect(() => {
+        const token = localStorage.getItem("access");
+
         const url = Project_type 
-      ? `http://127.0.0.1:8000/api/accounts/projects?project_type=${Project_type}`
-      : `http://127.0.0.1:8000/api/accounts/projects`;
-        fetch(url)
+            ? `${baseURL}/api/accounts/projects?project_type=${Project_type}`
+            : `${baseURL}/api/accounts/projects`;
+
+        fetch(url, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {}
+        })
             .then(r => r.json())
             .then((data) => {
-                 
-                const sorted = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-                setProject(sorted)
-                const idx = {}
-                const Likes = {}
-                sorted.forEach((p) => {
-                    idx[p.id] = 0
-                    Likes[p.id] = false
-                })
-                setCurrentImgIdx(idx)
-               
-            })
-            .catch((e) => console.log('load error', e));
+            const sorted = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+            setProject(sorted)
 
-    }, [Project_type])
+            const idx = {}
+            sorted.forEach((p) => { idx[p.id] = 0 })
+            setCurrentImgIdx(idx)
+            })
+            .catch((e) => console.log('load error', e))
+        }, [Project_type])
+
     
     const nextImag = (id, total) => {
         setCurrentImgIdx((prev) => ({
@@ -72,7 +75,27 @@ export default function Project_Component({ Project_type }) {
             }
         })
         const data = await res.json()
-        setProject((prev)=> prev.map((p)=>p.id === id ?{...p,likes:data.like,userLiked:data.liked}:p))
+        setProject((prev)=> prev.map((p)=>p.id === id ?{...p,likes:data.likes,userLiked:data.liked}:p))
+        
+    }
+
+    const addComment = async () => {
+        const token = localStorage.getItem('access')
+        if (!commentText.trim()) return
+        await fetch(`http://127.0.0.1:8000/api/accounts/projects/${currentProjectId}/comments`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-type':'application/json'
+            },
+            body:JSON.stringify({text:commentText})
+        }).then(res => res.json())
+            .then((data) => {
+                setProject(prev => prev.map((p) => p.id === currentProjectId ? { ...p, comments: data.comments } : p))
+            
+                setCommentText('')
+                setShowCommentBox(false)
+            })
         
     }
 
@@ -186,16 +209,52 @@ export default function Project_Component({ Project_type }) {
                                         <button onClick={() => toggle_like(p.id)}
                                             className={`flex items-centre gap-1.5 transition-all ${p.userLiked ? 'text-red-500' : 'text-gray-700 dark:text-gray-300'} hover:scale-110`}
                                         >
-                                            <Heart className={`w-6 h-6 ${p.userLiked  ? 'fill-current animate-pluse' : ''}`} />
+                                            <Heart className={`w-6 h-6 ${p.userLiked  ? 'fill-current animate-pulse' : ''}`} />
                                                                 <span className="text-sm font-medium">
                                                                  {p.likes }
                                                                 </span>
                                         </button>
 
-                                    <button className="flex items-center gap-1.5 text-gray-700 dark:text-gray-300 hover:scale-110 transition-all">
+                                        <button onClick={() => {
+                                            setShowCommentBox(true),setCurrentProjectId(p.id)
+                                    }} className="flex items-center gap-1.5 text-gray-700 dark:text-gray-300 hover:scale-110 transition-all">
                                         <MessageCircle className="w-6 h-6" />
                                         <span className="text-sm font-medium">{p.comments || 0}</span>
-                                    </button>
+                                        </button>
+                                    {showCommentBox && (
+                                <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+                                    <div className="bg-white dark:bg-neutral-900 p-4 rounded-xl w-80 shadow-xl">
+
+                                    <h2 className="text-lg font-semibold mb-2">Add Comment</h2>
+
+                                    <textarea
+                                        className="w-full p-2 border dark:bg-neutral-800 rounded-lg focus:outline-none"
+                                        rows="3"
+                                        placeholder="Write a comment..."
+                                        value={commentText}
+                                        onChange={(e) => setCommentText(e.target.value)}
+                                    />
+
+                                    <div className="flex justify-between mt-3">
+                                        <button
+                                        onClick={() => setShowCommentBox(false)}
+                                        className="px-3 py-1 bg-gray-300 dark:bg-neutral-700 rounded-lg text-sm"
+                                        >
+                                        Cancel
+                                        </button>
+
+                                        <button
+                                        onClick={addComment}
+                                        className="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm"
+                                        >
+                                        Post
+                                        </button>
+                                    </div>
+                                    
+                                    </div>
+                                </div>
+                                )}
+
 
                                     <button className="flex items-center gap-1.5 text-gray-700 dark:text-gray-300 hover:scale-110 transition-all ml-auto">
                                         <Share2Icon className="w-6 h-6" />
