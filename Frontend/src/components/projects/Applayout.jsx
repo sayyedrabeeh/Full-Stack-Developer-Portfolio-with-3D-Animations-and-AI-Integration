@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import { Home,Globe,Layers,Zap,Terminal,Brain,Puzzle,BookOpen,Github,Mail, TrendingUp, Linkedin,Menu,X,LogOut,FolderPlus,ArrowLeft  } from "lucide-react";
+import { Home,Globe,Layers,Zap,Terminal,Brain,Puzzle,BookOpen,Github,Mail, TrendingUp, Linkedin,Menu,X,LogOut,FolderPlus,ArrowLeft,Bookmark  } from "lucide-react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 export default function AppLayout() {
@@ -126,7 +126,7 @@ useEffect(() => {
           })}
         </nav>
        <div className="p-4 border-t border-gray-800 space-y-3">
-        {isSuperUser && (
+        {isSuperUser ? (
           <div
             onClick={() => navigate("/projects/add_project")}
             className="flex items-center justify-center gap-2 py-2 
@@ -137,7 +137,16 @@ useEffect(() => {
             <FolderPlus size={18} className="text-green-400" />
             <span>Add Project</span>
           </div>
-        )}
+        ):          <div
+            onClick={() => navigate("/projects/saved_projects")}
+            className="flex items-center justify-center gap-2 py-2 
+                      text-gray-200 font-semibold text-base 
+                      cursor-pointer hover:text-green-400 
+                      transition-all duration-200"
+          >
+            <Bookmark size={18} className="text-green-400" />
+            <span>Saved Projects</span>
+          </div>}
       </div>
     </aside>
 
