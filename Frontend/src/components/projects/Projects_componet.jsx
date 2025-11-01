@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { ArrowLeft, Heart, MessageCircle, Share2Icon, Github,Bookmark, BookmarkCheck, ExternalLink, X,ChevronLeft, ChevronRight, Calendar, Send } from "lucide-react"
+import { ArrowLeft, Heart, MessageCircle, Share2Icon, Trash2 ,Github,Bookmark, BookmarkCheck, ExternalLink, X,ChevronLeft, ChevronRight, Calendar, Send } from "lucide-react"
 import moment from "moment";
 import api from "../../api/axios";
 import { toast } from "react-toastify";
@@ -26,6 +26,7 @@ export default function Project_Component({ Project_type }) {
     const [currentProjectId, setCurrentProjectId] = useState(null)
     const [commentText, setCommentText] = useState('')
     const [comments, setComments] = useState([])
+    const [isSuperUser, setIsSuperUser] = useState(false);
     
      
     const baseURL = "http://127.0.0.1:8000"
@@ -51,7 +52,8 @@ export default function Project_Component({ Project_type }) {
                 return;
             }
             const sorted = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-            setProject(sorted)
+                setProject(sorted)
+                
 
             const idx = {}
             sorted.forEach((p) => { idx[p.id] = 0 })
@@ -74,7 +76,35 @@ export default function Project_Component({ Project_type }) {
         }))
     }
 
+  useEffect(() => {
+   
+    const stored = localStorage.getItem('user');
+    const user = stored && stored !== 'undefined' && stored !== 'null' 
+      ? JSON.parse(stored) 
+      : null;
+      
+    setIsSuperUser(user?.is_superuser || false);
+     
+  }, []);
   
+const handleDeleteProject = async (id) => {
+  if (!window.confirm("Are you sure? This project will be deleted.")) return;
+
+  try {
+    await api.delete(`/api/accounts/projects/${id}/delete/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access")}`,
+      },
+    });
+
+    setProject((prev) => prev.filter((p) => p.id !== id));
+
+    toast.success("Project deleted successfully ");
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to delete project ");
+  }
+};
 
   const fmtDate = (d) => {
     const date = new Date(d);
@@ -307,7 +337,16 @@ export default function Project_Component({ Project_type }) {
                                         <Bookmark className="w-6 h-6" />
                                     )}
                                      
+                                        </button>
+                                        
+                                    {isSuperUser && (
+                                    <button
+                                    onClick={() => handleDeleteProject(p.id)}
+                                    className="flex items-center gap-1.5 text-red-500 hover:scale-110 transition-all"
+                                    >
+                                    <Trash2 className="w-6 h-6" />
                                     </button>
+                                )}
                                     </div>
 
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isCommentsOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
