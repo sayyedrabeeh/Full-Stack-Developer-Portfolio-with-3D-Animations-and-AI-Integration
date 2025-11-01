@@ -102,14 +102,15 @@ export default function Project_Component({ Project_type }) {
     }
 
     const openComments = async (projectId) => {
+        
         setShowCommentBox(true)
         setCurrentProjectId(projectId)
         const token = localStorage.getItem('access')
         const res = await fetch(`http://127.0.0.1:8000/api/accounts/projects/${projectId}/get_comments/`, {
              headers: { "Authorization": `Bearer ${token}` }
         }) 
-        const data = res.json()
-        setComments(data)
+        const data = await res.json()
+        setComments(data.comments|| [])
     }
 
     return (
@@ -234,48 +235,45 @@ export default function Project_Component({ Project_type }) {
                                         <MessageCircle className="w-6 h-6" />
                                         <span className="text-sm font-medium">{p.comments || 0}</span>
                                         </button>
-                                    {showCommentBox && (
-                                <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-                                    <div className="bg-white dark:bg-neutral-900 p-4 rounded-xl w-80 shadow-xl">
-                                <div className="max-h-40 overflow-y-auto mb-2">
-                                {comments.length > 0 ? (
-                                    comments.map((c) => (
-                                    <div key={c.id} className="border-b py-1 text-sm">
-                                        <strong className="text-blue-500">{c.user}: </strong>
-                                        <span>{c.text}</span>
+                                                                
+                                {showCommentBox && currentProjectId === p.id && (
+                                <div className="border-t border-gray-200 dark:border-gray-700 px-4 pt-3 pb-4 space-y-3">
+                                    <div className="max-h-64 overflow-y-auto space-y-2">
+                                    {comments.length > 0 ? (
+                                        comments.map((c) => (
+                                        <div key={c.id} className="flex gap-2 text-sm">
+                                            <span className="font-medium text-blue-600 dark:text-blue-400">
+                                            {c.user}
+                                            </span>
+                                            <span className="text-gray-800 dark:text-gray-200">{c.text}</span>
+                                        </div>
+                                        ))
+                                    ) : (
+                                        <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                                        No comments yet
+                                        </p>
+                                    )}
                                     </div>
-                                    ))
-                                ) : (
-                                    <p className="text-gray-500 text-sm text-center">No comments yet</p>
-                                )}
-                                </div>
-
-                                    <h2 className="text-lg font-semibold mb-2">Add Comment</h2>
-
+                                    <div className="flex gap-2">
                                     <textarea
-                                        className="w-full p-2 border dark:bg-neutral-800 rounded-lg focus:outline-none"
-                                        rows="3"
+                                        rows={2}
                                         placeholder="Write a comment..."
+                                        className="flex-1 resize-none rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         value={commentText}
                                         onChange={(e) => setCommentText(e.target.value)}
+                                        onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && !e.shiftKey) {
+                                            e.preventDefault();
+                                            addComment();
+                                        }
+                                        }}
                                     />
-
-                                    <div className="flex justify-between mt-3">
-                                        <button
-                                        onClick={() => setShowCommentBox(false)}
-                                        className="px-3 py-1 bg-gray-300 dark:bg-neutral-700 rounded-lg text-sm"
-                                        >
-                                        Cancel
-                                        </button>
-
-                                        <button
+                                    <button
                                         onClick={addComment}
-                                        className="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm"
-                                        >
+                                        className="self-start px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition"
+                                    >
                                         Post
-                                        </button>
-                                    </div>
-                                    
+                                    </button>
                                     </div>
                                 </div>
                                 )}
