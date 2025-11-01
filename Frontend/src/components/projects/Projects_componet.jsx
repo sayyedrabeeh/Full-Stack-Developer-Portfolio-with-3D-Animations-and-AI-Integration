@@ -8,7 +8,7 @@ export default function Project_Component({ Project_type }) {
     const navigate = useNavigate()
     const [project, setProject] = useState([])
     const [currentImgIdx, setCurrentImgIdx] = useState({})
-    const [liked, setLiked] = useState({})
+     
     const baseURL = "http://127.0.0.1:8000"
 
 
@@ -19,7 +19,7 @@ export default function Project_Component({ Project_type }) {
         fetch(url)
             .then(r => r.json())
             .then((data) => {
-                console.log(data)
+                 
                 const sorted = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
                 setProject(sorted)
                 const idx = {}
@@ -29,7 +29,7 @@ export default function Project_Component({ Project_type }) {
                     Likes[p.id] = false
                 })
                 setCurrentImgIdx(idx)
-                setLiked(Likes)
+               
             })
             .catch((e) => console.log('load error', e));
 
@@ -48,9 +48,7 @@ export default function Project_Component({ Project_type }) {
         }))
     }
 
-    const toggleLike = (id) => {
-        setLiked((prev) =>({...prev,[id]:!prev[id]}))
-    }
+  
 
   const fmtDate = (d) => {
     const date = new Date(d);
@@ -63,6 +61,20 @@ export default function Project_Component({ Project_type }) {
     return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   };
 
+    const toggle_like = async (id) => {
+        const token = localStorage.getItem('access')
+        
+        const res = await fetch(`http://127.0.0.1:8000/api/accounts/projects/${id}/likes`, {
+            
+            method: 'POST',
+            headers: {
+            "Authorization": `Bearer ${token}`,
+            }
+        })
+        const data = await res.json()
+        setProject((prev)=> prev.map((p)=>p.id === id ?{...p,likes:data.like,userLiked:data.liked}:p))
+        
+    }
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -93,7 +105,7 @@ export default function Project_Component({ Project_type }) {
                         project.map((p) => {
                             const imgIdx = currentImgIdx[p.id] ?? 0
                             const manyImage = p.media_type === 'image' && p.images?.length > 1;
-                            const isLiked = liked[p.id]
+                             
 
                             return (
                                 <article key={p.id}
@@ -171,12 +183,12 @@ export default function Project_Component({ Project_type }) {
                                     )}
                                     
                                     <div className="flex items-center gap-5 p-3" >
-                                        <button onClick={() => toggleLike(p.id)}
-                                            className={`flex items-centre gap-1.5 transition-all ${isLiked ? 'text-red-500' : 'text-gray-700 dark:text-gray-300'} hover:scale-110`}
+                                        <button onClick={() => toggle_like(p.id)}
+                                            className={`flex items-centre gap-1.5 transition-all ${p.userLiked ? 'text-red-500' : 'text-gray-700 dark:text-gray-300'} hover:scale-110`}
                                         >
-                                            <Heart className={`w-6 h-6 ${isLiked ? 'fill-current animate-pluse' : ''}`} />
+                                            <Heart className={`w-6 h-6 ${p.userLiked  ? 'fill-current animate-pluse' : ''}`} />
                                                                 <span className="text-sm font-medium">
-                                                                {isLiked ? (p.likes || 0) + 1 : p.likes || 0}
+                                                                 {p.likes }
                                                                 </span>
                                         </button>
 
