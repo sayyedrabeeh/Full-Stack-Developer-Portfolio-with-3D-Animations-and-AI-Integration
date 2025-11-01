@@ -1,6 +1,6 @@
 from django.urls import path
  
-from .views import signUp, login,create_project,project_counts,get_projects,toggle_like,add_comment 
+from .views import signUp, login,create_project,project_counts,get_projects,toggle_like,add_comment,get_comments 
  
  
 from rest_framework_simplejwt.views import (
@@ -18,6 +18,7 @@ urlpatterns = [
     path('projects/', get_projects),
     path('projects/<int:pk>/likes',toggle_like),
     path('projects/<int:pk>/comments',add_comment),
+    path('projects/<int:pk>/get_comments/', get_comments, name='get_comments'),
 
  
 ]
