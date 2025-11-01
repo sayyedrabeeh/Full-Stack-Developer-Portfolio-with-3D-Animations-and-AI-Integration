@@ -175,7 +175,7 @@ def toggle_like(request,pk):
 @permission_classes([IsAuthenticated])
 def add_comment(request,pk):
     user = request.user
-    project = get_object_or_404(Project,id)
+    project = get_object_or_404(Project,id=pk)
     text = request.data.get('text')
     if not text:
         return Response({'error':'Comment text required'},status=status.HTTP_400_BAD_REQUEST)
