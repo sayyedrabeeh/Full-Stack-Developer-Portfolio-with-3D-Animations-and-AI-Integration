@@ -145,26 +145,34 @@ export default function Project_Component({ Project_type }) {
                 ))
 
     }
-    const handleBookmark = async (id) => {
-  try {
-    const res = await api.post(`/api/accounts/projects/${id}/bookmark/`, {}, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("access")}`,
-      }
-    });
+   const handleBookmark = async (id) => {
+        try {
+            const res = await api.post(`/api/accounts/projects/${id}/bookmark/`, {}, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("access")}`,
+            }
+            });
 
-    toast.success(
-      res.data.status === "added" 
-      ? "Added to saved projects " 
-      : "Removed from saved "
-    );
+            const status = res.data.status;  
 
-     
-  } catch (error) {
-    console.error(error);
-    toast.error("Something went wrong");
-  }
+            toast.success(
+            status === "added"
+                ? "Added to saved projects"
+                : "Removed from saved"
+            );
+            setProject(prev =>
+            prev.map(p =>
+                p.id === id
+                ? { ...p, is_bookmarked: status === "added" }
+                : p
+            )
+            );
+        } catch (error) {
+            console.error(error);
+            toast.error("Something went wrong");
+        }
 };
+
 
    
     return (
@@ -298,7 +306,7 @@ export default function Project_Component({ Project_type }) {
                                     ) : (
                                         <Bookmark className="w-6 h-6" />
                                     )}
-                                    <span className="text-sm font-medium">{p.bookmarks || 0}</span>
+                                     
                                     </button>
                                     </div>
 
