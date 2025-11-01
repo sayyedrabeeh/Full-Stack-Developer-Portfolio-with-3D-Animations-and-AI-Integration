@@ -181,11 +181,17 @@ def add_comment(request,pk):
     text = request.data.get('text')
     if not text:
         return Response({'error':'Comment text required'},status=status.HTTP_400_BAD_REQUEST)
-    ProjectComment.objects.create(project=project,user=user,text=text)
+    comment = ProjectComment.objects.create(project=project,user=user,text=text)
     comment_count = ProjectComment.objects.filter(project=project).count()
     return Response({
         'message':'Comment Added Successfully',
-        'comments':comment_count
+        'comments':comment_count,
+        'new_comment': {
+            "id": comment.id,
+            "user": user.username,
+            "text": text,
+            "created_at": comment.created_at.isoformat()
+        }
     })
 
 @api_view(['GET'])
@@ -193,14 +199,14 @@ def add_comment(request,pk):
 def get_comments(request,pk):
 
     project = get_object_or_404(Project,id = pk)
-    comments = ProjectComment.objects.filter(project=project).order_by('-created_at')
+    comments = ProjectComment.objects.filter(project=project).order_by('created_at')
     data = []
     for c in comments:
         data.append({
             'id':c.id,
             'user':c.user.username,
             'text':c.text,
-            'created_at': c.created_at.strftime("%Y-%m-%d")
+            'created_at':c.created_at.isoformat()
         })
     return Response({"comments": data})
 
