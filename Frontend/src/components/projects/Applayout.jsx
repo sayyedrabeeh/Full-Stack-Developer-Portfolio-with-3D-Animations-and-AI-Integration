@@ -42,16 +42,16 @@ export default function AppLayout() {
     .catch(err => console.log(err));
 };
 
-
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'))
-    setIsSuperUser(user?.is_superuser || false)
-     
-    refreshCounts()
-
-  },[])
-
-  
+useEffect(() => {
+ 
+  const stored = localStorage.getItem('user');
+  const user = stored && stored !== 'undefined' && stored !== 'null' 
+    ? JSON.parse(stored) 
+    : null;
+    
+  setIsSuperUser(user?.is_superuser || false);
+  refreshCounts();
+}, []);
 
   return (
     <div className="flex w-full bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white ">

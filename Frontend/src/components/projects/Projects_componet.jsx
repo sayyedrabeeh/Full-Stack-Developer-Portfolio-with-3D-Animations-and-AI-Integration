@@ -2,7 +2,18 @@ import React, { useState, useEffect } from "react"
 import { ArrowLeft, Heart, MessageCircle, Share2Icon, Github, ExternalLink, X,ChevronLeft, ChevronRight, Calendar, Send } from "lucide-react"
 import moment from "moment";
 
-
+ const safeJson = async (response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const text = await response.text();
+        console.log("Raw API:", text);  
+        if (!text || text.trim() === '' || text === 'undefined') return [];
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            console.error("Parse failed:",e, text);
+            return [];
+        }
+    };
 
 export default function Project_Component({ Project_type }) {
     
@@ -28,8 +39,15 @@ export default function Project_Component({ Project_type }) {
         fetch(url, {
             headers: token ? { Authorization: `Bearer ${token}` } : {}
         })
-            .then(r => r.json())
+        .then( safeJson)
+
+
             .then((data) => {
+            if (!Array.isArray(data)) {
+                console.error("Expected array, got:", data);
+                setProject([]);
+                return;
+            }
             const sorted = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
             setProject(sorted)
 
@@ -77,7 +95,7 @@ export default function Project_Component({ Project_type }) {
             "Authorization": `Bearer ${token}`,
             }
         })
-        const data = await res.json()
+        const data = await safeJson(res)
         setProject((prev)=> prev.map((p)=>p.id === id ?{...p,likes:data.likes,userLiked:data.liked}:p))
         
     }
@@ -94,12 +112,12 @@ export default function Project_Component({ Project_type }) {
             body:JSON.stringify({text:commentText})
         })
 
-            const data = await res.json();
+            const data = await safeJson(res);
             setProject(prev => prev.map((p) =>
                 p.id === currentProjectId ? { ...p, comments: data.comments } : p
             ));
             if (data.new_comment) {
-                setComments(prev => [...prev, data.new_comment]);
+                setComments(prev => [data.new_comment,...prev]);
             }
 
             setCommentText('');
@@ -119,24 +137,27 @@ export default function Project_Component({ Project_type }) {
         const res = await fetch(`http://127.0.0.1:8000/api/accounts/projects/${projectId}/get_comments/`, {
              headers: { "Authorization": `Bearer ${token}` }
         }) 
-        const data = await res.json()
-        setComments(data.comments|| [])
-    }
+        const data = await safeJson(res)
+        setComments((data.comments || []).sort(
+                (a, b) => new Date(b.created_at) - new Date(a.created_at)
+                ))
 
+    }
+   
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-            <header className="sticky top-0 z-10 bg-white  dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700" >
+        <div className="min-h-screen  bg-gray-900">
+            <header className="sticky top-0 z-10   bg-gray-800 border-b  border-gray-700" >
                 <div className="max-w-2xl  mx-auto flex items-center justify-center px-4 py-3" >
                 <div className="mb flex flex-col items-center gap-1">
-                    <h1 className="text-[26px] font-extrabold text-gray-900 dark:text-white tracking-tight">
+                    <h1 className="text-[26px] font-extrabold  text-white tracking-tight">
                         {Project_type?.toUpperCase() || "ALL PROJECTS"}
                     </h1>
 
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                    <p className="text-sm  text-gray-400">
                         curated feed of My work
                     </p>
 
-                    <div className="mt-2 h-1 w-14 rounded-full bg-black/80 dark:bg-white/80"></div>
+                    <div className="mt-2 h-1 w-14 rounded-full  bg-white/80"></div>
                     </div>
 
                     <div className="w-8"/>                    
@@ -145,7 +166,7 @@ export default function Project_Component({ Project_type }) {
 
             <main className="max-w-2xl mx-auto px-4 py-4 space-y-6 pb-20 ">
                 {project.length === 0 ? (
-                    <p className="text-center text-gray-500 dark:text-gray-400 py-12" >
+                    <p className="text-center  text-gray-400 py-12" >
                         No Projects Yet.
                     </p>
                 ) : (
@@ -156,7 +177,7 @@ export default function Project_Component({ Project_type }) {
 
                             return (
                                 <article key={p.id}
-                                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700"
+                                    className=" bg-gray-800 rounded-2xl shadow-sm overflow-hidden border  border-gray-700"
                                 >
                                     <div className="flex items-center justify-between p-4">
                                         <div className="flex items-center gap-3 " >
@@ -164,10 +185,10 @@ export default function Project_Component({ Project_type }) {
                                                 { p.name.charAt(0).toUpperCase() }
                                             </div>
                                             <div>
-                                                <h3 className="font-semibold text-gray-900 dark:text-white" >
+                                                <h3 className="font-semibold  text-white" >
                                                     { p.name }
                                                 </h3>
-                                                <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400" >
+                                                <div className="flex items-center gap-2 text-sm  text-gray-400" >
                                                     <Calendar className="w-3 h-3" />
                                                     <span>{fmtDate(p.created_at)}</span>
                                                     {p.time_spent && (
@@ -231,7 +252,7 @@ export default function Project_Component({ Project_type }) {
                                     
                                     <div className="flex items-center gap-5 p-3" >
                                         <button onClick={() => toggle_like(p.id)}
-                                            className={`flex items-centre gap-1.5 transition-all ${p.userLiked ? 'text-red-500' : 'text-gray-700 dark:text-gray-300'} hover:scale-110`}
+                                            className={`flex items-centre gap-1.5 transition-all ${p.userLiked ? 'text-red-500' : ' text-gray-300'} hover:scale-110`}
                                         >
                                             <Heart className={`w-6 h-6 ${p.userLiked  ? 'fill-current animate-pulse' : ''}`} />
                                                                 <span className="text-sm font-medium">
@@ -240,47 +261,49 @@ export default function Project_Component({ Project_type }) {
                                         </button>
                                         
                                     <button onClick={() => openComments(p.id)}
-                                        className={`flex items-center gap-1.5 transition-all hover:scale-110 ${isCommentsOpen ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}>
+                                        className={`flex items-center gap-1.5 transition-all hover:scale-110 ${isCommentsOpen ? ' text-blue-400' : 'text-gray-300'}`}>
                                         <MessageCircle className={`w-6 h-6 ${isCommentsOpen ? 'fill-current' : ''}`} />
                                         <span className="text-sm font-medium">{p.comments || 0}</span>
                                     </button>
                                                                 
-                                        <button className="flex items-center gap-1.5 text-gray-700 dark:text-gray-300 hover:scale-110 transition-all ml-auto">
+                                        <button className="flex items-center gap-1.5 text-gray-300 hover:scale-110 transition-all ml-auto">
                                             <Share2Icon className="w-6 h-6" />
                                             <span className="text-sm font-medium">{p.shares || 0}</span>
                                         </button>
                                     </div>
 
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isCommentsOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                                    <div className="bg-gray-50 dark:bg-gray-900/50 px-4 py-4">
+                                    <div className=" bg-gray-900/50 px-4 py-4">
                                         <div className="flex items-center justify-between mb-3">
-                                            <h4 className="text-sm font-semibold text-gray-900 dark:text-white">
+                                            <h4 className="text-sm font-semibold  :text-white">
                                                 Comments ({comments.length})
                                             </h4>
                                             <button onClick={() => openComments(p.id)}
-                                                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
+                                                className=" text-gray-400  hover:text-gray-200 transition-colors">
                                                 <X className="w-4 h-4" />
                                             </button>
                                         </div>
-                                        <div className="max-h-64 overflow-y-auto space-y-3 mb-4 pr-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
+                                        <div className="max-h-64 overflow-y-auto space-y-3 mb-4 pr-2 scrollbar-thin  scrollbar-thumb-gray-600">
                                             {comments.length > 0 ? (
                                                 comments.map((c) => (
-                                                    <div key={c.id} className="bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm border border-gray-200 dark:border-gray-700">
+                                                    <div key={c.id} className=" bg-gray-800 rounded-lg p-3 shadow-sm border  border-gray-700">
                                                         <div className="flex items-start gap-2">
                                                             <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center font-bold text-white text-xs flex-shrink-0">
                                                                 {c.user.charAt(0).toUpperCase()}
                                                             </div>
                                                              <div className="flex-1 min-w-0">
                                                         <div className="flex justify-between items-center">
-                                                            <p className="font-semibold text-sm text-gray-900 dark:text-white">
+                                                            <p className="font-semibold text-sm  text-white">
                                                                 {c.user}
                                                             </p>
-                                                            <span className="text-[11px] text-gray-500 dark:text-gray-400">
-                                                                <p>{moment(c.created_at).fromNow()}</p>
+                                                            <span className="text-[11px]  text-gray-400">
+                                                               <p title={moment(c.created_at).format("DD MMM YYYY, hh:mm A")}>
+                                                                        {moment(c.created_at).fromNow()}
+                                                                        </p>
                                                             </span>
                                                         </div>
 
-                                                        <p className="text-sm text-gray-700 dark:text-gray-300 mt-1 break-words">
+                                                        <p className="text-sm text-gray-300 mt-1 break-words">
                                                             {c.text}
                                                         </p>
                                                     </div>
@@ -289,8 +312,8 @@ export default function Project_Component({ Project_type }) {
                                                 ))
                                             ) : (
                                                 <div className="text-center py-8">
-                                                    <MessageCircle className="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-2" />
-                                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                    <MessageCircle className="w-12 h-12 mx-auto  text-gray-600 mb-2" />
+                                                    <p className="text-sm  text-gray-400">
                                                         No comments yet. Be the first to comment!
                                                     </p>
                                                 </div>
@@ -302,7 +325,7 @@ export default function Project_Component({ Project_type }) {
                                             <textarea
                                                 rows={3}
                                                 placeholder="Write a comment..."
-                                                className="w-full resize-none rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 pr-12 text-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                                className="w-full resize-none rounded-xl border  border-gray-600 bg-gray-800 px-4 py-3 pr-12 text-sm   placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                                 value={commentText}
                                                 onChange={(e) => setCommentText(e.target.value)}
                                                 onKeyDown={(e) => {
@@ -324,12 +347,12 @@ export default function Project_Component({ Project_type }) {
                                 </div>
 
                                     <div className="px-4 pb-3 space-y-2"  >
-                                        <p className="text-sm text-gray-900 dark:text-gray-100  leading-relaxed" >
+                                        <p className="text-sm  text-gray-100  leading-relaxed" >
                                             { p.description  }
                                         </p>
                                         <div className="flex flex-wrap gap-1.5 " >
                                             {p.tech_stack?.split(',').map((t) => t.trim()).filter(Boolean).map((t, i) => (
-                                                 <span key={i} className="text-xs font-medium text-blue-600 dark:text-blue-400">#{t.replace(/\s+/g, "")}</span>
+                                                 <span key={i} className="text-xs font-medium  text-blue-400">#{t.replace(/\s+/g, "")}</span>
                                              )) }
                                         </div>
                                             
@@ -339,7 +362,7 @@ export default function Project_Component({ Project_type }) {
                                                     href={p.live_link}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="flex items-centre gap-1 text-blue-600 dark:text-blue-400 hover:underline font-medium ">
+                                                    className="flex items-centre gap-1  text-blue-400 hover:underline font-medium ">
                                                     <ExternalLink className="w-3.5 h-3.5" />
                                                     live
                                                 </a>
@@ -349,7 +372,7 @@ export default function Project_Component({ Project_type }) {
                                                     href={p.github_link}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="flex items-centre gap-1 text-blue-600 dark:text-blue-400 hover:underline font-medium ">
+                                                    className="flex items-centre gap-1 text-blue-400 hover:underline font-medium ">
                                                     <Github className="w-3.5 h-3.5" />
                                                     Code
                                                 </a>
