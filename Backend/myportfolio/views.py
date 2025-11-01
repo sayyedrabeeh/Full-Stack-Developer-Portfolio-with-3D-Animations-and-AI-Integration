@@ -239,7 +239,38 @@ def toggle_bookmark(request, pk):
     })
 
 
+@api_view('GET')
+@permission_classes([IsAuthenticated])
+def saved_projects(request):
+    user = request.user
+    data = []
+    projects = ProjectBookmark.objects.filter(user = user)
+    for p in projects:
+        item ={
+            'id':p.id,
+            'name':p.name,
+            'description':p.description,
+            'live_link':p.live_link,
+            'github_link':p.github_link,
+            'tech_stack':p.tech_stack,
+            'project_type':p.project_type,
+            'time_spent':p.time_spent,
+            'media_type':p.media_type,
+            'created_at':p.created_at,
+            'images':[{'image':img.image.url}for img in p.images.all()],
+            "likes": p.likes.count(),
+            "comments": p.comments.count(),
+            "userLiked": True if user and p.likes.filter(user=user).exists() else False,
+            "is_bookmarked": True if user and p.bookmarks.filter(user=user).exists() else False
+    }
+        if hasattr(p,'video') and p.video:
+            item['video'] = {'video': p.video.video.url}
+        else:
+            item['video'] = None
 
+
+        data.append(item)
+    return Response(data)
 
 
 
