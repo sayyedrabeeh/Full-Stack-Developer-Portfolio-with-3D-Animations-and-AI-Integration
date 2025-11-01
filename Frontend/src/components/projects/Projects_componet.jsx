@@ -5,7 +5,7 @@ import moment from "moment";
  const safeJson = async (response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const text = await response.text();
-        console.log("Raw API:", text);  
+         
         if (!text || text.trim() === '' || text === 'undefined') return [];
         try {
             return JSON.parse(text);
@@ -44,7 +44,7 @@ export default function Project_Component({ Project_type }) {
 
             .then((data) => {
             if (!Array.isArray(data)) {
-                console.error("Expected array, got:", data);
+                 
                 setProject([]);
                 return;
             }
