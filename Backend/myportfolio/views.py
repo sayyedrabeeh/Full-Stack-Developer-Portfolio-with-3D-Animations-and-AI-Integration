@@ -278,4 +278,14 @@ def saved_projects(request):
 
 
  
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_project(request, pk):
+    if not request.user.is_superuser:
+        return Response({"error": "Not allowed"}, status=403)
+
+    project = get_object_or_404(Project, id=pk)
+    project.delete()
+
+    return Response({"message": "Project deleted successfully"})
 
