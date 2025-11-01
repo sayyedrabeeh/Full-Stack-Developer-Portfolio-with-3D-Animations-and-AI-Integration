@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react"
-import { ArrowLeft, Heart, MessageCircle, Share2Icon, Github, ExternalLink, X,ChevronLeft, ChevronRight, Calendar, Send } from "lucide-react"
+import { ArrowLeft, Heart, MessageCircle, Share2Icon, Github,Bookmark, BookmarkCheck, ExternalLink, X,ChevronLeft, ChevronRight, Calendar, Send } from "lucide-react"
 import moment from "moment";
+import api from "../../api/axios";
+import { toast } from "react-toastify";
 
  const safeJson = async (response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -143,6 +145,27 @@ export default function Project_Component({ Project_type }) {
                 ))
 
     }
+    const handleBookmark = async (id) => {
+  try {
+    const res = await api.post(`/api/accounts/projects/${id}/bookmark/`, {}, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access")}`,
+      }
+    });
+
+    toast.success(
+      res.data.status === "added" 
+      ? "Added to saved projects " 
+      : "Removed from saved "
+    );
+
+     
+  } catch (error) {
+    console.error(error);
+    toast.error("Something went wrong");
+  }
+};
+
    
     return (
         <div className="min-h-screen  bg-gray-900">
@@ -266,10 +289,17 @@ export default function Project_Component({ Project_type }) {
                                         <span className="text-sm font-medium">{p.comments || 0}</span>
                                     </button>
                                                                 
-                                        <button className="flex items-center gap-1.5 text-gray-300 hover:scale-110 transition-all ml-auto">
-                                            <Share2Icon className="w-6 h-6" />
-                                            <span className="text-sm font-medium">{p.shares || 0}</span>
-                                        </button>
+                                        <button
+                                    onClick={() => handleBookmark(p.id)}
+                                    className="flex items-center gap-1.5 text-gray-700 dark:text-gray-300 hover:scale-110 transition-all ml-auto"
+                                    >
+                                    {p.is_bookmarked ? (
+                                        <BookmarkCheck className="w-6 h-6" />
+                                    ) : (
+                                        <Bookmark className="w-6 h-6" />
+                                    )}
+                                    <span className="text-sm font-medium">{p.bookmarks || 0}</span>
+                                    </button>
                                     </div>
 
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isCommentsOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
