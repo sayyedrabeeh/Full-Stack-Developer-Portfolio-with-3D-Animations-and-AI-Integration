@@ -78,6 +78,16 @@ class ProjectComment(models.Model):
         return f'comment by {self.user.username} on {self.project.name}'
     
     
+class ProjectBookmark(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='bookmarks')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'project')
+
+    def __str__(self):
+        return f"{self.user.username} bookmarked {self.project.name}"
 
 
 
