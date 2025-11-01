@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { ArrowLeft, Heart, MessageCircle, Share2Icon, Github, ExternalLink, X,ChevronLeft, ChevronRight, Calendar, Send } from "lucide-react"
- 
+import moment from "moment";
+
 
 
 export default function Project_Component({ Project_type }) {
@@ -84,7 +85,7 @@ export default function Project_Component({ Project_type }) {
     const addComment = async () => {
         const token = localStorage.getItem('access')
         if (!commentText.trim()) return
-        await fetch(`http://127.0.0.1:8000/api/accounts/projects/${currentProjectId}/comments`, {
+        const res =  await fetch(`http://127.0.0.1:8000/api/accounts/projects/${currentProjectId}/comments`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -92,14 +93,17 @@ export default function Project_Component({ Project_type }) {
             },
             body:JSON.stringify({text:commentText})
         })
-            .then(res => res.json())
-            .then((data) => {
-                setProject(prev => prev.map((p) => p.id === currentProjectId ? { ...p, comments: data.comments } : p))
-                setComments(prev =>[...prev,{id:Date.now(),user:'You',text:commentText}])
-                setCommentText('')
+
+            const data = await res.json();
+            setProject(prev => prev.map((p) =>
+                p.id === currentProjectId ? { ...p, comments: data.comments } : p
+            ));
+            if (data.new_comment) {
+                setComments(prev => [...prev, data.new_comment]);
+            }
+
+            setCommentText('');
                 
-            })
-        
     }
 
     const openComments = async (projectId) => {
@@ -266,14 +270,20 @@ export default function Project_Component({ Project_type }) {
                                                             <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center font-bold text-white text-xs flex-shrink-0">
                                                                 {c.user.charAt(0).toUpperCase()}
                                                             </div>
-                                                            <div className="flex-1 min-w-0">
-                                                                <p className="font-semibold text-sm text-gray-900 dark:text-white">
-                                                                    {c.user}
-                                                                </p>
-                                                                <p className="text-sm text-gray-700 dark:text-gray-300 mt-1 break-words">
-                                                                    {c.text}
-                                                                </p>
-                                                            </div>
+                                                             <div className="flex-1 min-w-0">
+                                                        <div className="flex justify-between items-center">
+                                                            <p className="font-semibold text-sm text-gray-900 dark:text-white">
+                                                                {c.user}
+                                                            </p>
+                                                            <span className="text-[11px] text-gray-500 dark:text-gray-400">
+                                                                <p>{moment(c.created_at).fromNow()}</p>
+                                                            </span>
+                                                        </div>
+
+                                                        <p className="text-sm text-gray-700 dark:text-gray-300 mt-1 break-words">
+                                                            {c.text}
+                                                        </p>
+                                                    </div>
                                                         </div>
                                                     </div>
                                                 ))
