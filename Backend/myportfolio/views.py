@@ -187,5 +187,32 @@ def add_comment(request,pk):
         'message':'Comment Added Successfully',
         'comments':comment_count
     })
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_comments(request,pk):
+
+    project = get_object_or_404(Project,id = pk)
+    comments = ProjectComment.objects.filter(project=project).order_by('-created_at')
+    data = []
+    for c in comments:
+        data.append({
+            'id':c.id,
+            'user':c.user.username,
+            'text':c.text,
+            'created_at': c.created_at.strftime("%Y-%m-%d")
+        })
+    return Response(data)
+
+
+
+
+
+
+
+
+
+
+
  
 
