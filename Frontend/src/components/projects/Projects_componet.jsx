@@ -10,7 +10,9 @@ export default function Project_Component({ Project_type }) {
     const [currentImgIdx, setCurrentImgIdx] = useState({})
     const [showCommentBox, setShowCommentBox] = useState(false)
     const [currentProjectId, setCurrentProjectId] = useState(null)
-    const [commentText,setCommentText] = useState('')
+    const [commentText, setCommentText] = useState('')
+    const [comments, setComments] = useState([])
+    
      
     const baseURL = "http://127.0.0.1:8000"
 
@@ -97,6 +99,17 @@ export default function Project_Component({ Project_type }) {
                 setShowCommentBox(false)
             })
         
+    }
+
+    const openComments = async (projectId) => {
+        setShowCommentBox(true)
+        setCurrentProjectId(projectId)
+        const token = localStorage.getItem('access')
+        const res = await fetch(`http://127.0.0.1:8000/api/accounts/projects/${projectId}/get_comments/`, {
+             headers: { "Authorization": `Bearer ${token}` }
+        }) 
+        const data = res.json()
+        setComments(data)
     }
 
     return (
@@ -216,7 +229,7 @@ export default function Project_Component({ Project_type }) {
                                         </button>
 
                                         <button onClick={() => {
-                                            setShowCommentBox(true),setCurrentProjectId(p.id)
+                                            openComments(p.id)
                                     }} className="flex items-center gap-1.5 text-gray-700 dark:text-gray-300 hover:scale-110 transition-all">
                                         <MessageCircle className="w-6 h-6" />
                                         <span className="text-sm font-medium">{p.comments || 0}</span>
@@ -224,6 +237,18 @@ export default function Project_Component({ Project_type }) {
                                     {showCommentBox && (
                                 <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
                                     <div className="bg-white dark:bg-neutral-900 p-4 rounded-xl w-80 shadow-xl">
+                                <div className="max-h-40 overflow-y-auto mb-2">
+                                {comments.length > 0 ? (
+                                    comments.map((c) => (
+                                    <div key={c.id} className="border-b py-1 text-sm">
+                                        <strong className="text-blue-500">{c.user}: </strong>
+                                        <span>{c.text}</span>
+                                    </div>
+                                    ))
+                                ) : (
+                                    <p className="text-gray-500 text-sm text-center">No comments yet</p>
+                                )}
+                                </div>
 
                                     <h2 className="text-lg font-semibold mb-2">Add Comment</h2>
 
