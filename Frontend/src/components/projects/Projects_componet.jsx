@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react"
-import { ArrowLeft, Heart, MessageCircle, Share2Icon, Github, ExternalLink, ChevronLeft, ChevronRight, Calendar } from "lucide-react"
-import { useNavigate } from "react-router-dom"
+import { ArrowLeft, Heart, MessageCircle, Share2Icon, Github, ExternalLink, X,ChevronLeft, ChevronRight, Calendar, Send } from "lucide-react"
+ 
 
 
 export default function Project_Component({ Project_type }) {
     
-    const navigate = useNavigate()
+     
     const [project, setProject] = useState([])
     const [currentImgIdx, setCurrentImgIdx] = useState({})
     const [showCommentBox, setShowCommentBox] = useState(false)
@@ -91,17 +91,23 @@ export default function Project_Component({ Project_type }) {
                 'Content-type':'application/json'
             },
             body:JSON.stringify({text:commentText})
-        }).then(res => res.json())
+        })
+            .then(res => res.json())
             .then((data) => {
                 setProject(prev => prev.map((p) => p.id === currentProjectId ? { ...p, comments: data.comments } : p))
-            
+                setComments(prev =>[...prev,{id:Date.now(),user:'You',text:commentText}])
                 setCommentText('')
-                setShowCommentBox(false)
+                
             })
         
     }
 
     const openComments = async (projectId) => {
+        if (showCommentBox && currentProjectId === projectId) {
+            setShowCommentBox(false)
+            setCurrentProjectId(null)
+            return
+        }
         
         setShowCommentBox(true)
         setCurrentProjectId(projectId)
@@ -142,7 +148,7 @@ export default function Project_Component({ Project_type }) {
                         project.map((p) => {
                             const imgIdx = currentImgIdx[p.id] ?? 0
                             const manyImage = p.media_type === 'image' && p.images?.length > 1;
-                             
+                             const isCommentsOpen = showCommentBox && currentProjectId === p.id;
 
                             return (
                                 <article key={p.id}
@@ -225,64 +231,85 @@ export default function Project_Component({ Project_type }) {
                                         >
                                             <Heart className={`w-6 h-6 ${p.userLiked  ? 'fill-current animate-pulse' : ''}`} />
                                                                 <span className="text-sm font-medium">
-                                                                 {p.likes }
+                                                                 {p.likes || 0 }
                                                                 </span>
                                         </button>
-
-                                        <button onClick={() => {
-                                            openComments(p.id)
-                                    }} className="flex items-center gap-1.5 text-gray-700 dark:text-gray-300 hover:scale-110 transition-all">
-                                        <MessageCircle className="w-6 h-6" />
-                                        <span className="text-sm font-medium">{p.comments || 0}</span>
+                                        
+                                        <button onClick={() => { openComments(p.id) }}
+                                            className={`flex items-center gap-1.5 transition-all hover:scale-110 ${ isCommentsOpen ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300' }`}>
+                                            <MessageCircle className={`w-6 h-6 ${isCommentsOpen ? 'fill-current': ''} `} />
+                                            <span className="text-sm font-medium">{p.comments || 0}</span>
                                         </button>
                                                                 
-                                {showCommentBox && currentProjectId === p.id && (
-                                <div className="border-t border-gray-200 dark:border-gray-700 px-4 pt-3 pb-4 space-y-3">
-                                    <div className="max-h-64 overflow-y-auto space-y-2">
-                                    {comments.length > 0 ? (
-                                        comments.map((c) => (
-                                        <div key={c.id} className="flex gap-2 text-sm">
-                                            <span className="font-medium text-blue-600 dark:text-blue-400">
-                                            {c.user}
-                                            </span>
-                                            <span className="text-gray-800 dark:text-gray-200">{c.text}</span>
+                                        <button className="flex items-center gap-1.5 text-gray-700 dark:text-gray-300 hover:scale-110 transition-all ml-auto">
+                                            <Share2Icon className="w-6 h-6" />
+                                            <span className="text-sm font-medium">{p.shares || 0}</span>
+                                        </button>
+                                    </div>
+
+                                    <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isCommentsOpen ? 'max-h-[600px] opacity-100 ' : 'max-h-0 opacity-0'}`}>
+                                        <div className="bg-gray-50 dark:bg-gray-900/50  px-4 py-4 ">
+                                            <div className="flex items-center justify-between mb-3">
+                                                <h4 className="text-sm font-semibold text-gray-900 dark:text-white">
+                                                    Comments ({comments.length})
+                                                </h4>
+                                                <button onClick={() => openComments(p.id)}
+                                                    className="text-gray-500  hover:text-gray-700 dark:text-gray-400  dark:hover:text-gray-200 transition-colors">
+                                                    <X className='w-4 h-4'/>
+                                                </button>
+                                            </div>
+                                            <div className="max-h-64 overflow-y-auto space-y-3 mb-4 pr-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
+                                                {comments.length > 0 ? (
+                                                    comments.map((c) => (
+                                                        <div key={c.id} className="bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm border border-gray-200 dark:border-gray-700">
+                                                            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center font-bold text-white text-xs flex-shrink-0 ">
+                                                               {c.user.charAt(0).toUpperCase()}
+                                                            </div>
+                                                            <div className="flex-1 min-w-0">
+                                                                <p className="font-semibold text-sm text-gray-900 dark:text-white" >
+                                                                    {c.user}
+                                                                </p>
+                                                                <p className="text-sm text-gray-700 dark:text-gray-300  mt-1 break-words" >
+                                                                    {c.text}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                        <div className="text-center py-8">
+                                                            <MessageCircle className="w-12  h-12 mx-auto text-gray-300 dark:text-gray-600 mb-2" />
+                                                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                                  No comments yet. Be the first to comment!
+                                                            </p>
+                                                       </div> 
+                                                ) }
+                                            </div>
+
+                                            <div className="relative">
+                                                <textarea
+                                                    rows={3}
+                                                    placeholder="Write a comment."
+                                                    className="w-full resize-none  rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark: bg-gray-800 px4 py-3 pr-12 text-sm
+                                                    text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                                    value={commentText}
+                                                    onChange={(e) => setCommentText(e.target.value)}
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === 'enter' && !e.shiftKey) {
+                                                            e.preventDefault()
+                                                            addComment()
+                                                        }
+                                                    }}
+                                                />
+                                                <button
+                                                    onClick={addComment}
+                                                    disabled={!commentText.trim()}
+                                                    className="absolute right-2 bottom-2 p-2 bg-blue-800  hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg transition-all transform hover:scale-105 disabled:hover:scale-100  "
+                                                    aria-label="send-comment">
+                                                    <Send className="w-4 h-4" />
+                                                    
+                                                </button>                                                
+                                            </div>
                                         </div>
-                                        ))
-                                    ) : (
-                                        <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                                        No comments yet
-                                        </p>
-                                    )}
-                                    </div>
-                                    <div className="flex gap-2">
-                                    <textarea
-                                        rows={2}
-                                        placeholder="Write a comment..."
-                                        className="flex-1 resize-none rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        value={commentText}
-                                        onChange={(e) => setCommentText(e.target.value)}
-                                        onKeyDown={(e) => {
-                                        if (e.key === 'Enter' && !e.shiftKey) {
-                                            e.preventDefault();
-                                            addComment();
-                                        }
-                                        }}
-                                    />
-                                    <button
-                                        onClick={addComment}
-                                        className="self-start px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition"
-                                    >
-                                        Post
-                                    </button>
-                                    </div>
-                                </div>
-                                )}
-
-
-                                    <button className="flex items-center gap-1.5 text-gray-700 dark:text-gray-300 hover:scale-110 transition-all ml-auto">
-                                        <Share2Icon className="w-6 h-6" />
-                                        <span className="text-sm font-medium">{p.shares || 0}</span>
-                                    </button>
                                     </div>
 
 
