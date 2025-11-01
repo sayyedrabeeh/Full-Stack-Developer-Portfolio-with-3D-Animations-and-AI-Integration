@@ -142,7 +142,8 @@ def get_projects(request):
             'images':[{'image':img.image.url}for img in p.images.all()],
             "likes": p.likes.count(),
             "comments": p.comments.count(),
-            "userLiked": True if user and p.likes.filter(user=user).exists() else False
+            "userLiked": True if user and p.likes.filter(user=user).exists() else False,
+            "is_bookmarked": True if user and p.bookmarks.filter(user=user).exists() else False
     }
         if hasattr(p,'video') and p.video:
             item['video'] = {'video': p.video.video.url}
