@@ -4,7 +4,7 @@ import HeroSection from "./components/Hero";
 import About from "./components/About";
 import Skills from "./components/Skills";
 import Projects from "./components/HeroProject";
-import Demo from './components/Journey'
+import Journey from './components/Journey'
 import Login3D from "./pages/login";
 import AppLayout from "./components/projects/Applayout";
 import PrivateRoute from "./api/PrivateRoute";
@@ -46,7 +46,7 @@ function App() {
           <About />
           <Skills />
           <Projects />
-          <Demo/>
+          <Journey/>
          
           <style>
             {`
