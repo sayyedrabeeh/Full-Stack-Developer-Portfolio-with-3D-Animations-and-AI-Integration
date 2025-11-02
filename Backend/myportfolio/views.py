@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Project,ProjectImage,ProjectVideo,ProjectComment,ProjectLike,ProjectBookmark
+from .models import Project,ProjectImage,ProjectVideo,ProjectComment,ProjectLike,ProjectBookmark,JourneyMilestone,JourneyAchievement
 from django.shortcuts import get_object_or_404
 from django.utils.timezone import localtime
 
@@ -288,4 +288,57 @@ def delete_project(request, pk):
     project.delete()
 
     return Response({"message": "Project deleted successfully"})
+
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_journey(request):
+    if not request.user.is_superuser:
+        return Response({'error':'You are not allowed '},status=status.HTTP_403_FORBIDDEN)
+    data = request.data 
+
+    milestone = JourneyMilestone.objects.create(
+        year = data.get('year'),
+        date = data.get('date'),
+        title = data.get('title'),
+        description = data.get('description'))
+    achievements = data.get('achievements',[])
+    for a in achievements:
+        JourneyAchievement.objects.create(
+            milestone=milestone,
+            name = a.get('name'),
+            github_link = a.get('github_link')
+        )
+    return Response({'message':'milestone created '})
+
+
+@api_view(['GET'])
+def get_journey(request):
+    milestones = JourneyMilestone.objects.all().order_by('date')
+
+    data = []
+    for m in milestones:
+        data.append({
+            'id':m.id,
+            'year':m.year,
+            'date':m.date,
+            'title':m.title,
+            'description':m.description,
+            'Achievements':[
+                {'name':a.name,'github_link':a.github_link} for a in m.achievements.all()
+            ]
+        })
+    return Response(data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def delete_journey(request,pk):
+    if not request.user.is_superuser:
+        return Response({'error':'you are not allowed '})
+    m = get_object_or_404(JourneyMilestone,id=pk)
+    m.delete()
+    return Response({'message':'milestone deleted'})
 
