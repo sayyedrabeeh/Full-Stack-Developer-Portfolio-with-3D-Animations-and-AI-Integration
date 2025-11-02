@@ -33,7 +33,7 @@ const CurvedJourneyTimeline = () => {
         : null;
         
       setIsSuperUser(user?.is_superuser || false);
-      refreshCounts();
+      
     }, []);
     
       const fetchJourney = async () => {
@@ -195,7 +195,15 @@ const CurvedJourneyTimeline = () => {
             <Sparkles className="w-5 h-5" />
             Follow the curved path
           </p>
-        </motion.div>
+              </motion.div>
+               {isSuperUser && (
+        <button
+          onClick={() => setShowModal(true)}
+          className="bg-cyan-500 hover:bg-cyan-600 px-4 py-2 rounded text-white flex items-center gap-2 mb-4"
+        >
+          <Plus /> Add Journey
+        </button>
+      )}
         <div className="relative w-full" style={{ minHeight: '1200px' }}>
           <svg
             viewBox="0 0 1000 1200"
