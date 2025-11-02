@@ -63,7 +63,7 @@ function HeroSection() {
         </div>
       </div>
 
-      <div className="md:w-1/2 flex justify-center mb-10 md:mb-0">
+      <div className="md:w-1/2 flex  flex-col items-center mb-10 md:mb-0">
         <motion.div 
           drag
           dragConstraints={constraintsRef}
@@ -103,6 +103,9 @@ function HeroSection() {
             />
           </div>
         </motion.div>
+        <p className="mt-4 text-gray-400 text-sm font-medium select-none">
+    Drag the image anywhere 😎
+  </p>
       </div>
 
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent blur-3xl pointer-events-none" />
