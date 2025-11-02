@@ -13,7 +13,8 @@ const CurvedJourneyTimeline = () => {
   const [bikePos, setBikePos] = useState({ x: 0, y: 0 });
   const [bikeAngle, setBikeAngle] = useState(0);
   const [particles, setParticles] = useState([]);
-
+  
+  const [isSuperUser, setIsSuperUser] = useState(false);  
   const [showModal, setShowModal] = useState(false);
   const [achievements, setAchievements] = useState([{ name: "", github_link: "" }]);  
     const [form, setForm] = useState({
@@ -21,7 +22,19 @@ const CurvedJourneyTimeline = () => {
     date: "",
     title: "",
     description: "",
-  })
+    })
+    
+    useEffect(() => {
+     
+      const stored = localStorage.getItem('user');
+      const user = stored && stored !== 'undefined' && stored !== 'null' 
+        ? JSON.parse(stored) 
+        : null;
+        
+      setIsSuperUser(user?.is_superuser || false);
+      refreshCounts();
+    }, []);
+    
     
   useEffect(() => {
     const newParticles = Array.from({ length: 60 }, (_, i) => ({
