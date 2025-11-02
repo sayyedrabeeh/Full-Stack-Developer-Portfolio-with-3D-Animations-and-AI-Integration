@@ -327,7 +327,7 @@ def get_journey(request):
             'title':m.title,
             'description':m.description,
             'Achievements':[
-                {'name':a.name,'github_link':a.github_link} for a in m.achievements.all()
+                {'name':a.name,'github_link':a.github_link} for a in m.Achievements.all()
             ]
         })
     return Response(data)
