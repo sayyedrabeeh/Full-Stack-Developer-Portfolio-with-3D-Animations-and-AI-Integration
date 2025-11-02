@@ -4,12 +4,14 @@ import HeroSection from "./components/Hero";
 import About from "./components/About";
 import Skills from "./components/Skills";
 import Projects from "./components/HeroProject";
+import Demo from './components/Journey'
 import Login3D from "./pages/login";
 import AppLayout from "./components/projects/Applayout";
 import PrivateRoute from "./api/PrivateRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+ 
 
 
 import HomeProjects from "./components/projects/HomeProjects";
@@ -44,7 +46,8 @@ function App() {
           <About />
           <Skills />
           <Projects />
-
+          <Demo/>
+         
           <style>
             {`
               @keyframes gradient {
