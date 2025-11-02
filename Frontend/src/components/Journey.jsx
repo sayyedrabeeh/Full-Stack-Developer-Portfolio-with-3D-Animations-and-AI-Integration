@@ -14,6 +14,15 @@ const CurvedJourneyTimeline = () => {
   const [bikeAngle, setBikeAngle] = useState(0);
   const [particles, setParticles] = useState([]);
 
+  const [showModal, setShowModal] = useState(false);
+  const [achievements, setAchievements] = useState([{ name: "", github_link: "" }]);  
+    const [form, setForm] = useState({
+    year: "",
+    date: "",
+    title: "",
+    description: "",
+  })
+    
   useEffect(() => {
     const newParticles = Array.from({ length: 60 }, (_, i) => ({
       id: i,
