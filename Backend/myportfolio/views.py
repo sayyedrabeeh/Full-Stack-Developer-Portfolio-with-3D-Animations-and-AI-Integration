@@ -333,3 +333,12 @@ def get_journey(request):
     return Response(data)
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def delete_journey(request,pk):
+    if not request.user.is_superuser:
+        return Response({'error':'you are not allowed '})
+    m = get_object_or_404(JourneyMilestone,id=pk)
+    m.delete()
+    return Response({'message':'milestone deleted'})
+
