@@ -1,6 +1,7 @@
 import React,{ useState,useEffect,useRef } from "react"
 import { motion,AnimatePresence, progress } from "framer-motion"
 import { Bike,X,Sparkles, Milestone, Sparkle } from "lucide-react"
+import { duration } from "moment"
 
 
 export default function Journey() {
@@ -179,6 +180,28 @@ export default function Journey() {
                             filter="url(#glow)"
                             className="opacity-60"
                         />
+                        <motion.path
+                            d='M 500 100 
+                                C 500 200, 600 250, 700 300
+                                C 800 350, 800 450, 700 500
+                                C 600 550, 400 550, 300 600
+                                C 200 650, 200 750, 300 800
+                                C 400 850, 600 850, 700 900
+                                C 800 950, 800 1050, 700 1100'
+                            stroke='#06b6d4'
+                            strokeWidth='10'
+                            fill='none'
+                            strokeLinecap='round'
+                            initial={{ pathLength: 0 }}
+                            animate={{ pathLength: bikeProgress, opacity: [0.7, 1, 0.7] }}
+                            transition={{
+                                pathLength: { duration: 0.5 } ,
+                            opacity:{ duration: 1.5, repeat: Infinity }
+                            }}
+                        />
+                        
+                        
+                        
 
 
                         </svg>
