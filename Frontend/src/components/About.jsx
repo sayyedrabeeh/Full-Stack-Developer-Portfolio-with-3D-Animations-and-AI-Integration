@@ -77,7 +77,7 @@ function About() {
                         <div className="absolute inset-8  rounded-full border border-purple-400/210 animate-pulse-slow"></div>
               </motion.div>
             </div>
-            <style jsx>{`
+            <style>{`
         .animate-spin-slow {
           animation: spin 20s linear infinite;
         }
