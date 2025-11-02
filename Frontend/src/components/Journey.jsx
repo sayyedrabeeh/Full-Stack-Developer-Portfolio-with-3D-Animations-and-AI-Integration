@@ -18,12 +18,15 @@ const CurvedJourneyTimeline = () => {
   
   const [isSuperUser, setIsSuperUser] = useState(false);  
   const [showModal, setShowModal] = useState(false);
-  const [achievements, setAchievements] = useState([{ name: "", github_link: "" }]);  
-    const [form, setForm] = useState({
+  
+  const [form, setForm] = useState({
     year: "",
     date: "",
     title: "",
-    description: "",
+        description: "",
+    achievements: [
+            { name: "", github_link: "" }
+    ]
     })
     
     useEffect(() => {
@@ -72,7 +75,25 @@ const CurvedJourneyTimeline = () => {
         fetchJourney();
         toast.success(res.data.message)
     };
-    
+    const addAchievement = () => {
+        setForm(prev => ({
+            ...prev,
+            achievements: [...prev.achievements, { name: "", github_link: "" }]
+        }));
+        };
+
+        const updateAchievement = (index, field, value) => {
+        const updated = [...form.achievements];
+        updated[index][field] = value;
+
+        setForm(prev => ({ ...prev, achievements: updated }));
+        };
+
+        const removeAchievement = (index) => {
+        const updated = form.achievements.filter((_, i) => i !== index);
+        setForm(prev => ({ ...prev, achievements: updated }));
+        };
+
   useEffect(() => {
     const newParticles = Array.from({ length: 60 }, (_, i) => ({
       id: i,
