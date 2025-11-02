@@ -94,4 +94,19 @@ class ProjectBookmark(models.Model):
 
 
 
+class JourneyMilestone(models.Model):
+    year = models.CharField(max_length=10)
+    date = models.DateField()
+    title = models.CharField(max_length=10)
+    description = models.TextField()
+
+    def __str__(self):
+        return f'{self.year} - { self.title }'
     
+class JourneyAchievement(models.Model):
+    milestone = models.ForeignKey(JourneyMilestone,related_name='Achievements')
+    name = models.CharField(max_length=10)
+    github_link = models.URLField(blank=True,null=True)
+
+    def __str__(self):
+        return f'{self.name}'
