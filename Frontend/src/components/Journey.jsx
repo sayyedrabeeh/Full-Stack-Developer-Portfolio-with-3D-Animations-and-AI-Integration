@@ -39,7 +39,7 @@ const CurvedJourneyTimeline = () => {
     
       const fetchJourney = async () => {
             const token = localStorage.getItem("access");
-            const res = await api.get("/journey/", {
+            const res = await api.get("api/accounts/journey/", {
             headers: { Authorization: `Bearer ${token}` }
             });
             setMilestones(res.data);
@@ -54,7 +54,7 @@ const CurvedJourneyTimeline = () => {
             return
         };
 
-        const res = await api.post("/journey/add/", 
+        const res = await api.post("api/accounts/journey/add/", 
             { ...form, achievements },
             { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -66,7 +66,7 @@ const CurvedJourneyTimeline = () => {
     const deleteMilestone = async (id) => {
         if (!window.confirm("Delete milestone?")) return;
 
-        const res = await api.delete(`/journey/delete/${id}/`, {
+        const res = await api.delete(`api/accounts/journey/delete/${id}/`, {
         headers: { Authorization: `Bearer ${token}` }
         });
         fetchJourney();
@@ -441,7 +441,15 @@ const CurvedJourneyTimeline = () => {
                       boxShadow: illumination > 0.3 ? `0 0 10px rgba(6, 182, 212, ${illumination * 0.6})` : 'none'
                     }}
                   />
-                </div>
+                    </div>
+                {isAdmin && (
+              <button
+                onClick={() => deleteMilestone(m.id)}
+                className="text-red-400 mt-3 flex gap-1 items-center"
+              >
+                <Trash2 size={18} /> Delete
+              </button>
+            )}
               </motion.div>
             );
           })}
