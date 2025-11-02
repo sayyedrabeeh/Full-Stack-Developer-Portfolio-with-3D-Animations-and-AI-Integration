@@ -83,11 +83,46 @@ export default function Journey() {
 
     const milestonePosition = getMilestonePositions()
 
-    
+    const getCardIllumination = (milestoneIndex) => {
+        if (!milestonePosition[milestoneIndex]) return 0
+        const pos = milestonePosition[milestoneIndex]
+        const dx = pos.x - bikePos.x
+        const dy = pos.y - bikePos.y
+        const distance = Math.sqrt(dx * dx - dy * dy)
+        const maxDistance = 150
+        return max.Math(0,1-distance / maxDistance )
+        
+    }
+
 
     return (
-        <>
-        Journey
-        </>
+        <div className="min-h-screen  text-white overflow-hidden relative " >
+            <div className="fixed inset-0 overflow-hidden " >
+                {particles.map(particle => (
+                    <motion.div
+                        key={particle.id}
+                        className="absolute rounded-full bg-cyan-400"
+                        style={{
+                            left: `${particle.x}%`,
+                            top: `${particle.y}%`,
+                            width: `${particle.size}px`,
+                            height:`${particle.size}px`
+                        }}
+                        animate={{
+                            y: [0, -80, 0],
+                            opacity:[0.2,0.5,0.2]
+                        }}
+                        transition={{
+                            duration: particle.duration,
+                            repeat: Infinity,
+                            ease : 'linear'
+                    }}
+                    />
+                )) }
+            </div>
+            <div className="fixed inset-0 bg-gradient-to-br from-purple-900/10 via-transparent  to-blue-900/10  pointer-events-none" />
+
+  
+        </div>
     )
 }
