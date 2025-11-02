@@ -60,7 +60,7 @@ const CurvedJourneyTimeline = () => {
         try {
             const token = localStorage.getItem("access");
             const res = await api.post(
-            "/journey/add/",
+            "api/accounts/journey/add/",
             form,
             { headers: { Authorization: `Bearer ${token}` } }
             );
