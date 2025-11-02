@@ -1,5 +1,5 @@
 import React,{ useState,useEffect,useRef } from "react"
-import { motion,AnimatePresence, progress } from "framer-motion"
+import { motion,AnimatePresence, progress, delay } from "framer-motion"
 import { Bike,X,Sparkles, Milestone, Sparkle } from "lucide-react"
  
 
@@ -368,8 +368,96 @@ export default function Journey() {
             </div>
 
             
+            <AnimatePresence>
+                {expandedCard !== null && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed inset-0 bg-black /90 backdrop-blur-lg z-40 "
+                            onClick={() => setActiveMileStone(null)}
+                        />
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.4, rotateY: 90 }}
+                            animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                            exit={{ opacity: 0, scale: 0.4, rotateY: -90 }}
+                            transition={{
+                                type:'spring',
+                                stiffness: 150,
+                                damping:25      
+                            }}
+                            className="fixed inset-0 z-50 flex items-center justify-center p-6">
+                            
+                            <div className="relative max-w-4xl w-full bg-gradient-to-br from-gray-900 via-blue-900/40 to-purple-900/30 border-2 border-cyan-400/70 rounded-3xl shadow-[0_0_120px_rgba(6,182,212,0.6)]   p-10 backdrop-blur-2xl " >
+                                <motion.div className="absolute inset-2 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 rounded-3xl opacity-20 blur-3xl "
+                                    animate={{
+                                        opacity: [0.2, 0.5, 0.2],
+                                        scale:[1,1.05,1]
+                                    }}
+                                    transition={{
+                                        duration: 3,
+                                        repeat:Infinity
+                                    }}
+                                />
+                                <button onClick={() => setExpandedCard(null)}
+                                    className="absolute top-6 right-6 p-3 rounded-full bg-cyan-500/20 hover: bg-cyan-500/40 transition-all border border-cyan-400/40 group z-10 "
+                                >
+                                    <X className="w-6 h-6 text-cyan-400 group-hover:rotate-90 transition-transform duration-300" />
+                                </button>
 
-            
+
+                                <div className="relative z-10">
+                                    <motion.div initial={{ opacity: 0, x: -30 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{
+                                            delay: 0.2
+                                            
+                                        }}
+                                        className="flex items-center gap-4 mb-8">
+                                        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500  flex-items-center justify-center shadow-[0_0_40px_rgba(6,182,212,0.7)] ">
+                                            <span className="text-3xl font-bold text-white" >{ mileStones[expandedCard].year}</span>
+                                        </div>
+                                        <Sparkles className="w-10 h-10 text-cyan-400"/>
+                                    </motion.div>
+
+                                    <motion.h2 initial={{
+                                        opacity: 0, y:20
+                                    }}
+                                        animate={{ opacity: 1, y0 }}
+                                        transition={{ delay: 0.3 }}
+                                        className="text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-blue-400 to purple-400 bg-clip-text text-transparent   ">
+                                        {mileStones[expandedCard].title}
+                                    </motion.h2>
+
+                                    <motion.p
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.4 }}
+                                        className="text-xl text-gray-200 leading-relaxed mb-8 "
+                                    >
+                                        {mileStones[expandedCard].description}
+                                    </motion.p>
+
+                                    <motion.div
+                                        initial={{ width: 0 }}
+                                        animate={{ width: '100%' }}
+                                        transition={{ delay: 0.6, duration: 1.2 }}
+                                        className="h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 rounded-full  "/>
+                                    </div>
+                            </div>
+                        </motion.div>
+                    </>
+                ) }
+                    </AnimatePresence>
+            <style>{`
+                .line-clamp-3 {
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                }
+            `}</style>
   
         </div>
     )
