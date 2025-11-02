@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bike, X, Sparkles } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 const CurvedJourneyTimeline = () => {
   
@@ -35,6 +36,31 @@ const CurvedJourneyTimeline = () => {
       refreshCounts();
     }, []);
     
+      const fetchJourney = async () => {
+            const token = localStorage.getItem("access");
+            const res = await axios.get("/journey/", {
+            headers: { Authorization: `Bearer ${token}` }
+            });
+            setMilestones(res.data);
+        };
+        useEffect(() => {
+            fetchJourney();
+        }, []);
+    
+    const handleSubmit = async () => {
+        if (!form.title || !form.year || ! form.description ) {
+            toast.error('All fields are required ')
+            return
+        };
+
+        const res = await axios.post("/journey/add/", 
+            { ...form, achievements },
+            { headers: { Authorization: `Bearer ${token}` } }
+            );
+            toast.success(res.data.message)
+            setShowModal(false);
+            fetchJourney();
+        };
     
   useEffect(() => {
     const newParticles = Array.from({ length: 60 }, (_, i) => ({
