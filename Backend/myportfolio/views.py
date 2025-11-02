@@ -311,3 +311,22 @@ def add_journey(request):
             github_link = a.get('github_link')
         )
     return Response({'message':'milestone created '})
+
+
+@api_view(['GET'])
+def get_journey(request):
+    milestones = JourneyMilestone.objects.all().order_by('date')
+
+    data = []
+    for m in milestones:
+        data.append({
+            'id':m.id,
+            'year':m.year,
+            'date':m.date,
+            'title':m.title,
+            'description':m.description,
+            'Achievements':[
+                {'name':a.name,'github_link':a.github_link} for a in m.achievements.all()
+            ]
+        })
+    return Response(data)
