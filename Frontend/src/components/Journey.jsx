@@ -58,7 +58,8 @@ const CurvedJourneyTimeline = () => {
         }
 
         try {
-            const res = await axios.post(
+            const token = localStorage.getItem("access");
+            const res = await api.post(
             "/journey/add/",
             form,
             { headers: { Authorization: `Bearer ${token}` } }
@@ -69,6 +70,7 @@ const CurvedJourneyTimeline = () => {
             fetchJourney();
         } catch (err) {
             toast.error("Failed to add journey");
+            console.log(err)
         }
         };
 
@@ -225,14 +227,16 @@ const CurvedJourneyTimeline = () => {
             Follow the curved path
           </p>
               </motion.div>
-               {isSuperUser && (
-        <button
-          onClick={() => setShowModal(true)}
-          className="bg-cyan-500 hover:bg-cyan-600 px-4 py-2 rounded text-white flex items-center gap-2 mb-4"
-        >
-          <Plus /> Add Journey
-        </button>
-      )}
+             {isSuperUser && (
+          <div className="flex justify-center mb-6">
+            <button
+              onClick={() => setShowModal(true)}
+              className="bg-cyan-500 hover:bg-cyan-600 px-6 py-3 rounded-lg text-white flex items-center gap-2 transition-colors shadow-lg shadow-cyan-500/50"
+            >
+              <Plus className="w-5 h-5" /> Add Journey
+            </button>
+          </div>
+        )}
         <div className="relative w-full" style={{ minHeight: '1200px' }}>
           <svg
             viewBox="0 0 1000 1200"
@@ -470,7 +474,7 @@ const CurvedJourneyTimeline = () => {
                     }}
                   />
                     </div>
-                {isAdmin && (
+                {isSuperUser && (
               <button
                 onClick={() => deleteMilestone(m.id)}
                 className="text-red-400 mt-3 flex gap-1 items-center"
@@ -483,67 +487,95 @@ const CurvedJourneyTimeline = () => {
           })}
         </div>
           </div>
-         {showModal && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div className="bg-white p-6 rounded w-[450px]">
+            {showModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
 
-      <h2 className="text-xl font-bold mb-3">Add Journey</h2>
+            <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-gray-900 border border-cyan-400/30 p-6 rounded-2xl w-full max-w-lg shadow-2xl"
+            >
+            <h2 className="text-2xl font-bold mb-4 text-cyan-400">Add Journey</h2>
 
-      <input className="border p-2 w-full mb-2" placeholder="Year"
-        value={form.year}
-        onChange={(e) => setForm({...form, year: e.target.value})}
-      />
+            <input
+                className="border border-gray-700 bg-gray-800 text-white p-3 w-full mb-3 rounded-lg focus:outline-none focus:border-cyan-400 transition-colors"
+                placeholder="Year (e.g., 2024)"
+                value={form.year}
+                onChange={(e) => setForm({ ...form, year: e.target.value })}
+            />
 
-      <input className="border p-2 w-full mb-2" type="date"
-        value={form.date}
-        onChange={(e) => setForm({...form, date: e.target.value})}
-      />
+            <input
+                type="date"
+                className="border border-gray-700 bg-gray-800 text-white p-3 w-full mb-3 rounded-lg focus:outline-none focus:border-cyan-400 transition-colors"
+                value={form.date}
+                onChange={(e) => setForm({ ...form, date: e.target.value })}
+            />
 
-      <input className="border p-2 w-full mb-2" placeholder="Title"
-        value={form.title}
-        onChange={(e) => setForm({...form, title: e.target.value})}
-      />
+            <input
+                className="border border-gray-700 bg-gray-800 text-white p-3 w-full mb-3 rounded-lg focus:outline-none focus:border-cyan-400 transition-colors"
+                placeholder="Title"
+                value={form.title}
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
+            />
 
-      <textarea className="border p-2 w-full mb-2" placeholder="Description"
-        value={form.description}
-        onChange={(e) => setForm({...form, description: e.target.value})}
-      />
+            <textarea
+                className="border border-gray-700 bg-gray-800 text-white p-3 w-full mb-3 rounded-lg h-24 resize-none focus:outline-none focus:border-cyan-400 transition-colors"
+                placeholder="Description"
+                value={form.description}
+                onChange={(e) => setForm({ ...form, description: e.target.value })}
+            />
 
-      <p className="font-semibold mb-1">Achievements</p>
+            <p className="font-semibold mb-2 text-cyan-300">Achievements</p>
 
-      {form.achievements.map((ach, i) => (
-        <div key={i} className="flex gap-2 mb-2">
-          <input
-            className="border p-2 w-1/2"
-            placeholder="Achievement"
-            value={ach.name}
-            onChange={(e) => updateAchievement(i, "name", e.target.value)}
-          />
-          <input
-            className="border p-2 w-1/2"
-            placeholder="GitHub Link"
-            value={ach.github_link}
-            onChange={(e) => updateAchievement(i, "github_link", e.target.value)}
-          />
-          <button onClick={() => removeAchievement(i)} className="text-red-600">✕</button>
+            {form.achievements.map((ach, i) => (
+                <div key={i} className="flex gap-2 mb-3 items-center">
+                <input
+                    className="border border-gray-700 bg-gray-800 text-white p-2 w-1/2 rounded-lg focus:outline-none focus:border-cyan-400 transition-colors"
+                    placeholder="Achievement"
+                    value={ach.name}
+                    onChange={(e) => updateAchievement(i, "name", e.target.value)}
+                />
+                <input
+                    className="border border-gray-700 bg-gray-800 text-white p-2 w-1/2 rounded-lg focus:outline-none focus:border-cyan-400 transition-colors"
+                    placeholder="GitHub Link"
+                    value={ach.github_link}
+                    onChange={(e) => updateAchievement(i, "github_link", e.target.value)}
+                />
+
+                <button
+                    onClick={() => removeAchievement(i)}
+                    className="text-red-400 hover:text-red-300 px-2 transition-colors"
+                >
+                    <X size={20} />
+                </button>
+                </div>
+            ))}
+
+            <button
+                onClick={addAchievement}
+                className="text-cyan-400 hover:text-cyan-300 text-sm mb-4 flex items-center gap-1 transition-colors"
+            >
+                <Plus size={16} /> Add achievement
+            </button>
+
+            <div className="flex justify-between gap-3">
+                <button
+                onClick={() => setShowModal(false)}
+                className="px-6 py-2 border border-gray-600 hover:border-gray-500 text-white rounded-lg transition-colors"
+                >
+                Cancel
+                </button>
+                <button
+                onClick={handleSubmit}
+                className="px-6 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition-colors shadow-lg shadow-cyan-500/30"
+                >
+                Save Journey
+                </button>
+            </div>
+            </motion.div>
         </div>
-      ))}
+        )}
 
-      <button onClick={addAchievement} className="text-blue-600 text-sm mb-2">
-        + Add achievement
-      </button>
-
-      <div className="flex justify-between">
-        <button onClick={() => setShowModal(false)} className="px-4 py-2 border rounded">
-          Cancel
-        </button>
-        <button onClick={handleSubmit} className="px-4 py-2 bg-green-600 text-white rounded">
-          Save
-        </button>
-      </div>
-    </div>
-  </div>
-)}
       <AnimatePresence>
         {expandedCard !== null && (
           <>
