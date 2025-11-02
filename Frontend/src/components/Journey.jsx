@@ -319,25 +319,57 @@ export default function Journey() {
                                     
 
 
+                                    <div className="relative z-10" >
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <div className={`w-14 h-14 rounded-full flex items-centre justify-center transition-all ${illumination > 0.3 ? ' bg-cyan-400/30 border-2 border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.6)]' : 'bg-gray-800/80 border border-gray-600 '}`}>
+                                                <span className={`text-lg font-bold ${illumination > 0.3 ? 'text-cyan-300' : 'text-gray-500'}`} >
+                                                    {mileStones[index].year}
+                                                </span>
+                                            </div>
+
+                                            {illumination > 0.5 && (
+                                                <motion.div animate={{
+                                                    rotate:360
+                                                }}
+                                                    transition={{
+                                                    duration:4,repeat:Infinity,ease:'linear'
+                                                    }}
+                                                >
+                                                    <Sparkles className="w-6 h-6 text-cyan-400"/>
+                                                </motion.div>
+                                            ) }
+                                        </div>
+                                        <h3 className={`text-xl font-bold mb-3 transition-colors ${illumination > 0.3 ? 'text-white ' : 'text-gray-500'} `} >
+                                            {mileStones[index].title}
+                                        </h3>
+
+                                        <p className={`text-sm leading-relaxed line-clamp-3 transition-colors ${illumination > 0.3 ?'text-gray-200':'text-gray-600'}`} >
+                                            {mileStones[index].description}
+                                        </p>
+                                        {illumination > 0.4 && (
+                                            <motion.div initial={{ width: 0 }}
+                                                animate={{ width: '100%' }}
+                                                transition={{ duration: 0.8 }}
+                                            className="h-1 bg-gradient-to-r from-cyan-400 via-blue-500  to-purple-500 rounded-full mt-4 "/>
+                                        ) }
+                                    </div>
+
+                                    <div className={`absolute top-1/2 ${isLeft ? 'left-full' : 'right-full'} w-20 h-0.5 transition-all ${illumination > 0.3 ? 'bg-gradient-to-r from-cyan-400/60 to-transparent' : 'bg-gray-700/30'}`}  
+                                    style={{
+                                        boxShadow: illumination > 0.3 ? `0 0 10px rgba(6, 182, 212, ${illumination * 0.6})` : 'none'
+                                        }}/>
                                 </div>
-
-
                                 </motion.div>
                             
                         )
-
-
-
-
-
-
                     }) }
 
                 </div>
-
-
             </div>
 
+            
+
+            
   
         </div>
     )
