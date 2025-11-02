@@ -293,6 +293,7 @@ def delete_project(request, pk):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def add_journey(request):
     if not request.user.is_superuser:
         return Response({'error':'You are not allowed '},status=status.HTTP_403_FORBIDDEN)
@@ -330,3 +331,5 @@ def get_journey(request):
             ]
         })
     return Response(data)
+
+
