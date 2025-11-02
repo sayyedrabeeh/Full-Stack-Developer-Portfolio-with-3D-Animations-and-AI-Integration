@@ -1,6 +1,6 @@
 import React,{ useState,useEffect,useRef } from "react"
 import { motion,AnimatePresence, progress } from "framer-motion"
-import { Bike,X,Sparkles, Milestone } from "lucide-react"
+import { Bike,X,Sparkles, Milestone, Sparkle } from "lucide-react"
 
 
 export default function Journey() {
@@ -121,6 +121,26 @@ export default function Journey() {
                 )) }
             </div>
             <div className="fixed inset-0 bg-gradient-to-br from-purple-900/10 via-transparent  to-blue-900/10  pointer-events-none" />
+
+            <div className="relative z-10 px-8 py-12">
+                <motion.div
+                    initial={{ opacity: 0, y: -30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center mb-8"
+                >
+                    <h1 className="text-6xl md:text-7xl font-bold mb-3  bg-gradient-to-r from-cyan-400 via-blue-500  to-purple-500 bg-clip-text text-transparent"
+                    >
+                        My Coding Journey
+                    </h1>
+                    <p className="text-cyan-300/70 text-lg flex items-center  justify-center gap-2 " >
+                        <Sparkles className="w-5 h-5"/>
+                        Follow the curved path
+                    </p>
+                </motion.div>
+                
+
+
+            </div>
 
   
         </div>
