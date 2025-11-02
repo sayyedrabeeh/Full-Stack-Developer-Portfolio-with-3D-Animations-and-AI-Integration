@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bike, X, Sparkles } from 'lucide-react';
+import { Bike, X, Sparkles,Plus  } from 'lucide-react';
 import { toast } from 'react-toastify';
+import api from '../api/axios';
 
 const CurvedJourneyTimeline = () => {
   
@@ -38,7 +39,7 @@ const CurvedJourneyTimeline = () => {
     
       const fetchJourney = async () => {
             const token = localStorage.getItem("access");
-            const res = await axios.get("/journey/", {
+            const res = await api.get("/journey/", {
             headers: { Authorization: `Bearer ${token}` }
             });
             setMilestones(res.data);
@@ -53,7 +54,7 @@ const CurvedJourneyTimeline = () => {
             return
         };
 
-        const res = await axios.post("/journey/add/", 
+        const res = await api.post("/journey/add/", 
             { ...form, achievements },
             { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -65,7 +66,7 @@ const CurvedJourneyTimeline = () => {
     const deleteMilestone = async (id) => {
         if (!window.confirm("Delete milestone?")) return;
 
-        const res = await axios.delete(`/journey/delete/${id}/`, {
+        const res = await api.delete(`/journey/delete/${id}/`, {
         headers: { Authorization: `Bearer ${token}` }
         });
         fetchJourney();
