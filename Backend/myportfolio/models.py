@@ -97,7 +97,7 @@ class ProjectBookmark(models.Model):
 class JourneyMilestone(models.Model):
     year = models.CharField(max_length=10)
     date = models.DateField()
-    title = models.CharField(max_length=10)
+    title = models.CharField(max_length=100)
     description = models.TextField()
 
     def __str__(self):

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bike, X, Sparkles,Plus  } from 'lucide-react';
+import { Bike, X, Sparkles,Plus,Trash2   } from 'lucide-react';
 import { toast } from 'react-toastify';
 import api from '../api/axios';
 
@@ -77,6 +77,7 @@ const CurvedJourneyTimeline = () => {
     
     const deleteMilestone = async (id) => {
         if (!window.confirm("Delete milestone?")) return;
+        const token = localStorage.getItem("access");
 
         const res = await api.delete(`api/accounts/journey/delete/${id}/`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -476,7 +477,7 @@ const CurvedJourneyTimeline = () => {
                     </div>
                 {isSuperUser && (
               <button
-                onClick={() => deleteMilestone(m.id)}
+                onClick={() => deleteMilestone(index)}
                 className="text-red-400 mt-3 flex gap-1 items-center"
               >
                 <Trash2 size={18} /> Delete
