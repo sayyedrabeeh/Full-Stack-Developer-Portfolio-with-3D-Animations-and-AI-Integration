@@ -52,19 +52,26 @@ const CurvedJourneyTimeline = () => {
         }, []);
     
     const handleSubmit = async () => {
-        if (!form.title || !form.year || ! form.description ) {
-            toast.error('All fields are required ')
-            return
-        };
+        if (!form.title || !form.year || !form.description) {
+            toast.error('All fields are required');
+            return;
+        }
 
-        const res = await api.post("api/accounts/journey/add/", 
-            { ...form, achievements },
+        try {
+            const res = await axios.post(
+            "/journey/add/",
+            form,
             { headers: { Authorization: `Bearer ${token}` } }
             );
-            toast.success(res.data.message)
+
+            toast.success(res.data.message);
             setShowModal(false);
             fetchJourney();
-    };
+        } catch (err) {
+            toast.error("Failed to add journey");
+        }
+        };
+
     
     const deleteMilestone = async (id) => {
         if (!window.confirm("Delete milestone?")) return;
