@@ -62,6 +62,27 @@ export default function Journey() {
         animate()        
 
     }, [activeMileStone, pathLength, mileStones.length])
+
+    const handleMileStoneClick = (index) => {
+        setActiveMileStone(index)
+    }
+
+    const handleCardClick = (index) => {
+        setActiveMileStone(index)
+        setExpandedCard(index)
+    }
+    
+    const getMilestonePositions = () => {
+        if (!pathRef.current || !pathLength) return []; 
+        return mileStones.map((_, index) => {
+            const progress = index - (mileStones.length - 1)
+            const point = pathRef.current.getPointAtLength(progress * pathLength)
+            return { x: point.x, y : point.y }
+        })
+    }
+
+    const milestonePosition = getMilestonePositions()
+
     
 
     return (
