@@ -483,62 +483,67 @@ const CurvedJourneyTimeline = () => {
           })}
         </div>
           </div>
-           {showModal && (
-        <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50">
-          <div className="bg-gray-900 p-6 rounded-xl border border-cyan-400 w-[400px] relative">
-            <button className="absolute right-3 top-3 text-cyan-400" onClick={() => setShowModal(false)}>
-              <X size={22}/>
-            </button>
+         {showModal && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="bg-white p-6 rounded w-[450px]">
 
-            <h2 className="text-cyan-400 text-xl font-bold mb-4">Add Journey Milestone</h2>
+      <h2 className="text-xl font-bold mb-3">Add Journey</h2>
 
-            <input placeholder="Year" className="input"
-              onChange={e => setForm({...form, year: e.target.value})}
-            />
-            <input type="date" className="input"
-              onChange={e => setForm({...form, date: e.target.value})}
-            />
-            <input placeholder="Title" className="input"
-              onChange={e => setForm({...form, title: e.target.value})}
-            />
-            <textarea placeholder="Description" className="input h-20"
-              onChange={e => setForm({...form, description: e.target.value})}
-            />
+      <input className="border p-2 w-full mb-2" placeholder="Year"
+        value={form.year}
+        onChange={(e) => setForm({...form, year: e.target.value})}
+      />
 
-            <h3 className="text-gray-300 font-semibold mt-3">Achievements</h3>
+      <input className="border p-2 w-full mb-2" type="date"
+        value={form.date}
+        onChange={(e) => setForm({...form, date: e.target.value})}
+      />
 
-            {achievements.map((a, i) => (
-              <div key={i} className="mt-2">
-                <input placeholder="Name" className="input mb-1"
-                  onChange={e => {
-                    const arr = [...achievements];
-                    arr[i].name = e.target.value;
-                    setAchievements(arr);
-                  }}
-                />
-                <input placeholder="GitHub Link" className="input"
-                  onChange={e => {
-                    const arr = [...achievements];
-                    arr[i].github_link = e.target.value;
-                    setAchievements(arr);
-                  }}
-                />
-              </div>
-            ))}
+      <input className="border p-2 w-full mb-2" placeholder="Title"
+        value={form.title}
+        onChange={(e) => setForm({...form, title: e.target.value})}
+      />
 
-            <button onClick={addAchievement} className="text-cyan-400 text-sm mt-2 flex items-center gap-1">
-              <Plus size={14}/> Add Achievement
-            </button>
+      <textarea className="border p-2 w-full mb-2" placeholder="Description"
+        value={form.description}
+        onChange={(e) => setForm({...form, description: e.target.value})}
+      />
 
-            <button
-              onClick={handleSubmit}
-              className="bg-cyan-500 hover:bg-cyan-600 w-full mt-4 py-2 rounded text-white"
-            >
-              Save Journey
-            </button>
-          </div>
+      <p className="font-semibold mb-1">Achievements</p>
+
+      {form.achievements.map((ach, i) => (
+        <div key={i} className="flex gap-2 mb-2">
+          <input
+            className="border p-2 w-1/2"
+            placeholder="Achievement"
+            value={ach.name}
+            onChange={(e) => updateAchievement(i, "name", e.target.value)}
+          />
+          <input
+            className="border p-2 w-1/2"
+            placeholder="GitHub Link"
+            value={ach.github_link}
+            onChange={(e) => updateAchievement(i, "github_link", e.target.value)}
+          />
+          <button onClick={() => removeAchievement(i)} className="text-red-600">✕</button>
         </div>
-      )}
+      ))}
+
+      <button onClick={addAchievement} className="text-blue-600 text-sm mb-2">
+        + Add achievement
+      </button>
+
+      <div className="flex justify-between">
+        <button onClick={() => setShowModal(false)} className="px-4 py-2 border rounded">
+          Cancel
+        </button>
+        <button onClick={handleSubmit} className="px-4 py-2 bg-green-600 text-white rounded">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+)}
       <AnimatePresence>
         {expandedCard !== null && (
           <>
