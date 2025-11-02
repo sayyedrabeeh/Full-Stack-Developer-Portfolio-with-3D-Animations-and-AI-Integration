@@ -165,7 +165,20 @@ export default function Journey() {
                                 <stop offset='100%' stopColor="#06b6d4" stopOpacity='0'/>
                             </radialGradient>
                         </defs>  
-                        
+                        <path ref={pathRef} d="M 500 100 
+                                                C 500 200, 600 250, 700 300
+                                                C 800 350, 800 450, 700 500
+                                                C 600 550, 400 550, 300 600
+                                                C 200 650, 200 750, 300 800
+                                                C 400 850, 600 850, 700 900
+                                                C 800 950, 800 1050, 700 1100"
+                            stroke="url(#pathGradient)"
+                            strokeWidth='8'
+                            fill="none"
+                            strokeLinecap="round"
+                            filter="url(#glow)"
+                            className="opacity-60"
+                        />
 
 
                         </svg>
