@@ -1,12 +1,12 @@
 import React,{ useState,useEffect,useRef } from "react"
 import { motion,AnimatePresence, progress } from "framer-motion"
 import { Bike,X,Sparkles, Milestone, Sparkle } from "lucide-react"
-import { duration } from "moment"
+ 
 
 
 export default function Journey() {
     
-    const [mileStones, setMileStones] = useState([])
+    // const [mileStones, setMileStones] = useState([])
     const [activeMileStone, setActiveMileStone] = useState(0)
     const [expandedCard, setExpandedCard] = useState(null)
     const [ bikeProgress ,setBikeProgress ] = useState(0)
@@ -15,6 +15,15 @@ export default function Journey() {
     const [bikePos, setBikePos] = useState({ x: 0, y: 0 })
     const [bikeAngle, setBikeAngle] = useState(0)
     const [particles, setParticles] = useState([])
+
+      const mileStones = [
+    "Started Coding",
+    "Learned Python",
+    "Built AI Projects",
+    "Learned Django",
+    "Mastered React",
+    "Full-Stack Developer Journey",
+  ];
     
     useEffect(() => {
         const newParticles = Array.from({ length: 60 }, (_,i) => ({
@@ -28,7 +37,7 @@ export default function Journey() {
     }, [])
     useEffect(() => {
         if (pathRef.current) {
-            setPathLength(pathRef.current.getTotalLength)
+            setPathLength(pathRef.current.getTotalLength())
         }
     }, [])    
     useEffect(() => {
@@ -40,7 +49,7 @@ export default function Journey() {
         const startTime = Date.now()
         
         const animate = () => {
-            const elapsed = Date.now - startTime
+            const elapsed = Date.now() - startTime
             const progress = Math.min(elapsed / duration, 1)
             const eased = progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2
             const currentProgress = startProgress + (targetProgress - startProgress) * eased
@@ -76,7 +85,7 @@ export default function Journey() {
     const getMilestonePositions = () => {
         if (!pathRef.current || !pathLength) return []; 
         return mileStones.map((_, index) => {
-            const progress = index - (mileStones.length - 1)
+            const progress = index / (mileStones.length - 1)
             const point = pathRef.current.getPointAtLength(progress * pathLength)
             return { x: point.x, y : point.y }
         })
@@ -91,7 +100,7 @@ export default function Journey() {
         const dy = pos.y - bikePos.y
         const distance = Math.sqrt(dx * dx - dy * dy)
         const maxDistance = 150
-        return max.Math(0,1-distance / maxDistance )
+        return Math.max(0,1-distance / maxDistance )
         
     }
 
@@ -133,7 +142,7 @@ export default function Journey() {
                     >
                         My Coding Journey
                     </h1>
-                    <p className="text-cyan-300/70 text-lg flex items-center  justify-center gap-2 " >
+                    <p className="text-white-900/70 text-lg text-cyan-400 flex items-center  justify-center gap-2 " >
                         <Sparkles className="w-5 h-5"/>
                         Follow the curved path
                     </p>
@@ -199,9 +208,44 @@ export default function Journey() {
                             opacity:{ duration: 1.5, repeat: Infinity }
                             }}
                         />
+
                         
                         
-                        
+                        {milestonePosition.map((pos, index) => {
+                            const illumination = getCardIllumination(index)
+                            const isActive = illumination > 0.3 
+                            return (
+                                <g key={index} >{isActive && (<motion.circle 
+                                    cx={pos.x}
+                                    cy={pos.y}
+                                    r='40'
+                                    fill='url(#headlight)'
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: illumination * 0.7 }}
+                                    />
+                                )}
+                                    <motion.circle 
+                                        cx={pos.x}
+                                        cy={pos.y}
+                                        r='10'
+                                        fill={isActive ? '#06b6d4' : '#334155'}
+                                        stroke={isActive ? '#ffffff' : '#475569'}
+                                        strokeWidth='3'
+                                        className='cursor-pointer'
+                                        onClick={() => handleMileStoneClick(index)}
+                                        whileHover={{ scale: 1.4 }}
+                                        animate={{
+                                            scale: isActive ? [1, 1.3, 1] : 1
+                                            
+                                        }}
+                                        transition={{
+                                        scale:{duration:1, repeat : Infinity}
+                                        }}
+                                    />
+                                </g>
+
+                            )
+                        }) }
 
 
                         </svg>
