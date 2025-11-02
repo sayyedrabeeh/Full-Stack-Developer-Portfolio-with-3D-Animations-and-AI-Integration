@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Project,ProjectImage,ProjectVideo,ProjectComment,ProjectLike,ProjectBookmark
+from .models import Project,ProjectImage,ProjectVideo,ProjectComment,ProjectLike,ProjectBookmark,JourneyMilestone,JourneyAchievement
 from django.shortcuts import get_object_or_404
 from django.utils.timezone import localtime
 
@@ -289,3 +289,25 @@ def delete_project(request, pk):
 
     return Response({"message": "Project deleted successfully"})
 
+
+
+
+@api_view(['POST'])
+def add_journey(request):
+    if not request.user.is_superuser:
+        return Response({'error':'You are not allowed '},status=status.HTTP_403_FORBIDDEN)
+    data = request.data 
+
+    milestone = JourneyMilestone.objects.create(
+        year = data.get('year')
+        date = data.get('date')
+        title = data.get('title')
+        description = data.get('description'))
+    achievements = data.get('achievements',[])
+    for a in achievements:
+        JourneyAchievement.objects.create(
+            milestone=milestone,
+            name = a.get('name'),
+            github_link = a.get('github_link')
+        )
+    return Response({'message':'milestone created '})
