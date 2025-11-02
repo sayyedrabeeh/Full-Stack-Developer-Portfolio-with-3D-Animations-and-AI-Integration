@@ -60,7 +60,17 @@ const CurvedJourneyTimeline = () => {
             toast.success(res.data.message)
             setShowModal(false);
             fetchJourney();
-        };
+    };
+    
+    const deleteMilestone = async (id) => {
+        if (!window.confirm("Delete milestone?")) return;
+
+        const res = await axios.delete(`/journey/delete/${id}/`, {
+        headers: { Authorization: `Bearer ${token}` }
+        });
+        fetchJourney();
+        toast.success(res.data.message)
+    };
     
   useEffect(() => {
     const newParticles = Array.from({ length: 60 }, (_, i) => ({
