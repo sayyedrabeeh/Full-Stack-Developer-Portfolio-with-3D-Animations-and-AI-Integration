@@ -108,4 +108,5 @@ class JourneyAchievement(models.Model):
     name = models.CharField(max_length=10)
     github_link = models.URLField(blank=True,null=True)
 
-    
+    def __str__(self):
+        return f'{self.name}'
