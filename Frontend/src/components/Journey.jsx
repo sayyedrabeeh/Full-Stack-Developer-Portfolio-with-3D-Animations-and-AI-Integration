@@ -245,10 +245,93 @@ export default function Journey() {
                                 </g>
 
                             )
-                        }) }
+                        })}
+                        
+                        {bikePos.x > 0 && (
+                            <g transform={`translate(${bikePos.x}, ${bikePos.y}) rotate(${bikeAngle})`}
+                            >
+                                <motion.ellipse cx='30' cy='0' rx='60' ry='35' fill='url(#headlight)' animate={{
+                                    opacity:[0.6,0.9,0.6]
+                                }}
+                                    transition={{
+                                        duration: 1.5,
+                                        repeat:Infinity
+                                    }}
+                                />
+                                <circle cx='0' cy='0' r='18' fill="#06b6d4" opacity= '0.3' filter="url(#glow)"/>
+                                <circle cx='0' cy='0' r='10' fill="#06b6d4" stroke="#ffffff" strokeWidth='2' />
+
+                                <motion.circle cx='0' cy='0' r='15' fill='none' stroke='06b6d4' strokeWidth='1.5'
+                                    animate={{
+                                        scale: [1, 1.6, 1],
+                                        opacity:[0.7,0,0.7]
+                                    }}
+                                    transition={{
+                                        duration: 1.5,
+                                        repeat:Infinity
+                                }}
+                                />
+                            </g>
+                         ) }
+                    </svg>
+                    
+                    {milestonePosition.map((pos, index) => {
+                        const illumination = getCardIllumination(index)
+                        const isLeft = index % 2 === 0;
+                        const offsetX = isLeft ? -350 : 100
+
+                        return (
+                            <motion.div key={index} className="absolute"
+                                style={{
+                                        left: `${(pos.x / 1000) * 100}%`,
+                                        top: `${(pos.y / 1200) * 100}%`,
+                                        transform: `translate(${offsetX}px, -50%)`,
+                                        width: '320px'
+                                }}
+                                initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
+                                animate={{
+                                    opacity: illumination > 0.1 ? 1 : 0.3,
+                                    x: 0,
+                                    scale:illumination > 0.3 ? 1 : 0.95
+                                }}
+                                transition={{ duration: 0.5 }}>
+                                
+                                <div className={`relative px-6 rounded-2xl backdrop-blur-xl cursor-pointer transition-all duration-500 ${illumination > 0.3 ? 'bg-gradient-to-br from-cyan-500/30 to-purple-500/20  border-2 border-cyan-400/60 ' : 'bg-gray-900/50 border border-gray-700/40'}`}
+                                                  style={{
+                                boxShadow: illumination > 0.3
+                                ? `0 0 ${illumination * 80}px rgba(6, 182, 212, ${illumination * 0.8}), inset 0 0 ${illumination * 40}px rgba(6, 182, 212, ${illumination * 0.3})`
+                                : 'none'
+                                                }}
+                                    onClick={() => handleCardClick(index)}  >
+                                    {illumination > 0.2 && (
+                                        <motion.div className="absolute  inset-0 rounded-2xl pointer-events-none" style={{
+                                            background: `radial-gradient(circle at ${isLeft ? '100%' : '0%'} 50%, rgba(255,255,255,${illumination * 0.15}) 0%, transparent 70%)`,
+                                        }}
+                                            animate={{
+                                            opacity:[0.7,1,0.7]
+                                            }}
+                                            transition={{
+                                                duration: 2,
+                                                repeat:Infinity
+                                            }}
+                                        />
+                                     ) }
+                                    
 
 
-                        </svg>
+                                </div>
+
+
+                                </motion.div>
+                            
+                        )
+
+
+
+
+
+
+                    }) }
 
                 </div>
 
