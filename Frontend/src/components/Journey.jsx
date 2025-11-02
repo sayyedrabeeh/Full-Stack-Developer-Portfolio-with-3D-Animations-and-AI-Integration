@@ -454,7 +454,63 @@ const CurvedJourneyTimeline = () => {
             );
           })}
         </div>
-      </div>
+          </div>
+           {showModal && (
+        <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50">
+          <div className="bg-gray-900 p-6 rounded-xl border border-cyan-400 w-[400px] relative">
+            <button className="absolute right-3 top-3 text-cyan-400" onClick={() => setShowModal(false)}>
+              <X size={22}/>
+            </button>
+
+            <h2 className="text-cyan-400 text-xl font-bold mb-4">Add Journey Milestone</h2>
+
+            <input placeholder="Year" className="input"
+              onChange={e => setForm({...form, year: e.target.value})}
+            />
+            <input type="date" className="input"
+              onChange={e => setForm({...form, date: e.target.value})}
+            />
+            <input placeholder="Title" className="input"
+              onChange={e => setForm({...form, title: e.target.value})}
+            />
+            <textarea placeholder="Description" className="input h-20"
+              onChange={e => setForm({...form, description: e.target.value})}
+            />
+
+            <h3 className="text-gray-300 font-semibold mt-3">Achievements</h3>
+
+            {achievements.map((a, i) => (
+              <div key={i} className="mt-2">
+                <input placeholder="Name" className="input mb-1"
+                  onChange={e => {
+                    const arr = [...achievements];
+                    arr[i].name = e.target.value;
+                    setAchievements(arr);
+                  }}
+                />
+                <input placeholder="GitHub Link" className="input"
+                  onChange={e => {
+                    const arr = [...achievements];
+                    arr[i].github_link = e.target.value;
+                    setAchievements(arr);
+                  }}
+                />
+              </div>
+            ))}
+
+            <button onClick={addAchievement} className="text-cyan-400 text-sm mt-2 flex items-center gap-1">
+              <Plus size={14}/> Add Achievement
+            </button>
+
+            <button
+              onClick={handleSubmit}
+              className="bg-cyan-500 hover:bg-cyan-600 w-full mt-4 py-2 rounded text-white"
+            >
+              Save Journey
+            </button>
+          </div>
+        </div>
+      )}
       <AnimatePresence>
         {expandedCard !== null && (
           <>
