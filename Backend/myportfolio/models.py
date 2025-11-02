@@ -103,3 +103,9 @@ class JourneyMilestone(models.Model):
     def __str__(self):
         return f'{self.year} - { self.title }'
     
+class JourneyAchievement(models.Model):
+    milestone = models.ForeignKey(JourneyMilestone,related_name='Achievements')
+    name = models.CharField(max_length=10)
+    github_link = models.URLField(blank=True,null=True)
+
+    
