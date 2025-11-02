@@ -299,9 +299,9 @@ def add_journey(request):
     data = request.data 
 
     milestone = JourneyMilestone.objects.create(
-        year = data.get('year')
-        date = data.get('date')
-        title = data.get('title')
+        year = data.get('year'),
+        date = data.get('date'),
+        title = data.get('title'),
         description = data.get('description'))
     achievements = data.get('achievements',[])
     for a in achievements:
