@@ -137,7 +137,40 @@ export default function Journey() {
                         Follow the curved path
                     </p>
                 </motion.div>
-                
+
+                <div className="relative  width-full " style={{ minHeight: '1200px' }} >
+                    <svg
+                        viewBox="0 0 1000 1200"
+                        className="w-full h-full absolute inset-0 "
+                        style={{ filter: 'drop-shadow(0 0 15px rgb(6,182,212,0.2))' }}>
+                        
+                        <defs>
+                            <linearGradient id="pathGradient" x1='0%' y1='0%' x2='0%' y2='100%'>
+                                <stop offset='0%' stopColor="#06b6d4" stopOpacity='0.9'/>
+                                <stop offset='50%' stopColor="#3b82f6" stopOpacity='0.9'/>
+                                <stop offset='100%' stopColor="#8b5cf6" stopOpacity='0.9'/>
+                            </linearGradient>
+
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation='3' result="coloredBlur" />
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                       
+                            <radialGradient id="headlight">
+                                <stop offset='0%' stopColor="#ffffff" stopOpacity='0.9'/>
+                                <stop offset='50%' stopColor="#06b6d4" stopOpacity='0.5'/>
+                                <stop offset='100%' stopColor="#06b6d4" stopOpacity='0'/>
+                            </radialGradient>
+                        </defs>  
+                        
+
+
+                        </svg>
+
+                </div>
 
 
             </div>
