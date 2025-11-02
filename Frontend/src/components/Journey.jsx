@@ -15,6 +15,16 @@ export default function Journey() {
     const [bikeAngle, setBikeAngle] = useState(0)
     const [particles, setParticles] = useState([])
     
+    useEffect(() => {
+        const newParticles = Array.from({ length: 60 }, (_,i) => ({
+            id: i,
+            x: Math.random() * 100,
+            y: Math.random() * 100,
+            size: Math.random() * 2 + 1,
+            duration : Math.random() * 15 + 10
+        }))
+        setParticles(newParticles)
+    }, [])
     
 
     return (
