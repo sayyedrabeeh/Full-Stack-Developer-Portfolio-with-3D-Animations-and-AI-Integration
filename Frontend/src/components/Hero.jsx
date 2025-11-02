@@ -107,7 +107,7 @@ function HeroSection() {
 
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent blur-3xl pointer-events-none" />
 
-      <style jsx>{`
+      <style>{`
         .perspective-1000 {
           perspective: 1000px;
         }

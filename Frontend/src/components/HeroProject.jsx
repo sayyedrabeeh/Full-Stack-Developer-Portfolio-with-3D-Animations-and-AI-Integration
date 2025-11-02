@@ -3,41 +3,18 @@ import { Autoplay, EffectCoverflow } from "swiper/modules"
 import { Swiper,SwiperSlide } from "swiper/react"
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import React,{ useState,useEffect } from "react";
 
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 
-const projects  =[
-      {
-    img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop",
-    title: "Front-End Expertise",
-    description: "Advanced interfaces with React, Next.js, and sophisticated animations.",
-    tech: [ 'React', 'Next.js',  'TypeScript'],
-    live: "#",
-    github: "#",
-    },
-    {
-    img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop",
-    title: "Robust Back-End",
-    description: "Efficient APIs, optimized databases, and scalable architecture.",
-    tech:  [ 'React', 'Next.js',  'TypeScript'],
-    live: "#",
-    github: "#",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1570545887537-865bd283af1c?w=600&h=400&fit=crop",
-    title: "Migtech Hub",
-    description: "System for optimal job transitions with healthcare diploma support.",
-    tech:  [ 'React', 'Next.js',  'TypeScript'],
-    live: "#",
-    github: "#",
-  }
-]
+ 
 
 
 
 export default function Projects() {
     const navigate = useNavigate();
+    const [projects, setProjects] = useState([])
 
     const handleautheticate = () => {
         const token = localStorage.getItem("access");
@@ -47,6 +24,24 @@ export default function Projects() {
       navigate("/login");  
     }
     }
+
+    useEffect(() => {
+        fetch('http://127.0.0.1:8000/api/accounts/projects')
+            .then(r => r.json())
+            .then(prev => {
+                const formatted = prev.filter(p => p.images?.length > 0).map(p => ({
+                ...p,
+                img: p.images?.length ? p.images[0].image : null,  
+                title: p.name,
+                live: p.live_link,
+                github: p.github_link,
+                tech: p.tech_stack ? p.tech_stack.split(",") : [], 
+            }))
+                
+                setProjects(formatted)
+            })
+            .catch(e => console.log(e))
+    },[])
 
     return (
         <motion.section id="projects"
@@ -91,7 +86,7 @@ export default function Projects() {
                         grabCursor
                         centeredSlides
                         slidesPerView='auto'
-                        loop
+                        loop ={projects.length > 2}
                         speed={1300}
                         spaceBetween={-150}
                         coverflowEffect={
@@ -114,7 +109,7 @@ export default function Projects() {
 
                                     <div className="relative h-full  bg-white/5 backdrop-blur-2xl rounded-3xl border border-white/10  shadow-xl overflow-hidden transition-all flex flex-col  ">
                                         <div className="h-3/4  overflow-hidden relative group ">
-                                            <motion.img src={p.img} alt={p.title} className="w-full
+                                            <motion.img src={p.img ? `http://127.0.0.1:8000${p.img}` : ""} alt={p.title} className="w-full
                                             h-full object-cover transition-transform  duration-[1200ms]  ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-110 group-hover:blur-sm" />
                                             <div className="absolute inset-0 text-lg bg-black/40 flex flex-col items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ">
                                                 <a href={p.live}
@@ -138,14 +133,14 @@ export default function Projects() {
                                                 { p.title }
                                             </h3>
                                             <div>
-                                                {p.tech.map((p,i)=>(
+                                                {p.tech?.slice(0,5).map((t,i)=>(
                                                     <span key={i}
                                                 className="text-xs font-medium text-gray-200 bg-white/10 px-2 py-1 rounded-full border  border-white/20 "    >
-                                                    {p.trim()}
+                                                    {t.trim()}
                                                 </span>
                                                 ))}
                                             </div>
-                                            <p className="text-sm text-gray-300 mt-4 leading-relaxed mb-6 " >
+                                            <p className="text-sm text-gray-300 mt-4 leading-relaxed mb-6 line-clamp-3" >
                                                 { p.description }
                                             </p>
                                         </div>
