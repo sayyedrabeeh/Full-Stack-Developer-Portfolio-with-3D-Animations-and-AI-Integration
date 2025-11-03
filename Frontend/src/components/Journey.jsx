@@ -18,6 +18,7 @@ const CurvedJourneyTimeline = () => {
   
   const [isSuperUser, setIsSuperUser] = useState(false);  
   const [showModal, setShowModal] = useState(false);
+  const [svgHeight, setSvgHeight] = useState(1200);  
   
   const [form, setForm] = useState({
     year: "",
@@ -28,7 +29,18 @@ const CurvedJourneyTimeline = () => {
             { name: "", github_link: "" }
     ]
     })
+     useEffect(() => {
+    const baseHeight = 1200;
+    const heightPerMilestone = 180;
+    const calculatedHeight = Math.max(baseHeight, milestones.length * heightPerMilestone);
+    setSvgHeight(calculatedHeight);
+     }, [milestones.length])
     
+    
+    useEffect(() => {
+    if (pathRef.current) setPathLength(pathRef.current.getTotalLength());
+  }, [milestones.length, svgHeight]);
+
     useEffect(() => {
      
       const stored = localStorage.getItem('user');
@@ -124,7 +136,7 @@ const CurvedJourneyTimeline = () => {
  useEffect(() => {
   if (!pathLength || milestones.length === 0) return;
 
-  // If only one milestone, place bike at start and return
+  
   if (milestones.length === 1) {
     const point = pathRef.current.getPointAtLength(0);
     setBikeProgress(0);
@@ -215,8 +227,30 @@ const CurvedJourneyTimeline = () => {
     return Math.max(0, 1 - distance / maxDistance);
   };
 
+    
+    
+    const generateDynamicPath = () => {
+    if (milestones.length === 0) return "M 500 100";
+    const startY = 100;
+    const segmentHeight = 180;
+    let pathCommands = [`M 500 ${startY}`];
+    for (let i = 0; i < milestones.length - 1; i++) {
+      const y1 = startY + i * segmentHeight;
+      const y2 = startY + (i + 1) * segmentHeight;
+      const midY = (y1 + y2) / 2;
+      if (i % 4 === 0) pathCommands.push(`C 500 ${y1 + 100}, 600 ${midY - 50}, 700 ${y2}`);
+      else if (i % 4 === 1) pathCommands.push(`C 800 ${y1 + 50}, 800 ${midY + 50}, 700 ${y2}`);
+      else if (i % 4 === 2) pathCommands.push(`C 600 ${y1 + 50}, 400 ${midY - 50}, 300 ${y2}`);
+      else pathCommands.push(`C 200 ${y1 + 50}, 200 ${midY + 50}, 300 ${y2}`);
+    }
+    return pathCommands.join(' ');
+  };
+
+  const dynamicPath = generateDynamicPath();
+
+    
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden relative">
+    <div id='journey' className="min-h-screen  text-white overflow-hidden relative">
       <div className="fixed inset-0 overflow-hidden">
         {particles.map(particle => (
           <motion.div
@@ -292,13 +326,7 @@ const CurvedJourneyTimeline = () => {
             </defs>
             <path
               ref={pathRef}
-              d="M 500 100 
-                 C 500 200, 600 250, 700 300
-                 C 800 350, 800 450, 700 500
-                 C 600 550, 400 550, 300 600
-                 C 200 650, 200 750, 300 800
-                 C 400 850, 600 850, 700 900
-                 C 800 950, 800 1050, 700 1100"
+              d={dynamicPath}
               stroke="url(#pathGradient)"
               strokeWidth="8"
               fill="none"
@@ -307,13 +335,7 @@ const CurvedJourneyTimeline = () => {
               className="opacity-60"
             />
             <motion.path
-              d="M 500 100 
-                 C 500 200, 600 250, 700 300
-                 C 800 350, 800 450, 700 500
-                 C 600 550, 400 550, 300 600
-                 C 200 650, 200 750, 300 800
-                 C 400 850, 600 850, 700 900
-                 C 800 950, 800 1050, 700 1100"
+              d={dynamicPath}
               stroke="#06b6d4"
               strokeWidth="10"
               fill="none"
