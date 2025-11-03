@@ -631,93 +631,127 @@ const TOTAL_PATH_HEIGHT = Math.max(
         </div>
         )}
 
-      <AnimatePresence>
-        {expandedCard !== null && (
-          <>
+    <AnimatePresence>
+  {expandedCard !== null && (
+    <>
+    
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40"
+        onClick={() => setExpandedCard(null)}
+      />
+
+     
+      <motion.div
+        initial={{ opacity: 0, scale: 0.5, rotateY: 90 }}
+        animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+        exit={{ opacity: 0, scale: 0.5, rotateY: -90 }}
+        transition={{ type: "spring", stiffness: 180, damping: 28 }}
+        className="fixed inset-0 z-50 flex items-center justify-center p-6"
+      >
+        <div
+          className="
+            relative max-w-4xl w-full
+            bg-gray-900/95 backdrop-blur-xl
+            border border-cyan-400/20
+            rounded-3xl
+            p-10
+            shadow-lg
+          "
+        >
+       
+          <button
+            onClick={() => setExpandedCard(null)}
+            className="
+              absolute top-5 right-5 p-2.5
+              rounded-full bg-gray-800/60 hover:bg-gray-700/60
+              border border-gray-600/40
+              transition-colors group
+            "
+          >
+            <X className="w-5 h-5 text-gray-300 group-hover:text-gray-100 transition-colors" />
+          </button>
+
+          <div className="relative">
+         
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/90 backdrop-blur-lg z-40"
-              onClick={() => setExpandedCard(null)}
-            />
-            
-            <motion.div
-              initial={{ opacity: 0, scale: 0.4, rotateY: 90 }}
-              animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-              exit={{ opacity: 0, scale: 0.4, rotateY: -90 }}
-              transition={{ 
-                type: "spring", 
-                stiffness: 150, 
-                damping: 25
-              }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-6"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex items-center gap-4 mb-8"
             >
-              <div className="relative max-w-4xl w-full bg-gradient-to-br from-gray-900 via-blue-900/40 to-purple-900/30 border-2 border-cyan-400/70 rounded-3xl shadow-[0_0_120px_rgba(6,182,212,0.6)] p-10 backdrop-blur-2xl">
-                <motion.div
-                  className="absolute -inset-2 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 rounded-3xl opacity-20 blur-3xl"
-                  animate={{
-                    opacity: [0.2, 0.5, 0.2],
-                    scale: [1, 1.05, 1]
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity
-                  }}
-                />
-                
-                <button
-                  onClick={() => setExpandedCard(null)}
-                  className="absolute top-6 right-6 p-3 rounded-full bg-cyan-500/20 hover:bg-cyan-500/40 transition-all border border-cyan-400/40 group z-10"
-                >
-                  <X className="w-6 h-6 text-cyan-400 group-hover:rotate-90 transition-transform duration-300" />
-                </button>
-                
-                <div className="relative z-10">
-                  <motion.div
-                    initial={{ opacity: 0, x: -30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="flex items-center gap-4 mb-8"
-                  >
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center shadow-[0_0_40px_rgba(6,182,212,0.7)]">
-                      <span className="text-3xl font-bold text-white">
-                        {milestones[expandedCard].year}
-                      </span>
-                    </div>
-                    <Sparkles className="w-10 h-10 text-cyan-400" />
-                  </motion.div>
-
-                  <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent"
-                  >
-                    {milestones[expandedCard].title}
-                  </motion.h2>
-
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                    className="text-xl text-gray-200 leading-relaxed mb-8"
-                  >
-                    {milestones[expandedCard].description}
-                  </motion.p>
-                  
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: '100%' }}
-                    transition={{ delay: 0.6, duration: 1.2 }}
-                    className="h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 rounded-full"
-                  />
-                </div>
+              <div className="
+                w-20 h-20 rounded-full
+                bg-gradient-to-br from-cyan-500/80 to-blue-600/80
+                flex items-center justify-center
+                shadow-md
+              ">
+                <span className="text-3xl font-bold text-white">
+                  {milestones[expandedCard].year}
+                </span>
               </div>
+              <Sparkles className="w-9 h-9 text-cyan-400/80" />
             </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+
+         
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="
+                text-5xl font-bold mb-6
+                bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300
+                bg-clip-text text-transparent
+              "
+            >
+              {milestones[expandedCard].title}
+            </motion.h2>
+ 
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="text-xl text-gray-200 leading-relaxed mb-8"
+            >
+              {milestones[expandedCard].description}
+            </motion.p>
+
+          
+            {milestones[expandedCard].achievements?.length > 0 && (
+              <div className="mt-6">
+                <h4 className="text-lg font-semibold text-cyan-300 mb-3">Achievements</h4>
+                <ul className="space-y-2">
+                  {milestones[expandedCard].achievements.map((ach, i) => (
+                    <li key={i} className="flex items-center gap-2 text-gray-300">
+                      <a
+                        href={ach.github_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-cyan-300 transition-colors underline"
+                      >
+                        {ach.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+           
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: "100%" }}
+              transition={{ delay: 0.6, duration: 1 }}
+              className="h-px bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent rounded-full"
+            />
+          </div>
+        </div>
+      </motion.div>
+    </>
+  )}
+</AnimatePresence>
 
       <style>{`
         .line-clamp-3 {
