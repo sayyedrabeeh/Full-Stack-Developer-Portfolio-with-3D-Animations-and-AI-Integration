@@ -10,7 +10,7 @@ import AppLayout from "./components/projects/Applayout";
 import PrivateRoute from "./api/PrivateRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useRef } from "react"
  
 
 
@@ -30,6 +30,7 @@ function App() {
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
   const isProjectsPage = location.pathname.startsWith("/projects");
+  const dragAreaRef = useRef(null)
 
   return (
     <>
@@ -40,9 +41,9 @@ function App() {
         toastStyle={{ background: "#1e293b", color: "#fff" }}
       />
       {!isLoginPage && !isProjectsPage && (
-        <div className="min-h-screen text-white animate-gradient overflow-hidden">
+        <div ref={dragAreaRef} className="min-h-screen text-white animate-gradient overflow-hidden">
            <Navbar />
-          <HeroSection />
+          <HeroSection dragAreaRef={dragAreaRef} />
           <About />
           <Skills />
           <Projects />
