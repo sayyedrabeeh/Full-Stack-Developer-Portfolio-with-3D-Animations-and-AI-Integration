@@ -320,11 +320,18 @@ const TOTAL_PATH_HEIGHT = Math.max(
             style={{ filter: 'drop-shadow(0 0 15px rgba(6, 182, 212, 0.2))', minHeight: `${TOTAL_PATH_HEIGHT}px` }}
           >
             <defs>
-                <radialGradient id="headlight">
-                        <stop offset="0%" stopColor="#fff" stopOpacity="0.9" />
-                        <stop offset="35%" stopColor="#06b6d4" stopOpacity="0.4" />
-                        <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
-                </radialGradient>
+               <radialGradient id="naturalHeadlight" cx="30%" cy="50%" r="200%">
+    <stop offset="0%" stopColor="#fff9e6" stopOpacity="1" />
+    <stop offset="25%" stopColor="#fde68a" stopOpacity="0.7" />
+    <stop offset="50%" stopColor="#fbbf24" stopOpacity="0.3" />
+    <stop offset="80%" stopColor="#f59e0b" stopOpacity="0.1" />
+    <stop offset="100%" stopColor="#451a03" stopOpacity="0" />
+  </radialGradient>
+
+  {/* Soft blur */}
+  <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%">
+    <feGaussianBlur stdDeviation="12" />
+  </filter>
                           
              <linearGradient id="pathGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.85" />
@@ -412,7 +419,26 @@ const TOTAL_PATH_HEIGHT = Math.max(
         transform={`translate(${bikePos.x}, ${bikePos.y}) rotate(${bikeAngle})`}
         className="pointer-events-none"
         >
-        
+        <motion.path
+            d="M 35,-25 Q 180,0 35,25 Q 80,0 35,-25 Z"
+            fill="url(#naturalHeadlight)"
+            filter="url(#softGlow)"
+            animate={{ 
+            opacity: [0.6, 0.85, 0.6],
+            d: [
+                "M 35,-25 Q 160,0 35,25 Q 80,0 35,-25 Z",
+                "M 35,-25 Q 200,0 35,25 Q 80,0 35,-25 Z",
+                "M 35,-25 Q 160,0 35,25 Q 80,0 35,-25 Z"
+            ]
+            }}
+            transition={{ 
+            duration: 2.5, 
+            repeat: Infinity,
+            ease: "easeInOut"
+            }}
+        />
+ 
+        <circle cx="38" cy="0" r="8" fill="#fff9e6" filter="url(#softGlow)" opacity="0.9" />
         <motion.ellipse
             cx="38"
             cy="-2"
