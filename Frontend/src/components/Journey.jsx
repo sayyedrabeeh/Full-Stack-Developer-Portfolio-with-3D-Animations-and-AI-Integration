@@ -264,12 +264,12 @@ const TOTAL_PATH_HEIGHT = Math.max(
 );
      
   return (
-    <div id='journey' className="min-h-screen  text-white overflow-x-hidden relative">
-      <div className="fixed inset-0 overflow-hidden">
+    <div id='journey' className="min-h-screen  text-white overflow-x-hidden relative  ">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
         {particles.map(particle => (
           <motion.div
             key={particle.id}
-            className="absolute rounded-full bg-cyan-400"
+            className="absolute rounded-full bg-cyan-400 pointer-events-none"
             style={{
               left: `${particle.x}%`,
               top: `${particle.y}%`,
@@ -321,17 +321,17 @@ const TOTAL_PATH_HEIGHT = Math.max(
           >
             <defs>
                <radialGradient id="naturalHeadlight" cx="30%" cy="50%" r="200%">
-    <stop offset="0%" stopColor="#fff9e6" stopOpacity="1" />
-    <stop offset="25%" stopColor="#fde68a" stopOpacity="0.7" />
-    <stop offset="50%" stopColor="#fbbf24" stopOpacity="0.3" />
-    <stop offset="80%" stopColor="#f59e0b" stopOpacity="0.1" />
-    <stop offset="100%" stopColor="#451a03" stopOpacity="0" />
-  </radialGradient>
+                    <stop offset="0%" stopColor="#fff9e6" stopOpacity="1" />
+                    <stop offset="25%" stopColor="#fde68a" stopOpacity="0.7" />
+                    <stop offset="50%" stopColor="#fbbf24" stopOpacity="0.3" />
+                    <stop offset="80%" stopColor="#f59e0b" stopOpacity="0.1" />
+                    <stop offset="100%" stopColor="#451a03" stopOpacity="0" />
+                </radialGradient>
 
-  {/* Soft blur */}
-  <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%">
-    <feGaussianBlur stdDeviation="12" />
-  </filter>
+  
+                <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%">
+                    <feGaussianBlur stdDeviation="12" />
+                </filter>
                           
              <linearGradient id="pathGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.85" />
@@ -399,7 +399,7 @@ const TOTAL_PATH_HEIGHT = Math.max(
                     fill={isActive ? "#06b6d4" : "#334155"}
                     stroke={isActive ? "#ffffff" : "#475569"}
                     strokeWidth="3"
-                    className="cursor-pointer"
+                    className="cursor-pointer pointer-events-auto"
                     onClick={() => handleMilestoneClick(index)}
                     whileHover={{ scale: 1.4 }}
                     animate={{

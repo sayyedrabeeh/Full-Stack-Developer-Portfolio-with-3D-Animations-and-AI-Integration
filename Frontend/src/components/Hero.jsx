@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 
 
-function HeroSection() {
+function HeroSection({ dragAreaRef }) {
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const constraintsRef = useRef(null);
 
@@ -66,8 +66,9 @@ function HeroSection() {
       <div className="md:w-1/2 flex  flex-col items-center mb-10 md:mb-0">
         <motion.div 
           drag
-          dragConstraints={constraintsRef}
+          dragConstraints={dragAreaRef}
           dragElastic={0.5}
+         
     
           className="relative perspective-1000 z-50"
           onMouseMove={handleMouseMove}
