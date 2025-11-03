@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bike, X, Sparkles,Plus,Trash2   } from 'lucide-react';
+import { Bike, X, Sparkles,Plus,Trash2,Trophy, ExternalLink   } from 'lucide-react';
 import { toast } from 'react-toastify';
 import api from '../api/axios';
 
@@ -738,25 +738,82 @@ const TOTAL_PATH_HEIGHT = Math.max(
             </motion.p>
 
           
-            {milestones[expandedCard].achievements?.length > 0 && (
-              <div className="mt-6">
-                <h4 className="text-lg font-semibold text-cyan-300 mb-3">Achievements</h4>
-                <ul className="space-y-2">
-                  {milestones[expandedCard].achievements.map((ach, i) => (
-                    <li key={i} className="flex items-center gap-2 text-gray-300">
-                      <a
+        {Array.isArray(milestones[expandedCard].Achievements) && 
+        milestones[expandedCard].Achievements.length > 0 && (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            className="mt-8 mb-6"
+        >
+            <h4 className="text-lg font-semibold text-cyan-300 mb-4 flex items-center gap-2">
+            <Trophy className="w-5 h-5 text-yellow-400" />
+            Achievements
+            </h4>
+
+            <div className="space-y-3">
+            {milestones[expandedCard].Achievements.map((ach, i) => (
+                <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.6 + i * 0.1 }}
+                className="
+                    group flex items-center gap-3 p-3
+                    bg-gradient-to-r from-cyan-500/10 via-blue-500/5 to-transparent
+                    backdrop-blur-sm
+                    border border-cyan-400/20
+                    rounded-xl
+                    hover:border-cyan-400/40
+                    hover:bg-cyan-500/15
+                    transition-all duration-300
+                "
+                >
+                <div className="
+                    w-10 h-10 rounded-full
+                    bg-gradient-to-br from-yellow-400 to-amber-500
+                    flex items-center justify-center
+                    shadow-md
+                    group-hover:scale-110
+                    transition-transform duration-300
+                ">
+                    <Trophy className="w-5 h-5 text-white" />
+                </div>
+
+                <div className="flex-1">
+                    <p className="text-white font-medium text-sm">
+                    {ach.name}
+                    </p>
+                    {ach.github_link && (
+                    <a
                         href={ach.github_link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hover:text-cyan-300 transition-colors underline"
-                      >
-                        {ach.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+                        className="
+                        inline-flex items-center gap-1
+                        text-xs text-cyan-300 hover:text-cyan-200
+                        underline underline-offset-2
+                        transition-colors
+                        "
+                    >
+                        <ExternalLink className="w-3 h-3" />
+                        View on GitHub
+                    </a>
+                    )}
+                </div>
+
+                <div className="
+                    absolute inset-0 rounded-xl
+                    bg-gradient-to-r from-cyan-400/10 to-transparent
+                    opacity-0 group-hover:opacity-100
+                    transition-opacity duration-300
+                    pointer-events-none
+                " />
+                </motion.div>
+            ))}
+            </div>
+        </motion.div>
+        )}
 
            {isSuperUser && (
               <motion.div
