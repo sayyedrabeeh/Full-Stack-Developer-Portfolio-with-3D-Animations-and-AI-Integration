@@ -8,6 +8,7 @@ import Journey from './components/Journey'
 import ContactSection from "./components/Contact";
 import Login3D from "./pages/login";
 import AppLayout from "./components/projects/Applayout";
+import ExternalLinks from "./components/ExternalLinks";
 import PrivateRoute from "./api/PrivateRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -49,7 +50,9 @@ function App() {
           <Skills />
           <Projects />
           <Journey />
-          <ContactSection/>
+          <ExternalLinks/>
+          <ContactSection />
+          
          
           <style>
             {`
