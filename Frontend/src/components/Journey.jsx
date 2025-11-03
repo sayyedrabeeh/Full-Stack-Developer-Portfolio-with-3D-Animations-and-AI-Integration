@@ -320,6 +320,12 @@ const TOTAL_PATH_HEIGHT = Math.max(
             style={{ filter: 'drop-shadow(0 0 15px rgba(6, 182, 212, 0.2))', minHeight: `${TOTAL_PATH_HEIGHT}px` }}
           >
             <defs>
+                <radialGradient id="headlight">
+                        <stop offset="0%" stopColor="#fff" stopOpacity="0.9" />
+                        <stop offset="35%" stopColor="#06b6d4" stopOpacity="0.4" />
+                        <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
+                </radialGradient>
+                          
              <linearGradient id="pathGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.85" />
                 <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.85" />
@@ -400,41 +406,86 @@ const TOTAL_PATH_HEIGHT = Math.max(
               );
             })}
             {bikePos.x > 0 && (
-              <g transform={`translate(${bikePos.x}, ${bikePos.y}) rotate(${bikeAngle})`}>
-                <motion.ellipse
-                  cx="30"
-                  cy="0"
-                  rx="80"
-                  ry="65"
-                  fill="url(#headlight)"
-                  animate={{
-                    opacity: [0.6, 0.9, 0.6]
-                  }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity
-                  }}
-                />
-                <circle cx="0" cy="0" r="18" fill="#06b6d4" opacity="0.3"  />
-                <circle cx="0" cy="0" r="10" fill="#06b6d4" stroke="#ffffff" strokeWidth="2" />
-                <motion.circle
-                  cx="0"
-                  cy="0"
-                  r="15"
-                  fill="none"
-                  stroke="#06b6d4"
-                  strokeWidth="1.5"
-                  animate={{
-                    scale: [1, 1.6, 1],
-                    opacity: [0.7, 0, 0.7]
-                  }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity
-                  }}
-                />
-              </g>
-            )}
+ 
+ 
+        <g
+        transform={`translate(${bikePos.x}, ${bikePos.y}) rotate(${bikeAngle})`}
+        className="pointer-events-none"
+        >
+        
+        <motion.ellipse
+            cx="38"
+            cy="-2"
+            rx="55"
+            ry="32"
+            fill="url(#headlight)"
+            animate={{ opacity: [0.6, 0.9, 0.6] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+        />
+        
+        <path
+            d="M 0,-8 L 30,0 L 0,8 Z"
+            fill="none"
+            stroke="#06b6d4"
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+        
+        <ellipse cx="-12" cy="-6" rx="8" ry="4" fill="#1e293b" />
+
+        
+        <path
+            d="M 28,-4 L 36,-4 L 36,0 L 28,0"
+            fill="none"
+            stroke="#64748b"
+            strokeWidth="3"
+            strokeLinecap="round"
+        />
+
+        
+        <circle cx="30" cy="0" r="12" fill="#1e293b" stroke="#64748b" strokeWidth="2" />
+        <circle cx="30" cy="0" r="9" fill="#334155" />
+        
+        {[...Array(6)].map((_, i) => (
+            <line
+            key={i}
+            x1={30 + 9 * Math.cos((i * Math.PI) / 3)}
+            y1={0 + 9 * Math.sin((i * Math.PI) / 3)}
+            x2={30 + 12 * Math.cos((i * Math.PI) / 3)}
+            y2={0 + 12 * Math.sin((i * Math.PI) / 3)}
+            stroke="#64748b"
+            strokeWidth="1"
+            />
+        ))}
+
+        
+        <circle cx="-20" cy="0" r="12" fill="#1e293b" stroke="#64748b" strokeWidth="2" />
+        <circle cx="-20" cy="0" r="9" fill="#334155" />
+        {[...Array(6)].map((_, i) => (
+            <line
+            key={i}
+            x1={-20 + 9 * Math.cos((i * Math.PI) / 3)}
+            y1={0 + 9 * Math.sin((i * Math.PI) / 3)}
+            x2={-20 + 12 * Math.cos((i * Math.PI) / 3)}
+            y2={0 + 12 * Math.sin((i * Math.PI) / 3)}
+            stroke="#64748b"
+            strokeWidth="1"
+            />
+        ))}
+
+        
+        <circle cx="5" cy="0" r="3" fill="#64748b" />
+        <motion.rect
+            x="-8" y="-1.5" width="26" height="3"
+            rx="1.5"
+            fill="#06b6d4"
+            animate={{ rotate: [0, 360] }}
+            transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
+            style={{ transformOrigin: "5px 0px" }}
+        />
+        </g>
+                    )}
           </svg>
           {milestonePositions.map((pos, index) => {
             const illumination = getCardIllumination(index);
