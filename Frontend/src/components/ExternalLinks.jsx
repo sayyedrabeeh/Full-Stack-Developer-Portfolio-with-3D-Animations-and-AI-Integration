@@ -13,10 +13,16 @@ export default function ExternalLinks() {
             color: 'hover:text-gray-400'
         },
         {
-            name: 'Linkdin',
+            name: 'Linkedin',
             url: 'https://www.linkedin.com/in/sayyed-rabeeh/',
             icon: <FiLinkedin className="w-5 h-5" />,
             color: 'hover:text-blue-400'
+        },
+        {
+            name: 'Twitter',
+            url: 'https://x.com/Sayyed_Rabi',
+            icon: <FiTwitter className="w-5 h-5" />,
+            color: 'hover:text-sky-400'
         },
 
     ]
