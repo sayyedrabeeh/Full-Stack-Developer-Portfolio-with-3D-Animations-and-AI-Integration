@@ -247,10 +247,14 @@ const CurvedJourneyTimeline = () => {
   };
 
   const dynamicPath = generateDynamicPath();
-
-    
+ const MILESTONE_SPACING = 180;  
+const TOTAL_PATH_HEIGHT = Math.max(
+  800,
+  milestonePositions.length * MILESTONE_SPACING
+);
+     
   return (
-    <div id='journey' className="min-h-screen  text-white overflow-hidden relative">
+    <div id='journey' className="min-h-screen  text-white overflow-x-hidden relative">
       <div className="fixed inset-0 overflow-hidden">
         {particles.map(particle => (
           <motion.div
@@ -299,11 +303,11 @@ const CurvedJourneyTimeline = () => {
             </button>
           </div>
         )}
-        <div className="relative w-full" style={{ minHeight: '1200px' }}>
+        <div className="relative w-full" style={{ minHeight: `${TOTAL_PATH_HEIGHT + 200}px` }} >
           <svg
-            viewBox="0 0 1000 1200"
+            viewBox={`0 0 1000 ${TOTAL_PATH_HEIGHT}`}
             className="w-full h-full absolute inset-0"
-            style={{ filter: 'drop-shadow(0 0 15px rgba(6, 182, 212, 0.2))' }}
+            style={{ filter: 'drop-shadow(0 0 15px rgba(6, 182, 212, 0.2))', minHeight: `${TOTAL_PATH_HEIGHT}px` }}
           >
             <defs>
               <linearGradient id="pathGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -425,14 +429,15 @@ const CurvedJourneyTimeline = () => {
           {milestonePositions.map((pos, index) => {
             const illumination = getCardIllumination(index);
             const isLeft = index % 2 === 0;
-            const offsetX = isLeft ? -350 : 100;
+              const offsetX = isLeft ? -350 : 100;
+              const topPercent = (pos.y / svgHeight) * 100
             return (
               <motion.div
                 key={index}
                 className="absolute"
                 style={{
                   left: `${(pos.x / 1000) * 100}%`,
-                  top: `${(pos.y / 1200) * 100}%`,
+                  top: `${topPercent}%`,
                   transform: `translate(${offsetX}px, -50%)`,
                   width: '320px'
                 }}
@@ -728,7 +733,10 @@ const CurvedJourneyTimeline = () => {
 
 export default function Journey() {
     return (
-        <CurvedJourneyTimeline/>
+        
+        <div className="min-h-screen overflow-y-auto">
+  <CurvedJourneyTimeline />
+</div>
     )
 } 
  
