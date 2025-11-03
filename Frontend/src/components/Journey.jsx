@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Bike, X, Sparkles,Plus,Trash2,Trophy, ExternalLink   } from 'lucide-react';
 import { toast } from 'react-toastify';
 import api from '../api/axios';
+import { useNavigate } from 'react-router-dom';
 
 const CurvedJourneyTimeline = () => {
   
@@ -15,12 +16,22 @@ const CurvedJourneyTimeline = () => {
   const [bikePos, setBikePos] = useState({ x: 0, y: 0 });
   const [bikeAngle, setBikeAngle] = useState(0);
   const [particles, setParticles] = useState([]);
-  
+    
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSuperUser, setIsSuperUser] = useState(false);  
   const [showModal, setShowModal] = useState(false);
   const [svgHeight, setSvgHeight] = useState(1200);  
   
-  const [form, setForm] = useState({
+  const navigate = useNavigate()
+    
+    
+    
+ useEffect(() => {
+    const token = localStorage.getItem("access");
+    setIsLoggedIn(!!token);
+  }, []);
+  
+ const [form, setForm] = useState({
     year: "",
     date: "",
     title: "",
@@ -289,7 +300,8 @@ const TOTAL_PATH_HEIGHT = Math.max(
         ))}
       </div>
       <div className="fixed inset-0 bg-gradient-to-br from-purple-900/10 via-transparent to-blue-900/10 pointer-events-none" />
-      <div className="relative z-10 px-8 py-12">
+    {isLoggedIn ? (<>
+           <div className="relative z-10 px-8 py-12">
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -933,6 +945,33 @@ const TOTAL_PATH_HEIGHT = Math.max(
   )}
 </AnimatePresence>
 
+      </>) : (
+        
+        <div className="relative z-10 flex min-h-screen items-center justify-center px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-md w-full text-center space-y-6"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
+              Journey Timeline
+            </h2>
+
+            <p className="text-lg text-gray-300">
+              Login to see the journey
+            </p>
+
+            <button
+              onClick={() => navigate("/login")}
+              className="px-8 py-3 bg-cyan-500 hover:bg-cyan-600 rounded-xl font-medium text-white shadow-lg shadow-cyan-500/30 transition-all pointer-events-auto"
+            >
+              Login
+            </button>
+          </motion.div>
+          </div>
+          
+      )}
+          
       <style>{`
         .line-clamp-3 {
           display: -webkit-box;
