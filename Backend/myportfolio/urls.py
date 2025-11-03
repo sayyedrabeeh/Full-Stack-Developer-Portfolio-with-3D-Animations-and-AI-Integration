@@ -24,7 +24,7 @@ urlpatterns = [
     path("projects/<int:pk>/delete/", delete_project, name="delete_project"),
     path('journey/',get_journey),
     path('journey/add/',add_journey),
-    path('journey/delete/<int:id>/',delete_journey),
+    path('journey/delete/<int:pk>/',delete_journey),
 
 
 

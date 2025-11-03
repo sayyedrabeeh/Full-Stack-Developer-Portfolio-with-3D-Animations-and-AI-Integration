@@ -79,7 +79,7 @@ const CurvedJourneyTimeline = () => {
         if (!window.confirm("Delete milestone?")) return;
         const token = localStorage.getItem("access");
 
-        const res = await api.delete(`api/accounts/journey/delete/${id}/`, {
+        const res = await api.post(`api/accounts/journey/delete/${id}/`,{}, {
         headers: { Authorization: `Bearer ${token}` }
         });
         fetchJourney();
@@ -166,15 +166,22 @@ const CurvedJourneyTimeline = () => {
     setExpandedCard(index);
   };
 
-  const getMilestonePositions = () => {
-    if (!pathRef.current || !pathLength) return [];
-    
-    return milestones.map((_, index) => {
-      const progress = index / (milestones.length - 1);
-      const point = pathRef.current.getPointAtLength(progress * pathLength);
-      return { x: point.x, y: point.y };
-    });
-  };
+ const getMilestonePositions = () => {
+  if (!pathRef.current || !pathLength || milestones.length === 0) return [];
+
+   
+  if (milestones.length === 1) {
+    const point = pathRef.current.getPointAtLength(0);
+    return [{ x: point.x, y: point.y }];
+  }
+
+  return milestones.map((_, index) => {
+    const progress = index / (milestones.length - 1);
+    const point = pathRef.current.getPointAtLength(progress * pathLength);
+    return { x: point.x, y: point.y };
+  });
+};
+
 
   const milestonePositions = getMilestonePositions();
 
@@ -477,7 +484,7 @@ const CurvedJourneyTimeline = () => {
                     </div>
                 {isSuperUser && (
               <button
-                onClick={() => deleteMilestone(index)}
+                onClick={() => deleteMilestone(milestones[index].id)}
                 className="text-red-400 mt-3 flex gap-1 items-center"
               >
                 <Trash2 size={18} /> Delete
