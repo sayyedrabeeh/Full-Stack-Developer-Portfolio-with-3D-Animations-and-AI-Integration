@@ -230,9 +230,28 @@ export default function Login3D() {
     }
   };
      
-   
+   useEffect(() => {
+  const access = localStorage.getItem("access");
+
+  if (access) {
+    navigate("/", { replace: true });
+    const preventBack = () => {
+      if (localStorage.getItem("access")) {
+        window.history.pushState(null, "", "/");
+        navigate("/", { replace: true });
+      }
+    };
+    window.addEventListener("popstate", preventBack);
+    window.history.pushState(null, "", window.location.href);
+
+    return () => {
+      window.removeEventListener("popstate", preventBack);
+    };
+  }
+}, [navigate]);
 
   return (
+    
     <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-purple-950 via-indigo-950 to-violet-950">
       <div ref={mountRef} className="absolute inset-0 z-0" />
 
