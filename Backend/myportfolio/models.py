@@ -95,9 +95,9 @@ class ProjectBookmark(models.Model):
 
 
 class JourneyMilestone(models.Model):
-    year = models.CharField(max_length=10)
+    year = models.CharField(max_length=50)
     date = models.DateField()
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=200)
     description = models.TextField()
 
     def __str__(self):
@@ -105,7 +105,7 @@ class JourneyMilestone(models.Model):
     
 class JourneyAchievement(models.Model):
     milestone = models.ForeignKey(JourneyMilestone,related_name='Achievements' ,on_delete=models.CASCADE)
-    name = models.CharField(max_length=10)
+    name = models.CharField(max_length=200)
     github_link = models.URLField(blank=True,null=True)
 
     def __str__(self):
