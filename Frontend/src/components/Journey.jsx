@@ -310,23 +310,23 @@ const TOTAL_PATH_HEIGHT = Math.max(
             style={{ filter: 'drop-shadow(0 0 15px rgba(6, 182, 212, 0.2))', minHeight: `${TOTAL_PATH_HEIGHT}px` }}
           >
             <defs>
-              <linearGradient id="pathGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.9" />
-                <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.9" />
-              </linearGradient>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+             <linearGradient id="pathGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.85" />
+                <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.85" />
+            </linearGradient>
+              <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="1.5" result="blur"/>
                 <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
                 </feMerge>
-              </filter>
+            </filter>
               <radialGradient id="headlight">
-                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
-                <stop offset="30%" stopColor="#06b6d4" stopOpacity="0.5" />
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.7" />
+                <stop offset="35%" stopColor="#06b6d4" stopOpacity="0.3" />
                 <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
-              </radialGradient>
+            </radialGradient>
             </defs>
             <path
               ref={pathRef}
@@ -335,7 +335,7 @@ const TOTAL_PATH_HEIGHT = Math.max(
               strokeWidth="8"
               fill="none"
               strokeLinecap="round"
-              filter="url(#glow)"
+              filter="url(#softGlow)"
               className="opacity-60"
             />
             <motion.path
@@ -363,7 +363,7 @@ const TOTAL_PATH_HEIGHT = Math.max(
                     <motion.circle
                       cx={pos.x}
                       cy={pos.y}
-                      r="40"
+                      r="30"
                       fill="url(#headlight)"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: illumination * 0.7 }}
@@ -394,8 +394,8 @@ const TOTAL_PATH_HEIGHT = Math.max(
                 <motion.ellipse
                   cx="30"
                   cy="0"
-                  rx="60"
-                  ry="35"
+                  rx="80"
+                  ry="65"
                   fill="url(#headlight)"
                   animate={{
                     opacity: [0.6, 0.9, 0.6]
@@ -405,7 +405,7 @@ const TOTAL_PATH_HEIGHT = Math.max(
                     repeat: Infinity
                   }}
                 />
-                <circle cx="0" cy="0" r="18" fill="#06b6d4" opacity="0.3" filter="url(#glow)" />
+                <circle cx="0" cy="0" r="18" fill="#06b6d4" opacity="0.3"  />
                 <circle cx="0" cy="0" r="10" fill="#06b6d4" stroke="#ffffff" strokeWidth="2" />
                 <motion.circle
                   cx="0"
@@ -452,12 +452,12 @@ const TOTAL_PATH_HEIGHT = Math.max(
                 <div
                   className={`relative p-6 rounded-2xl backdrop-blur-xl cursor-pointer transition-all duration-500 ${
                     illumination > 0.3
-                      ? 'bg-gradient-to-br from-cyan-500/30 via-blue-500/30 to-purple-500/20 border-2 border-cyan-400/60'
+                      ? 'bg-gradient-to-br from-cyan-500/30 via-blue-500/30 to-purple-500/20 border-1 border-cyan-400/30'
                       : 'bg-gray-900/50 border border-gray-700/40'
                   }`}
                   style={{
                     boxShadow: illumination > 0.3
-                      ? `0 0 ${illumination * 80}px rgba(6, 182, 212, ${illumination * 0.8}), inset 0 0 ${illumination * 40}px rgba(6, 182, 212, ${illumination * 0.3})`
+                      ? `0 0 ${illumination*30}px rgba(6,182,212,0.25)`
                       : 'none'
                   }}
                   onClick={() => handleCardClick(index)}
