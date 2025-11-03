@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { FiGithub, FiLinkedin, FiTwitter, FiMail, FiGlobe, FiCode, FiCopy, FiRss } from 'react-icons/fi'
+import { FiGithub, FiLinkedin, FiTwitter, FiMail, FiGlobe, FiCode, FiCopy, FiRss, FiInstagram, FiYoutube } from 'react-icons/fi'
+import { FaRedditAlien,FaDiscord  } from 'react-icons/fa'
 import { SiLeetcode } from "react-icons/si";
 import { toast } from "react-toastify";
 
@@ -35,6 +36,36 @@ export default function ExternalLinks() {
             url: 'https://dev.to/sayyed_rabeeh',
             icon: <FiRss className="w-5 h-5" />,
             color: 'hover:text-gray-300'
+        },
+        {
+            name: 'Portfolio',
+            url: 'https://sayyedrabeeh.github.io/portfoliyo',
+            icon: <FiGlobe className="w-5 h-5" />,
+            color: 'hover:text-purple-400'
+        },
+        {
+            name: 'Instagram',
+            url: 'https://www.instagram.com/_r.abi.x_/',
+            icon: <FiInstagram  className="w-5 h-5" />,
+            color: 'hover:text-purple-400'
+        },
+        {
+            name: 'Youtube',
+            url: 'https://www.youtube.com/@sayyedrabeeh',
+            icon: <FiYoutube   className="w-5 h-5" />,
+            color: 'hover:text-red-500'
+        },
+        {
+            name: 'Reddit',
+            url: 'https://www.reddit.com/user/AdvantageAgile3414/',
+            icon: <FaRedditAlien   className="w-5 h-5" />,
+            color: 'hover:text-orange-400'
+        },
+        {
+            name: 'Discord',
+            url: 'https://discord.com/users/1360906900493045791',
+            icon: <FaDiscord    className="w-5 h-5" />,
+            color: 'hover:text-indigo-400'
         },
 
     ]
