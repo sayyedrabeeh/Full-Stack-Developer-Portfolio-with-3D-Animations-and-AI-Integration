@@ -124,7 +124,7 @@ const CurvedJourneyTimeline = () => {
  useEffect(() => {
   if (!pathLength || milestones.length === 0) return;
 
-   
+  // If only one milestone, place bike at start and return
   if (milestones.length === 1) {
     const point = pathRef.current.getPointAtLength(0);
     setBikeProgress(0);
