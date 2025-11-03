@@ -121,41 +121,61 @@ const CurvedJourneyTimeline = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (!pathLength) return;
-    
-    const targetProgress = activeMilestone / (milestones.length - 1);
-    const startProgress = bikeProgress;
-    const duration = 2000;
-    const startTime = Date.now();
+ useEffect(() => {
+  if (!pathLength || milestones.length === 0) return;
 
-    const animate = () => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      
-      const eased = progress < 0.5
-        ? 4 * progress * progress * progress
-        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-      
-      const currentProgress = startProgress + (targetProgress - startProgress) * eased;
-      setBikeProgress(currentProgress);
-      
-      if (pathRef.current) {
-        const point = pathRef.current.getPointAtLength(currentProgress * pathLength);
-        const nextPoint = pathRef.current.getPointAtLength(Math.min(currentProgress * pathLength + 10, pathLength));
-        const angle = Math.atan2(nextPoint.y - point.y, nextPoint.x - point.x) * 180 / Math.PI;
-        
-        setBikePos({ x: point.x, y: point.y });
-        setBikeAngle(angle);
+   
+  if (milestones.length === 1) {
+    const point = pathRef.current.getPointAtLength(0);
+    setBikeProgress(0);
+    setBikePos({ x: point.x, y: point.y });
+    setBikeAngle(0);
+    return;
+  }
+
+  const totalSegments = milestones.length - 1;
+  const targetProgress = Math.min(
+    Math.max(activeMilestone / totalSegments, 0),
+    1
+  );
+
+  const startProgress = bikeProgress;
+  const duration = 2000;
+  const startTime = Date.now();
+
+  const animate = () => {
+    const elapsed = Date.now() - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+
+ 
+    const eased = progress < 0.5
+      ? 4 * progress * progress * progress
+      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+    const currentProgress = startProgress + (targetProgress - startProgress) * eased;
+    setBikeProgress(currentProgress);
+
+    if (pathRef.current) {
+      const posLength = currentProgress * pathLength;
+
+      let point, nextPoint;
+      try {
+        point = pathRef.current.getPointAtLength(posLength);
+        nextPoint = pathRef.current.getPointAtLength(Math.min(posLength + 10, pathLength));
+      } catch {
+        return;  
       }
-      
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
-    };
-    
-    animate();
-  }, [activeMilestone, pathLength, milestones.length]);
+
+      const angle = Math.atan2(nextPoint.y - point.y, nextPoint.x - point.x) * 180 / Math.PI;
+      setBikePos({ x: point.x, y: point.y });
+      setBikeAngle(angle);
+    }
+
+    if (progress < 1) requestAnimationFrame(animate);
+  };
+
+  animate();
+}, [activeMilestone, pathLength, milestones.length]);
 
   const handleMilestoneClick = (index) => {
     setActiveMilestone(index);
