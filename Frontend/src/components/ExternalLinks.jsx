@@ -52,6 +52,29 @@ export default function ExternalLinks() {
                     </button>
                 </motion.div>
 
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {links.map((link, index) => (
+                        <motion.a key={link.name}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                            className={`group flex flex-col items-center justify-center p-6 bg-white/5 backdrop-blur-sm border border-purple-500/20  rounded-2xl hover:bg-white/10  hover:border-purple-500/40 transition-all
+                            duration-300 shadow-md hover:shadow-xl hover:scale-105 ${link.color} `}
+                        >
+                            <div className="mb-3  p-3 bg-white/10 rounded-full group-hover scale-110 transition-transform ">
+                                {link.icon}
+                                
+                            </div>
+                            <span className="text-sm font-medium text-purple-200 ">{link.name}</span>
+                            
+                        </motion.a>
+                    )) }
+
+                </div>
+
             </div>
     
         </section>
