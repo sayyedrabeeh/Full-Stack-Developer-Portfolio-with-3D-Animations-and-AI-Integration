@@ -32,7 +32,7 @@ export default function AppLayout() {
   const handleLogout = () => {
  
     localStorage.clear();
-    navigate("/login");
+    navigate("/");
   };
 
   const refreshCounts = () => {
