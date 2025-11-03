@@ -24,6 +24,18 @@ export default function ExternalLinks() {
             icon: <FiTwitter className="w-5 h-5" />,
             color: 'hover:text-sky-400'
         },
+        {
+            name: 'Leetcode',
+            url: 'https://leetcode.com/u/sayyed-rabeeh/',
+            icon: <SiLeetcode className="w-5 h-5" />,
+            color: 'hover:text-orange-500'
+        },
+        {
+            name: 'Dev.to',
+            url: 'https://dev.to/sayyed_rabeeh',
+            icon: <FiRss className="w-5 h-5" />,
+            color: 'hover:text-gray-300'
+        },
 
     ]
 
