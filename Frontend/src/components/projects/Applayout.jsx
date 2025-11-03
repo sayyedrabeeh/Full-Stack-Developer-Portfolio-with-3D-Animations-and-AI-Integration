@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from "react";
-import { Home,Globe,Layers,Zap,Terminal,Brain,Puzzle,BookOpen,Github,Mail, TrendingUp, Linkedin,Menu,X,LogOut,FolderPlus,ArrowLeft,Bookmark  } from "lucide-react";
+import { Home,Globe,Layers,Zap,Terminal,Brain,Puzzle,BookOpen ,Github,Mail, TrendingUp, Linkedin,Menu,X,LogOut,FolderPlus,ArrowLeft,Bookmark  } from "lucide-react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { SiLeetcode } from "react-icons/si";
 
 export default function AppLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -81,10 +82,11 @@ useEffect(() => {
             <Github size={18} />
           </a>
           <a
-            href="mailto:sayyedrabeeh240@gmail.com"
+              href="https://leetcode.com/u/sayyed-rabeeh/"
+              target="_blank"
             className="p-2.5 bg-gray-800 rounded-lg hover:bg-gray-700 transition-all duration-200"
           >
-            <Mail size={18} />
+            <SiLeetcode size={18} />
           </a>
           <a
             href="https://linkedin.com"
