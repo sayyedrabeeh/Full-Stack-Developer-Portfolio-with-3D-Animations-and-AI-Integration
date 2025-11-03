@@ -1,10 +1,13 @@
 
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
   const [activeSection, setActiveSection] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,6 +41,23 @@ function Navbar() {
     { id: "journey", label: "Journey" },
     { id: "contact", label: "Contact" }
   ];
+
+  useEffect(() => {
+    const token = localStorage.getItem("access");
+    setIsLoggedIn(!!token);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+    setIsLoggedIn(false);
+    setIsMobileMenuOpen(false);
+    window.location.href = "/";
+  };
+
+  const handleLogin = () => {
+    navigate("/login");
+  };
 
   return (
     <nav
@@ -79,6 +99,23 @@ function Navbar() {
                 </button>
               </li>
             ))}
+            <li>
+              {isLoggedIn ? (
+                <button
+                  onClick={handleLogout}
+                  className="px-6 py-2.5 rounded-full text-sm font-medium bg-red-500/20 hover:bg-red-500/30 text-red-300 hover:text-red-200 border border-red-500/30 transition-all duration-300"
+                >
+                  Logout
+                </button>
+              ) : (
+                <button
+                  onClick={handleLogin}
+                  className="px-6 py-2.5 rounded-full text-sm font-medium bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/40 hover:shadow-cyan-500/60 transition-all duration-300"
+                >
+                  Login
+                </button>
+              )}
+            </li>
           </ul>
 
  
@@ -134,7 +171,25 @@ function Navbar() {
                   {item.label}
                 </button>
               </li>
+              
             ))}
+            <li>
+              {isLoggedIn ? (
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-6 py-3 rounded-xl text-base font-medium bg-red-500/20 hover:bg-red-500/30 text-red-300 hover:text-red-200 border border-red-500/30 transition-all duration-300"
+                >
+                  Logout
+                </button>
+              ) : (
+                <button
+                  onClick={handleLogin}
+                  className="w-full text-left px-6 py-3 rounded-xl text-base font-medium bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/40 transition-all duration-300"
+                >
+                  Login
+                </button>
+              )}
+            </li>
           </ul>
         </div>
       </div>
