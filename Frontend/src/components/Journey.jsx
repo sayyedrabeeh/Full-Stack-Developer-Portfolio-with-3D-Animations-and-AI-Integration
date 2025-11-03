@@ -477,47 +477,63 @@ const TOTAL_PATH_HEIGHT = Math.max(
                       }}
                     />
                   )}
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
-                        illumination > 0.3
-                          ? 'bg-cyan-400/30 border-2 border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.6)]'
-                          : 'bg-gray-800/80 border border-gray-600'
-                      }`}>
-                        <span className={`text-lg font-bold ${
-                          illumination > 0.3 ? 'text-cyan-300' : 'text-gray-500'
-                        }`}>
-                          {milestones[index].year}
-                        </span>
-                      </div>
-                      {illumination > 0.5 && (
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                        >
-                          <Sparkles className="w-6 h-6 text-cyan-400" />
-                        </motion.div>
-                      )}
-                    </div>
-                    <h3 className={`text-xl font-bold mb-3 transition-colors ${
-                      illumination > 0.3 ? 'text-white' : 'text-gray-500'
-                    }`}>
-                      {milestones[index].title}
-                    </h3>
-                    <p className={`text-sm leading-relaxed line-clamp-3 transition-colors ${
-                      illumination > 0.3 ? 'text-gray-200' : 'text-gray-600'
-                    }`}>
-                      {milestones[index].description}
-                    </p>
-                    {illumination > 0.4 && (
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: '100%' }}
-                        transition={{ duration: 0.8 }}
-                        className="h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 rounded-full mt-4"
-                      />
-                    )}
-                  </div>
+            <div className="relative z-10">
+            <div className="flex items-center gap-3 mb-4">
+                <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
+                illumination > 0.25
+                    ? 'bg-cyan-500/20 border border-cyan-500/40 shadow-sm'
+                    : 'bg-gray-800/60 border border-gray-700/40'
+                }`}>
+                <span className={`text-lg font-bold ${
+                    illumination > 0.25 ? 'text-cyan-200' : 'text-gray-500'
+                }`}>
+                    {milestones[index].year}
+                </span>
+                </div>
+            
+                {illumination > 0.45 && (
+                <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                >
+                    <Sparkles className="w-5 h-5 text-cyan-400/70" />
+                </motion.div>
+                )}
+            </div>
+
+            <h3 className={`text-xl font-bold mb-3 transition-colors ${
+                illumination > 0.25 ? 'text-white' : 'text-gray-500'
+            }`}>
+                {milestones[index].title}
+            </h3>
+
+            <p className={`text-sm leading-relaxed line-clamp-3 transition-colors ${
+                illumination > 0.25 ? 'text-gray-200' : 'text-gray-600'
+            }`}>
+                {milestones[index].description}
+            </p>
+
+            
+            {illumination > 0.35 && (
+                <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: '100%' }}
+                transition={{ duration: 0.8 }}
+                className="h-px bg-gradient-to-r from-cyan-400/40 via-blue-500/30 to-purple-500/20 rounded-full mt-4"
+                />
+            )}
+            </div>
+
+ 
+                <div
+                className={`absolute top-1/2 ${isLeft ? 'left-full' : 'right-full'} w-16 h-px transition-all`}
+                style={{
+                    background: illumination > 0.25
+                    ? 'linear-gradient(to right, rgba(6, 182, 212, 0.4), transparent)'
+                    : 'rgba(75, 85, 99, 0.3)',
+                    boxShadow: 'none' 
+                }}
+                />
                   <div
                     className={`absolute top-1/2 ${isLeft ? 'left-full' : 'right-full'} w-20 h-0.5 transition-all ${
                       illumination > 0.3
@@ -529,14 +545,7 @@ const TOTAL_PATH_HEIGHT = Math.max(
                     }}
                   />
                     </div>
-                {isSuperUser && (
-              <button
-                onClick={() => deleteMilestone(milestones[index].id)}
-                className="text-red-400 mt-3 flex gap-1 items-center"
-              >
-                <Trash2 size={18} /> Delete
-              </button>
-            )}
+                 
               </motion.div>
             );
           })}
@@ -739,7 +748,34 @@ const TOTAL_PATH_HEIGHT = Math.max(
               </div>
             )}
 
-           
+           {isSuperUser && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="flex justify-end"
+              >
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteMilestone(milestones[expandedCard].id);
+                    setExpandedCard(null);
+                  }}
+                  className="
+                    flex items-center gap-2 px-4 py-2
+                    text-red-400 hover:text-red-300
+                    bg-red-900/20 hover:bg-red-900/30
+                    border border-red-700/40
+                    rounded-lg text-sm font-medium
+                    transition-all duration-200
+                  "
+                >
+                  <Trash2 size={16} />
+                  Delete Milestone
+                </button>
+              </motion.div>
+                                  )}
+                                  
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: "100%" }}
