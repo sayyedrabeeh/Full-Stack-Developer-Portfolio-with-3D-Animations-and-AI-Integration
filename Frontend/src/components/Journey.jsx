@@ -79,6 +79,16 @@ const CurvedJourneyTimeline = () => {
 
             toast.success(res.data.message);
             setShowModal(false);
+            setForm({
+                 year: "",
+                date: "",
+                title: "",
+                    description: "",
+                achievements: [
+                        { name: "", github_link: "" }
+                ]
+
+            })
             fetchJourney();
         } catch (err) {
             toast.error("Failed to add journey");
@@ -332,7 +342,7 @@ const TOTAL_PATH_HEIGHT = Math.max(
               ref={pathRef}
               d={dynamicPath}
               stroke="url(#pathGradient)"
-              strokeWidth="8"
+              strokeWidth="12"
               fill="none"
               strokeLinecap="round"
               filter="url(#softGlow)"
@@ -341,7 +351,7 @@ const TOTAL_PATH_HEIGHT = Math.max(
             <motion.path
               d={dynamicPath}
               stroke="#06b6d4"
-              strokeWidth="10"
+              strokeWidth="14"
               fill="none"
               strokeLinecap="round"
               initial={{ pathLength: 0 }}
@@ -452,7 +462,7 @@ const TOTAL_PATH_HEIGHT = Math.max(
                 <div
                   className={`relative p-6 rounded-2xl backdrop-blur-xl cursor-pointer transition-all duration-500 ${
                     illumination > 0.3
-                      ? 'bg-gradient-to-br from-cyan-500/30 via-blue-500/30 to-purple-500/20 border-1 border-cyan-400/30'
+                      ? 'bg-gradient-to-br from-cyan-500/30 via-blue-500/30 to-purple-500/20 border-2 border-cyan-400/30'
                       : 'bg-gray-900/50 border border-gray-700/40'
                   }`}
                   style={{
@@ -524,18 +534,18 @@ const TOTAL_PATH_HEIGHT = Math.max(
             )}
             </div>
 
- 
-                <div
-                className={`absolute top-1/2 ${isLeft ? 'left-full' : 'right-full'} w-16 h-px transition-all`}
-                style={{
-                    background: illumination > 0.25
-                    ? 'linear-gradient(to right, rgba(6, 182, 212, 0.4), transparent)'
-                    : 'rgba(75, 85, 99, 0.3)',
-                    boxShadow: 'none' 
-                }}
-                />
-                  <div
-                    className={`absolute top-1/2 ${isLeft ? 'left-full' : 'right-full'} w-20 h-0.5 transition-all ${
+    
+            <div
+            className={`absolute top-1/2 ${isLeft ? 'left-full' : 'right-full'} w-16 h-px transition-all`}
+            style={{
+                background: illumination > 0.25
+                ? 'linear-gradient(to right, rgba(6, 182, 212, 0.4), transparent)'
+                : 'rgba(75, 85, 99, 0.3)',
+                boxShadow: 'none' 
+            }}
+            />
+                            <div
+                        className={`absolute top-1/2 ${isLeft ? 'left-full' : 'right-full'} w-20 h-0.5 transition-all ${
                       illumination > 0.3
                         ? 'bg-gradient-to-r from-cyan-400/60 to-transparent'
                         : 'bg-gray-700/30'
