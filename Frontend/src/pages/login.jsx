@@ -3,6 +3,7 @@ import { motion, useMotionValue, animate  } from "framer-motion";
 import * as THREE from "three";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
+import { Home } from "lucide-react";
  
  
 
@@ -471,9 +472,26 @@ export default function Login3D() {
                   {isSignUp ? "Sign In" : "Sign Up"}
                 </button>
               </p>
-      
-               
-         
+      <div className="flex justify-center">
+            <motion.button
+              onClick={() => navigate("/")}
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="group flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-purple-300 hover:text-white bg-white/5 backdrop-blur-sm border border-purple-500/30 rounded-xl hover:bg-purple-500/10 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300"
+            >
+              <svg 
+                className="w-4 h-4 text-purple-400 group-hover:text-white transition-colors" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              <span>Home</span>
+            </motion.button>
+          </div>
 
             </div>
                               
