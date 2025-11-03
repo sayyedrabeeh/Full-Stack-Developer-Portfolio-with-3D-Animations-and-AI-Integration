@@ -1,5 +1,5 @@
 import React from "react";
-import { color, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { FiGithub, FiLinkedin, FiTwitter, FiMail, FiGlobe, FiCode, FiCopy, FiRss } from 'react-icons/fi'
 import { SiLeetcode } from "react-icons/si";
 import { toast } from "react-toastify";
@@ -11,6 +11,12 @@ export default function ExternalLinks() {
             url: 'https://github.com/sayyedrabeeh',
             icon: <FiGithub className="w-5 h-5" />,
             color: 'hover:text-gray-400'
+        },
+        {
+            name: 'Linkdin',
+            url: 'https://www.linkedin.com/in/sayyed-rabeeh/',
+            icon: <FiLinkedin className="w-5 h-5" />,
+            color: 'hover:text-blue-400'
         },
 
     ]
@@ -44,7 +50,7 @@ export default function ExternalLinks() {
                     className="mb-10"
                 >
                     <button onClick={copyEmail}
-                        className="group flex items-center gap-3 mx-auto px- py-4 bg-white/5 backdrop-blur-sm border border-purple-500/30 rounded-2xl  text-purple-200 hover:bg-white/10 transition-all
+                        className="group flex items-center gap-3 mx-auto px-6 py-4 bg-white/5 backdrop-blur-sm border border-purple-500/30 rounded-2xl  text-purple-200 hover:bg-white/10 transition-all
                     duration-300 shadow-lg hover:shadow-purple-500/20">
                         <FiMail className="w-6 h-6 text-purple-400" />
                         <span className="font-medium" >sayyedrabeeh240@gmail.com</span>
@@ -64,7 +70,7 @@ export default function ExternalLinks() {
                             className={`group flex flex-col items-center justify-center p-6 bg-white/5 backdrop-blur-sm border border-purple-500/20  rounded-2xl hover:bg-white/10  hover:border-purple-500/40 transition-all
                             duration-300 shadow-md hover:shadow-xl hover:scale-105 ${link.color} `}
                         >
-                            <div className="mb-3  p-3 bg-white/10 rounded-full group-hover scale-110 transition-transform ">
+                            <div className="mb-3  p-3 bg-white/10 rounded-full group-hover : scale-110 transition-transform ">
                                 {link.icon}
                                 
                             </div>
