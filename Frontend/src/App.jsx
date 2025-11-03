@@ -5,6 +5,7 @@ import About from "./components/About";
 import Skills from "./components/Skills";
 import Projects from "./components/HeroProject";
 import Journey from './components/Journey'
+import ContactSection from "./components/Contact";
 import Login3D from "./pages/login";
 import AppLayout from "./components/projects/Applayout";
 import PrivateRoute from "./api/PrivateRoute";
@@ -47,7 +48,8 @@ function App() {
           <About />
           <Skills />
           <Projects />
-          <Journey/>
+          <Journey />
+          <ContactSection/>
          
           <style>
             {`
