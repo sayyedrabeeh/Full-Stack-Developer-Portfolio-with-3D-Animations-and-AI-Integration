@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FiGithub, FiLinkedin, FiTwitter, FiMail, FiGlobe, FiCode, FiCopy, FiRss, FiInstagram, FiYoutube } from 'react-icons/fi'
-import { FaRedditAlien,FaDiscord  } from 'react-icons/fa'
+import { FaRedditAlien,FaDiscord,FaStackOverflow,FaMedium  } from 'react-icons/fa'
 import { SiLeetcode } from "react-icons/si";
 import { toast } from "react-toastify";
 
@@ -66,6 +66,18 @@ export default function ExternalLinks() {
             url: 'https://discord.com/users/1360906900493045791',
             icon: <FaDiscord    className="w-5 h-5" />,
             color: 'hover:text-indigo-400'
+        },
+        {
+            name: 'StackOverflow',
+            url: 'https://stackoverflow.com/users/25409876/sayyed-rabeeh',
+            icon: <FaStackOverflow    className="w-5 h-5" />,
+            color: 'hover:text-orange-500'
+        },
+        {
+            name: 'Medium',
+            url: 'https://medium.com/@sayyedrabeeh240',
+            icon: <FaMedium    className="w-5 h-5" />,
+            color: 'hover:text-gray-500'
         },
 
     ]
