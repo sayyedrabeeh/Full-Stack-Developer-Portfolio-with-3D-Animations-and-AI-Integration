@@ -681,12 +681,12 @@ const TOTAL_PATH_HEIGHT = Math.max(
         </div>
           </div>
             {showModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 overflow-y-auto">
 
             <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-gray-900 border border-cyan-400/30 p-6 rounded-2xl w-full max-w-lg shadow-2xl"
+            className="bg-gray-900 border border-cyan-400/30 p-6 rounded-2xl w-full max-w-lg shadow-2xl max-h-full overflow-y-auto"style={{ maxHeight: '90vh' }}
             >
             <h2 className="text-2xl font-bold mb-4 text-cyan-400">Add Journey</h2>
 
