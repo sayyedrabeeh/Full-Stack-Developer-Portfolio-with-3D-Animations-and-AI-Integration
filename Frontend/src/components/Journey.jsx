@@ -795,220 +795,218 @@ const TOTAL_PATH_HEIGHT = Math.max(
             </motion.div>
         </div>
         )}
-
     <AnimatePresence>
-  {expandedCard !== null && (
-    <>
-    
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40"
-        onClick={() => setExpandedCard(null)}
-      />
-
-     
-      <motion.div
-        initial={{ opacity: 0, scale: 0.5, rotateY: 90 }}
-        animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-        exit={{ opacity: 0, scale: 0.5, rotateY: -90 }}
-        transition={{ type: "spring", stiffness: 180, damping: 28 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-6"
-      >
-        <div
-          className="
-            relative max-w-4xl w-full
-            bg-gray-900/95 backdrop-blur-xl
-            border border-cyan-400/20
-            rounded-3xl
-            p-10
-            shadow-lg
-          "
-        >
-       
-          <button
+      {expandedCard !== null && (
+        <>
+      
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/90 backdrop-blur-sm z-40"
             onClick={() => setExpandedCard(null)}
-            className="
-              absolute top-5 right-5 p-2.5
-              rounded-full bg-gray-800/60 hover:bg-gray-700/60
-              border border-gray-600/40
-              transition-colors group
-            "
+          />
+
+    
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-6"
           >
-            <X className="w-5 h-5 text-gray-300 group-hover:text-gray-100 transition-colors" />
-          </button>
-
-          <div className="relative">
-         
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex items-center gap-4 mb-8"
-            >
-              <div className="
-                w-20 h-20 rounded-full
-                bg-gradient-to-br from-cyan-500/80 to-blue-600/80
-                flex items-center justify-center
-                shadow-md
-              ">
-                <span className="text-3xl font-bold text-white">
-                  {milestones[expandedCard].year}
-                </span>
-              </div>
-              <Sparkles className="w-9 h-9 text-cyan-400/80" />
-            </motion.div>
-
-         
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
+            <div
               className="
-                text-5xl font-bold mb-6
-                bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300
-                bg-clip-text text-transparent
+                relative max-w-6xl w-full max-h-[92vh] overflow-y-auto
+                bg-gray-900
+                rounded-2xl
+                shadow-2xl shadow-cyan-500/10
+                border border-gray-800
+                scrollbar-thin scrollbar-thumb-cyan-500/30 scrollbar-track-gray-800
               "
             >
-              {milestones[expandedCard].title}
-            </motion.h2>
- 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="text-xl text-gray-200 leading-relaxed mb-8"
-            >
-              {milestones[expandedCard].description}
-            </motion.p>
+          
+              <button
+                onClick={() => setExpandedCard(null)}
+                className="
+                  absolute top-6 right-6 p-2 z-10
+                  rounded-lg bg-gray-800 hover:bg-gray-750
+                  border border-gray-700 hover:border-cyan-500/50
+                  transition-all duration-200
+                "
+              >
+                <X className="w-5 h-5 text-gray-400 hover:text-cyan-400" />
+              </button>
+
+            
+              <div className="bg-gradient-to-r from-cyan-600 to-cyan-500 px-12 py-10">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="flex items-center gap-4 mb-4"
+                >
+                  <div className="
+                    w-16 h-16 rounded-xl
+                    bg-white/20 backdrop-blur-sm
+                    flex items-center justify-center
+                    border border-white/30
+                  ">
+                    <span className="text-3xl font-bold text-white">
+                      {milestones[expandedCard].year}
+                    </span>
+                  </div>
+                </motion.div>
+
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-5xl font-bold text-white mb-3 leading-tight"
+                >
+                  {milestones[expandedCard].title}
+                </motion.h2>
+
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-xl text-cyan-50 leading-relaxed max-w-4xl"
+                >
+                  {milestones[expandedCard].description}
+                </motion.p>
+              </div>
 
           
-        {Array.isArray(milestones[expandedCard].Achievements) && 
-        milestones[expandedCard].Achievements.length > 0 && (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-            className="mt-8 mb-6"
-        >
-            <h4 className="text-lg font-semibold text-cyan-300 mb-4 flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-yellow-400" />
-            Achievements
-            </h4>
+              <div className="px-12 py-10">
+            
+                {Array.isArray(milestones[expandedCard].Achievements) && 
+                milestones[expandedCard].Achievements.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <div className="flex items-center gap-3 mb-8 pb-4 border-b border-gray-800">
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center shadow-lg shadow-cyan-500/30">
+                        <Trophy className="w-5 h-5 text-white" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-100">
+                        Key Achievements
+                      </h3>
+                    </div>
 
-            <div className="space-y-3">
-            {milestones[expandedCard].Achievements.map((ach, i) => (
-                <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6 + i * 0.1 }}
-                className="
-                    group flex items-center gap-3 p-3
-                    bg-gradient-to-r from-cyan-500/10 via-blue-500/5 to-transparent
-                    backdrop-blur-sm
-                    border border-cyan-400/20
-                    rounded-xl
-                    hover:border-cyan-400/40
-                    hover:bg-cyan-500/15
-                    transition-all duration-300
-                "
-                >
-                <div className="
-                    w-10 h-10 rounded-full
-                    bg-gradient-to-br from-yellow-400 to-amber-500
-                    flex items-center justify-center
-                    shadow-md
-                    group-hover:scale-110
-                    transition-transform duration-300
-                ">
-                    <Trophy className="w-5 h-5 text-white" />
-                </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {milestones[expandedCard].Achievements.map((ach, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.5 + i * 0.1 }}
+                          className="
+                            group
+                            bg-gray-800/50 hover:bg-gray-800
+                            border border-gray-700 hover:border-cyan-500/50
+                            rounded-xl
+                            p-6
+                            transition-all duration-300
+                            hover:shadow-lg hover:shadow-cyan-500/10
+                          "
+                        >
+              
+                          {ach.image && (
+                            <div className="mb-5">
+                              <img
+                                src={ach.image}
+                                alt={ach.name}
+                                className="
+                                  w-full h-72 object-cover
+                                  rounded-lg
+                                  border border-gray-700
+                                  shadow-md
+                                  group-hover:shadow-xl group-hover:shadow-cyan-500/20
+                                  transition-all duration-300
+                                "
+                              />
+                            </div>
+                          )}
 
-                <div className="flex-1">
-                    <p className="text-white font-medium text-sm">
-                    {ach.name}
-                  </p>
-                 {ach.image && (
-                                <img
-                                  src={ach.image}
-                                  alt={ach.name}
-                                  className="w-14 h-14 rounded-lg object-cover border border-cyan-500/30 mt-2"
-                                />
+                  
+                          <div className="flex items-start gap-4">
+                            <div className="
+                              w-12 h-12 rounded-lg flex-shrink-0
+                              bg-gradient-to-br from-cyan-500 to-cyan-600
+                              flex items-center justify-center
+                              shadow-lg shadow-cyan-500/30
+                            ">
+                              <Trophy className="w-6 h-6 text-white" />
+                            </div>
+
+                            <div className="flex-1 min-w-0">
+                              <h4 className="text-lg font-semibold text-gray-100 mb-3 leading-snug">
+                                {ach.name}
+                              </h4>
+
+                              {ach.github_link && (
+                                <a
+                                  href={ach.github_link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="
+                                    inline-flex items-center gap-2 px-4 py-2
+                                    text-sm font-medium text-cyan-400 hover:text-cyan-300
+                                    bg-cyan-500/10 hover:bg-cyan-500/20
+                                    border border-cyan-500/30 hover:border-cyan-500/50
+                                    rounded-lg
+                                    transition-all duration-200
+                                  "
+                                >
+                                  <ExternalLink className="w-4 h-4" />
+                                  View on GitHub
+                                </a>
                               )}
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
 
-                    {ach.github_link && (
-                    <a
-                        href={ach.github_link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="
-                        inline-flex items-center gap-1
-                        text-xs text-cyan-300 hover:text-cyan-200
-                        underline underline-offset-2
-                        transition-colors
-                        "
+          
+                <div className="mt-10 pt-8 border-t border-gray-800 flex justify-between items-center">
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <Sparkles className="w-4 h-4 text-cyan-400" />
+                    <span>Milestone #{expandedCard + 1}</span>
+                  </div>
+
+                  {isSuperUser && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteMilestone(milestones[expandedCard].id);
+                        setExpandedCard(null);
+                      }}
+                      className="
+                        flex items-center gap-2 px-5 py-2.5
+                        text-red-400 hover:text-red-300
+                        bg-red-500/10 hover:bg-red-500/20
+                        border border-red-500/30 hover:border-red-500/50
+                        rounded-lg text-sm font-medium
+                        transition-all duration-200
+                      "
                     >
-                        <ExternalLink className="w-3 h-3" />
-                        View on GitHub
-                    </a>
-                    )}
+                      <Trash2 className="w-4 h-4" />
+                      Delete Milestone
+                    </button>
+                  )}
                 </div>
-
-                <div className="
-                    absolute inset-0 rounded-xl
-                    bg-gradient-to-r from-cyan-400/10 to-transparent
-                    opacity-0 group-hover:opacity-100
-                    transition-opacity duration-300
-                    pointer-events-none
-                " />
-                </motion.div>
-            ))}
+              </div>
             </div>
-        </motion.div>
-        )}
-
-           {isSuperUser && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="flex justify-end"
-              >
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    deleteMilestone(milestones[expandedCard].id);
-                    setExpandedCard(null);
-                  }}
-                  className="
-                    flex items-center gap-2 px-4 py-2
-                    text-red-400 hover:text-red-300
-                    bg-red-900/20 hover:bg-red-900/30
-                    border border-red-700/40
-                    rounded-lg text-sm font-medium
-                    transition-all duration-200
-                  "
-                >
-                  <Trash2 size={16} />
-                  Delete Milestone
-                </button>
-              </motion.div>
-                                  )}
-                                  
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: "100%" }}
-              transition={{ delay: 0.6, duration: 1 }}
-              className="h-px bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent rounded-full"
-            />
-          </div>
-        </div>
-      </motion.div>
-    </>
-  )}
-</AnimatePresence>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
 
       </>) : (
         
