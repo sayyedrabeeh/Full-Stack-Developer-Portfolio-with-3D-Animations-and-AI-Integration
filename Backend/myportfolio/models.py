@@ -107,11 +107,7 @@ class JourneyAchievement(models.Model):
     milestone = models.ForeignKey(JourneyMilestone,related_name='Achievements' ,on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     github_link = models.URLField(blank=True,null=True)
- 
-    
-
- 
-    image = models.ImageField(upload_to='journey/achievements',blank=True,null=True)
+    image = models.ImageField(upload_to='achievements/', blank=True, null=True)
  
     def __str__(self):
         return f'{self.name}'
