@@ -1,0 +1,73 @@
+# myportfolio/migrations/0001_project_models.py
+
+from django.db import migrations, models
+import django.db.models.deletion
+
+class Migration(migrations.Migration):
+    initial = True
+
+    dependencies = []
+
+    operations = [
+        migrations.CreateModel(
+            name='Project',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=200)),
+                ('description', models.TextField()),
+                ('live_link', models.URLField(blank=True, null=True)),
+                ('github_link', models.URLField(blank=True, null=True)),
+                ('tech_stack', models.CharField(help_text='Comma-separated technologies', max_length=300)),
+                ('project_type', models.CharField(blank=True, choices=[('fullstack', 'Fullstack'), ('django', 'Django'), ('react', 'React'), ('opencv', 'OpenCv'), ('ai', 'AI'), ('miniprojects', 'MiniProjects'), ('learning', 'Learning')], max_length=20, null=True)),
+                ('time_spent', models.CharField(blank=True, help_text="Example: '2 weeks', '30 hours'", max_length=100, null=True)),
+                ('media_type', models.CharField(choices=[('image', 'image'), ('video', 'video')], max_length=10)),
+                ('created_at', models.DateField(auto_now_add=True)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='ProjectImage',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('image', models.ImageField(upload_to='project_images/')),
+                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='myportfolio.project')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='ProjectVideo',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('video', models.FileField(upload_to='project_video/')),
+                ('project', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='video', to='myportfolio.project')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='ProjectLike',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('liked_at', models.DateField(auto_now_add=True)),
+                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='likes', to='myportfolio.project')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='auth.user')),
+            ],
+            options={'unique_together': {('project', 'user')}},
+        ),
+        migrations.CreateModel(
+            name='ProjectComment',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('text', models.TextField()),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='myportfolio.project')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='auth.user')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='ProjectBookmark',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bookmarks', to='myportfolio.project')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='auth.user')),
+            ],
+            options={'unique_together': {('user', 'project')}},
+        ),
+    ]

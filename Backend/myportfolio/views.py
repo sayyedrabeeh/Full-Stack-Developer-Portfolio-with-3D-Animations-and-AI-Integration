@@ -294,32 +294,42 @@ def delete_project(request, pk):
 
 
 
+ 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_journey(request):
     if not request.user.is_superuser:
-        return Response({'error':'You are not allowed '},status=status.HTTP_403_FORBIDDEN)
-    data = request.data 
+        return Response({'error': 'You are not allowed'}, status=status.HTTP_403_FORBIDDEN)
+
+    data = request.data
 
     milestone = JourneyMilestone.objects.create(
-        year = data.get('year'),
-        date = data.get('date'),
-        title = data.get('title'),
-        description = data.get('description'))
-    
-    achievements = data.get('achievements',[])
+        year=data.get('year'),
+        date=data.get('date'),
+        title=data.get('title'),
+        description=data.get('description')
+    )
 
-    for i,a in enumerate(achievements):
-        ach_obj = json.load(a)
+    achievement_data_list = request.data.getlist('achievements', [])
+
+    for i, ach_json in enumerate(achievement_data_list):
+        try:
+            ach_obj = json.loads(ach_json)  
+        except json.JSONDecodeError as e:
+            return Response({
+                'error': f'Invalid JSON in achievement {i}: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
         img = request.FILES.get(f'achievement_image_{i}')
 
         JourneyAchievement.objects.create(
             milestone=milestone,
-            name = ach_obj.get('name'),
-            github_link = ach_obj.get('github_link'),
-            image = img
+            name=ach_obj.get('name'),
+            github_link=ach_obj.get('github_link'),
+            image=img
         )
-    return Response({'message':'milestone created '})
+
+    return Response({'message': 'Milestone created successfully'})
 
 
 @api_view(['GET'])

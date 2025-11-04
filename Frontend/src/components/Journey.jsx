@@ -37,7 +37,7 @@ const CurvedJourneyTimeline = () => {
     title: "",
         description: "",
     achievements: [
-            { name: "", github_link: "" ,image:null}
+            { name: "", github_link: "" ,image:null,preview: ""}
     ]
     })
      useEffect(() => {
@@ -74,53 +74,61 @@ const CurvedJourneyTimeline = () => {
             fetchJourney();
         }, []);
     
-    const handleSubmit = async () => {
-        if (!form.title || !form.year || !form.description) {
-            toast.error('All fields are required');
-            return;
-        }
-        const formData = new FormData();
-        formData.append("year", form.year);
-        formData.append("date", form.date);
-        formData.append("title", form.title);
-        formData.append("description", form.description);
+const handleSubmit = async () => {
+  if (!form.year || !form.date || !form.title || !form.description) {
+    toast.error('All fields are required');
+    return;
+  }
 
-        form.achievements.forEach((ach, index) => {
-          formData.append("achievements", JSON.stringify({
-            name: ach.name,
-            github_link: ach.github_link,
-          }));
+  const formData = new FormData();
+  formData.append("year", form.year);
+  formData.append("date", form.date);
+  formData.append("title", form.title);
+  formData.append("description", form.description);
 
-          if (ach.image) {
-            formData.append(`achievement_image_${index}`, ach.image);
-          }
-        });
-        try {
-            const token = localStorage.getItem("access");
-            const res = await api.post(
-            "api/accounts/journey/add/",
-            formData,
-            { headers: { Authorization: `Bearer ${token}` } }
-            );
+  form.achievements.forEach((ach, index) => {
+    formData.append("achievements", JSON.stringify({
+      name: ach.name,
+      github_link: ach.github_link,
+    }));
 
-            toast.success(res.data.message);
-            setShowModal(false);
-            setForm({
-                 year: "",
-                date: "",
-                title: "",
-                    description: "",
-                achievements: [
-                        { name: "", github_link: "",image:null }
-                ]
+    if (ach.image) {
+      formData.append(`achievement_image_${index}`, ach.image);
+    }
+  });
 
-            })
-            fetchJourney();
-        } catch (err) {
-            toast.error("Failed to add journey");
-            console.log(err)
-        }
-        };
+  try {
+    const token = localStorage.getItem("access");
+
+    const res = await api.post(
+      "api/accounts/journey/add/",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data"
+        },
+      }
+    );
+
+    toast.success(res.data.message);
+    setShowModal(false);
+
+    setForm({
+      year: "",
+      date: "",
+      title: "",
+      description: "",
+      achievements: [{ name: "", github_link: "", image: null, preview: "" }]
+    });
+
+    fetchJourney();
+  } catch (err) {
+    toast.error("Failed to add journey");
+    console.log(err);
+  }
+};
+
 
     
     const deleteMilestone = async (id) => {
@@ -136,16 +144,23 @@ const CurvedJourneyTimeline = () => {
     const addAchievement = () => {
         setForm(prev => ({
             ...prev,
-            achievements: [...prev.achievements, { name: "", github_link: "" }]
+            achievements: [...prev.achievements, { name: "", github_link: "" ,image:null,preview: ""}]
         }));
         };
 
         const updateAchievement = (index, field, value) => {
-        const updated = [...form.achievements];
-        updated[index][field] = value;
-
-        setForm(prev => ({ ...prev, achievements: updated }));
-        };
+        setForm((prev) => {
+          const updated = [...prev.achievements];
+          if (field === "image" && value) {
+            const file = value;
+            updated[index].image = file;
+            updated[index].preview = URL.createObjectURL(file);
+          } else {
+            updated[index][field] = value;
+          }
+          return { ...prev, achievements: updated };
+        });
+      };
 
         const removeAchievement = (index) => {
         const updated = form.achievements.filter((_, i) => i !== index);
@@ -706,7 +721,7 @@ const TOTAL_PATH_HEIGHT = Math.max(
             <p className="font-semibold mb-2 text-cyan-300">Achievements</p>
 
             {form.achievements.map((ach, i) => (
-                <div key={i} className="flex gap-2 mb-3 items-center">
+                <div key={i} className="flex flex-col sm:flex-row gap-3 mb-4 items-start">
                 <input
                     className="border border-gray-700 bg-gray-800 text-white p-2 w-1/2 rounded-lg focus:outline-none focus:border-cyan-400 transition-colors"
                     placeholder="Achievement"
@@ -719,19 +734,27 @@ const TOTAL_PATH_HEIGHT = Math.max(
                     value={ach.github_link}
                     onChange={(e) => updateAchievement(i, "github_link", e.target.value)}
                 />
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => updateAchievement(i, "image", e.target.files[0])}
-                  className="text-white text-sm"
-                />
-
-                <button
-                    onClick={() => removeAchievement(i)}
-                    className="text-red-400 hover:text-red-300 px-2 transition-colors"
-                >
-                    <X size={20} />
-                </button>
+                <div className="flex gap-2 items-center w-full sm:w-auto">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => updateAchievement(i, "image", e.target.files[0])}
+                        className="text-xs text-gray-400 file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:bg-cyan-600 file:text-white hover:file:bg-cyan-700"
+                      />
+                      <button
+                        onClick={() => removeAchievement(i)}
+                        className="text-red-400 hover:text-red-300 p-1 transition"
+                      >
+                        <X size={20} />
+                      </button>
+                </div>
+                {ach.preview && (
+                      <img
+                        src={ach.preview}
+                        alt="preview"
+                        className="w-16 h-16 object-cover rounded-lg border border-cyan-500/30 mt-2"
+                      />
+                    )}
                 </div>
             ))}
 
@@ -894,13 +917,13 @@ const TOTAL_PATH_HEIGHT = Math.max(
                     <p className="text-white font-medium text-sm">
                     {ach.name}
                   </p>
-                  {ach.image && (
-                  <img
-                    src={ach.image}
-                    alt="achievement"
-                    className="w-12 h-12 rounded-lg object-cover border border-cyan-500/30"
-                  />
-                )}
+                 {ach.image && (
+                                <img
+                                  src={ach.image}
+                                  alt={ach.name}
+                                  className="w-14 h-14 rounded-lg object-cover border border-cyan-500/30 mt-2"
+                                />
+                              )}
 
                     {ach.github_link && (
                     <a
