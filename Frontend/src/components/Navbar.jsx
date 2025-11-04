@@ -110,7 +110,7 @@ function Navbar() {
               ) : (
                 <button
                   onClick={handleLogin}
-                  className="px-6 py-2.5 rounded-full text-sm font-medium bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/40 hover:shadow-cyan-500/60 transition-all duration-300"
+                  className="px-6 py-2.5 rounded-full text-sm font-medium bg-gradient-to-r from-cyan-500/50 to-blue-600/50 text-white   transition-all duration-300"
                 >
                   Login
                 </button>
@@ -184,7 +184,7 @@ function Navbar() {
               ) : (
                 <button
                   onClick={handleLogin}
-                  className="w-full text-left px-6 py-3 rounded-xl text-base font-medium bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/40 transition-all duration-300"
+                  className="w-full text-left px-6 py-3 rounded-xl text-base font-medium bg-cyan-500/20 to-blue-600/60 text-white shadow-lg shadow-cyan-500/40 transition-all duration-300"
                 >
                   Login
                 </button>
