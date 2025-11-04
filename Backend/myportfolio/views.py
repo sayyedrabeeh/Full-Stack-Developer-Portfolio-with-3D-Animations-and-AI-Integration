@@ -335,7 +335,12 @@ def get_journey(request):
             'title':m.title,
             'description':m.description,
             'Achievements':[
-                {'name':a.name,'github_link':a.github_link} for a in m.Achievements.all()
+                {
+                    'name':a.name,
+                    'github_link':a.github_link,
+                    'image':request.build_absolute_uri(a.image.url) if a.image else None
+                    
+                } for a in m.Achievements.all()
             ]
         })
     return Response(data)
