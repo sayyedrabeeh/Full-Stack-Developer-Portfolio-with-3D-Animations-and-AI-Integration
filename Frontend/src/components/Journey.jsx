@@ -37,7 +37,7 @@ const CurvedJourneyTimeline = () => {
     title: "",
         description: "",
     achievements: [
-            { name: "", github_link: "" }
+            { name: "", github_link: "" ,image:null}
     ]
     })
      useEffect(() => {
@@ -79,12 +79,27 @@ const CurvedJourneyTimeline = () => {
             toast.error('All fields are required');
             return;
         }
+        const formData = new FormData();
+        formData.append("year", form.year);
+        formData.append("date", form.date);
+        formData.append("title", form.title);
+        formData.append("description", form.description);
 
+        form.achievements.forEach((ach, index) => {
+          formData.append("achievements", JSON.stringify({
+            name: ach.name,
+            github_link: ach.github_link,
+          }));
+
+          if (ach.image) {
+            formData.append(`achievement_image_${index}`, ach.image);
+          }
+        });
         try {
             const token = localStorage.getItem("access");
             const res = await api.post(
             "api/accounts/journey/add/",
-            form,
+            formData,
             { headers: { Authorization: `Bearer ${token}` } }
             );
 
@@ -96,7 +111,7 @@ const CurvedJourneyTimeline = () => {
                 title: "",
                     description: "",
                 achievements: [
-                        { name: "", github_link: "" }
+                        { name: "", github_link: "",image:null }
                 ]
 
             })
@@ -704,6 +719,12 @@ const TOTAL_PATH_HEIGHT = Math.max(
                     value={ach.github_link}
                     onChange={(e) => updateAchievement(i, "github_link", e.target.value)}
                 />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => updateAchievement(i, "image", e.target.files[0])}
+                  className="text-white text-sm"
+                />
 
                 <button
                     onClick={() => removeAchievement(i)}
@@ -872,7 +893,15 @@ const TOTAL_PATH_HEIGHT = Math.max(
                 <div className="flex-1">
                     <p className="text-white font-medium text-sm">
                     {ach.name}
-                    </p>
+                  </p>
+                  {ach.image && (
+                  <img
+                    src={ach.image}
+                    alt="achievement"
+                    className="w-12 h-12 rounded-lg object-cover border border-cyan-500/30"
+                  />
+                )}
+
                     {ach.github_link && (
                     <a
                         href={ach.github_link}
