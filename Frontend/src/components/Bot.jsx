@@ -49,7 +49,13 @@ export default function ChatBot() {
 
     }
 
-    
+    const handleKeyPress = (e) => {
+        
+        if (e.key === 'enter') {
+            handleSend()
+        }
+
+    }
 
     return (
         <>
