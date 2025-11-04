@@ -54,7 +54,8 @@ function HeroSection({ dragAreaRef }) {
             Resume
           </a>
           <a
-            href=""
+            href="https://github.com/sayyedrabeeh"
+            target="_blank"
             className="px-6 py-3 bg-transparent border border-blue-400/30 rounded-xl
                        hover:bg-blue-500/20 hover:border-blue-400/50 transition-all duration-300 text-2xl"
           >

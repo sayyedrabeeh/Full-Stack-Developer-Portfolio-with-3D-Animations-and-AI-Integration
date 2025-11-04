@@ -342,7 +342,7 @@ const TOTAL_PATH_HEIGHT = Math.max(
           </h1>
           <p className="text-cyan-300/70 text-lg flex items-center justify-center gap-2">
             <Sparkles className="w-5 h-5" />
-            Follow the curved path
+            Follow the curved path Explore each point 
           </p>
               </motion.div>
              {isSuperUser && (
