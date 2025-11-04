@@ -92,12 +92,27 @@ export default function ChatBot() {
                                 </div>
 
                                 <div>
-                                    
+                                    <h2 className="font-bold text-lg " >Sayyed Rabeeh</h2>
+                                    <p className="text-xs text-blue-100 flex items-center gap-1" >
+                                        <span className="w-2 h-2 bg-green-400 rounded-full animate-pluse  " ></span>
+                                        Online • Full Stack Dev
+                                    </p>
                                 </div>
-
                             </div>
 
+
+                            <button onClick={() => setIsOpen(false)}
+                                className="hover: bg-white/20  p-2 rounded-full transition relative z-10 ">
+                                <X size={24} />
+                            </button>
                         </div>
+
+
+
+
+
+
+
                     </div>
                     
                 </>
