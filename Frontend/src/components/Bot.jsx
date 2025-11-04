@@ -67,10 +67,42 @@ export default function ChatBot() {
                 className={`fixed bottom-6 right-6 bg-gray-900 rounded-full shadow-2xl  hover:shadow-xl hover: shadow-purple-500/20 ring-1 ring-gray-700 transition-all duration-300 ease-out hover:scale-110 hover:ring-purple-500/50
                 z-50  ${ isOpen ? 'hidden':'flex' } items-center justify-center p-1.5 group overflow-hidden  `}
             >
-                
-
+                <img
+                    src="/images/rabi2.jpg"
+                    alt="sayyed rabeeh"
+                    className="w-14 h-14 rounded-full object-cover ring-2 ring-gray-800 shadow-lg "
+                />
+            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-purple-500/10 to-transparent skew-x-12 group-hover:translate-x-full transition-transform duration-1000"></div>
         </button>
             
+            {isOpen && (
+                <>
+                    <div className="fixed inset-0  bg-black bg-opacity-70 z-40 transition-opacity  backdrop-blur-sm " onClick={() => isOpen(false)} />
+                    
+                    <div className="fixed top-0 right-0 h-full w-full sm:w-96 bg-gradient-to-b from-gray-900 via-gray-900 to-black  shadow-2xl z-50 flex flex-col animate-slide-in  border-l border-purple-500/20  " >
+                        <div className="bg-gradient-to-r  from-blue-600 via-purple-600 to-pink-600 text-white p-5 flex  items-center justify-between relative overflow-hidden " >
+                            <div className="absolute inset-0 bg-black opacity-20 " ></div>
+                            <div className="flex items-center gap-3 relative z-10" >
+                                <div className="relative">
+                                    <img
+                                        src="/images/rabi2.jpg"
+                                        alt="sayyed rabeeh "
+                                        className="w-12 h-12 rounded-full border-2 border-white shadow-lg" />
+                                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-gray-900"></div>
+                                </div>
+
+                                <div>
+                                    
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    
+                </>
+            ) }
+
 
         </>
     )
