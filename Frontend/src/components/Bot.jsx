@@ -107,19 +107,67 @@ export default function ChatBot() {
                             </button>
                         </div>
 
+                        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-gray-900 to-black">
 
+                            {message.map((msg, idx) => (
+                                <div key={idx}
+                                    className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}  animate-fade-in `}>
+                                    <div className={`max-w-[85%] p-3 rounded-2xl backdrop-blur-sm ${msg.type === 'user' ?
+                                        'bg-gradient-to-r from-bg-600 via-purple-600 to-pink-600 text-white rounded-br-none shadow-lg shadow-purple-500/30 ' :
+                                        'bg-gray-800-80 text-gray-100  rounded-bl-none border border-purple-500/20 shadow-lg'
+                                        }`}>
+                                        
+                                        <p className="text-sm whitespace-pre-line leading-relaxed ">{ msg.text }</p>
 
+                                    </div>
 
+                                </div>
+                            )) }
 
+                            <div ref={messagesEndRef}/>
+                        </div>
 
-
+                        <div className="p-4 bg-gradient-to-r from-gray-900 to-black border-t border-purple-500/20">
+                        
+                            <div className="flex gap-2">
+                                <input type="text" value={input} onChange={(e) => setInput(e.target.value)} onKeyPress={handleKeyPress}
+                                    placeholder="Ask me anything " 
+                                    className="flex-1 p-3 bg-gray-800/50 border border-purple-500/30  rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm text-gray-100 placeholder-gray-500 backdrop-blur-sm "
+                                />
+                                <button onClick={handleSend} className="ng-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white p-3 rounded-full hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105  " >
+                                    <Send size={20}/>
+                                </button>
+                        </div>
                     </div>
+                </div>
                     
-                </>
-            ) }
-
-
-        </>
-    )
-    
-}
+            </>
+            )}
+             <style>{`
+                @keyframes slide-in {
+                    from {
+                        transform: translateX(100%);
+                    }
+                    to {
+                        transform: translateX(0);
+                    }
+                }
+                @keyframes fade-in {
+                    from {
+                        opacity: 0;
+                        transform: translateY(10px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                .animate-slide-in {
+                    animation: slide-in 0.3s ease-out;
+                }
+                .animate-fade-in {
+                    animation: fade-in 0.3s ease-out;
+                }
+            `}</style>
+    </>
+)}
