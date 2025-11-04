@@ -720,43 +720,56 @@ const TOTAL_PATH_HEIGHT = Math.max(
 
             <p className="font-semibold mb-2 text-cyan-300">Achievements</p>
 
-            {form.achievements.map((ach, i) => (
-                <div key={i} className="flex flex-col sm:flex-row gap-3 mb-4 items-start">
+          {form.achievements.map((ach, i) => (
+          <div
+            key={i}
+            className="bg-gray-800/50 border border-gray-700 rounded-xl p-4 mb-4 shadow-sm hover:border-cyan-500/30 transition-all"
+          >
+         
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+              <input
+                placeholder="Achievement name"
+                value={ach.name}
+                onChange={(e) => updateAchievement(i, "name", e.target.value)}
+                className="w-full px-3 py-2 bg-gray-900 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 transition-colors"
+              />
+              <input
+                placeholder="GitHub link (optional)"
+                value={ach.github_link}
+                onChange={(e) => updateAchievement(i, "github_link", e.target.value)}
+                className="w-full px-3 py-2 bg-gray-900 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 transition-colors"
+              />
+            </div>
+ 
+            <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+             
+              <div className="flex-1 flex items-center gap-3">
                 <input
-                    className="border border-gray-700 bg-gray-800 text-white p-2 w-1/2 rounded-lg focus:outline-none focus:border-cyan-400 transition-colors"
-                    placeholder="Achievement"
-                    value={ach.name}
-                    onChange={(e) => updateAchievement(i, "name", e.target.value)}
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => updateAchievement(i, "image", e.target.files?.[0] || null)}
+                  className="text-xs text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-medium file:bg-cyan-600 file:text-white hover:file:bg-cyan-700 cursor-pointer"
                 />
-                <input
-                    className="border border-gray-700 bg-gray-800 text-white p-2 w-1/2 rounded-lg focus:outline-none focus:border-cyan-400 transition-colors"
-                    placeholder="GitHub Link"
-                    value={ach.github_link}
-                    onChange={(e) => updateAchievement(i, "github_link", e.target.value)}
-                />
-                <div className="flex gap-2 items-center w-full sm:w-auto">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => updateAchievement(i, "image", e.target.files[0])}
-                        className="text-xs text-gray-400 file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:bg-cyan-600 file:text-white hover:file:bg-cyan-700"
-                      />
-                      <button
-                        onClick={() => removeAchievement(i)}
-                        className="text-red-400 hover:text-red-300 p-1 transition"
-                      >
-                        <X size={20} />
-                      </button>
-                </div>
+               
                 {ach.preview && (
-                      <img
-                        src={ach.preview}
-                        alt="preview"
-                        className="w-16 h-16 object-cover rounded-lg border border-cyan-500/30 mt-2"
-                      />
-                    )}
-                </div>
-            ))}
+                  <img
+                    src={ach.preview}
+                    alt="preview"
+                    className="w-12 h-12 rounded-lg object-cover border border-cyan-500/40 shadow-sm"
+                  />
+                )}
+              </div>
+ 
+              <button
+                onClick={() => removeAchievement(i)}
+                className="text-red-400 hover:text-red-300 p-2 rounded-lg hover:bg-red-900/20 transition-all duration-200 group"
+                title="Remove achievement"
+              >
+                <X size={18} className="group-hover:scale-110 transition-transform" />
+              </button>
+            </div>
+          </div>
+        ))}
 
             <button
                 onClick={addAchievement}
