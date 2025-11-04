@@ -10,6 +10,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Project,ProjectImage,ProjectVideo,ProjectComment,ProjectLike,ProjectBookmark,JourneyMilestone,JourneyAchievement
 from django.shortcuts import get_object_or_404
 from django.utils.timezone import localtime
+import json
+
 
 
 # Create your views here.
@@ -304,12 +306,18 @@ def add_journey(request):
         date = data.get('date'),
         title = data.get('title'),
         description = data.get('description'))
+    
     achievements = data.get('achievements',[])
-    for a in achievements:
+
+    for i,a in enumerate(achievements):
+        ach_obj = json.load(a)
+        img = request.FILES.get(f'achievement_image_{i}')
+
         JourneyAchievement.objects.create(
             milestone=milestone,
-            name = a.get('name'),
-            github_link = a.get('github_link')
+            name = ach_obj.get('name'),
+            github_link = ach_obj.get('github_link'),
+            image = img
         )
     return Response({'message':'milestone created '})
 
@@ -327,7 +335,12 @@ def get_journey(request):
             'title':m.title,
             'description':m.description,
             'Achievements':[
-                {'name':a.name,'github_link':a.github_link} for a in m.Achievements.all()
+                {
+                    'name':a.name,
+                    'github_link':a.github_link,
+                    'image':request.build_absolute_uri(a.image.url) if a.image else None
+                    
+                } for a in m.Achievements.all()
             ]
         })
     return Response(data)
