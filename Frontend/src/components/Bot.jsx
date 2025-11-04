@@ -57,9 +57,21 @@ export default function ChatBot() {
 
     }
 
+
+
+
+
     return (
         <>
-        ChatBot
+            <button onClick={() => setIsOpen(true)}
+                className={`fixed bottom-6 right-6 bg-gray-900 rounded-full shadow-2xl  hover:shadow-xl hover: shadow-purple-500/20 ring-1 ring-gray-700 transition-all duration-300 ease-out hover:scale-110 hover:ring-purple-500/50
+                z-50  ${ isOpen ? 'hidden':'flex' } items-center justify-center p-1.5 group overflow-hidden  `}
+            >
+                
+
+        </button>
+            
+
         </>
     )
     
