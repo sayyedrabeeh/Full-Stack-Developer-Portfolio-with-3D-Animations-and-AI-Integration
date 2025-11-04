@@ -22,7 +22,34 @@ export default function ChatBot() {
     
     const knowledgeBase = {
 
+        fullName: "Sayyed Rabeeh (also called Rabeeh, Thangal, Sayyed, or Rabi - multi-version human release 😄)",
+
+
     }
+
+    const getBotResponse = (userInput) => {
+        const input = userInput.toLowerCase()
+        if (input.includes('your name') || input.includes('who are you') || input === 'name') {
+            return `I am ${knowledgeBase.fullName}`
+        }
+
+    } 
+    
+    const handleSend = () => {
+        
+        if (!input.trim()) return 
+        const userMessage = { type: 'user', text: 'text' }
+        setMessage(prev => [...prev, userMessage])
+        
+        setTimeout(() => {
+            const botResponse = { type: 'bot', text: getBotResponse(input) }
+            setMessage(prev =>[...prev,botResponse])
+        }, 500)
+        setInput('')
+
+    }
+
+    
 
     return (
         <>
