@@ -65,6 +65,18 @@ export default function ChatBot() {
         hobbies: "Outside of coding, I’m really into movies and music. I don’t stick to one genre — if it’s good, I’m watching it. I'm a cinematic enjoyer, especially high-voltage movies like Lokesh universe, Bahubali, Salaar, KGF and all those goosebumps-triggers 😌🔥 I also love analyzing sound effects, background score, and visual shots — sometimes more than the story itself. If a movie has insane BGM and stylish scenes, I'm locked in",
         music: "I enjoy music based on my mood. My playlist shifts between emotional, energetic, and calm tracks depending on how I feel — I love exploring different genres rather than sticking to just one.I listen to music based on my mood — emotional songs when I'm sad, energetic ones when I'm happy. I don't have one fixed genre; I enjoy everything depending on how I feel.",
         codingMusic: "Depends on mood: Lo-fi (calm debugging), Trap/EDM (speed-coding), Instrumental BGM from KGF/Salaar/Baahubali (feel like saving world with terminal 🔥), sometimes emotional songs (debugging needs emotional support 😄)",
+        gaming: "Love chess! I enjoy strategic games, especially chess. I'm not a professional player, but I love the game and play it regularly to improve my strategic thinking. I occasionally play video games for fun as well.",
+        sports: "I enjoy physical activities like dance, karate, and fitness training. I haven’t formally trained yet due to financial and time focus on my tech journey, but it's definitely on my list once I’m more settled. I believe staying active is essential for discipline and mental clarity.",
+        creative: "Enjoy drawing simple nature sketches. Not professional - just for relaxation and creative expression",
+        travel: "Enjoy traveling, want to explore world in future. i want to explore different parts of the world in the future. I prefer meaningful travel with people I genuinely care about, rather than traveling just for the sake of it. Once I achieve stability in my career, I plan to prepare and start traveling more. Once career is stable, will travel more",
+        favoriteLanguage: "Python is my favorite because it was the first language I studied seriously, and it clicked for me. It's clean, easy to understand, and powerful for backend systems.React comes right after — I love how quickly I can shape UI ideas into reality and build modern, interactive interfaces.",
+        careerGoal: "Honestly, my long-term goal is to build something big — a tech product or company — and become extremely successful, financially and professionally.Yes… billionaire ambitions included  😎",
+        coffeeOrTea: "I’m not really a big coffee person — I prefer tea when I need something. But honestly, I don’t rely much on either; I stay more focused without it.r",
+        food: " I enjoy trying different snacks and flavors. I haven’t explored many cuisines yet, but once I’m financially stable, I’m planning to try everything—from burgers with cheese to international street food. I love experimenting with food, so I know I'll develop many favorites soon.",
+        schedule: "I'm a night owl by nature — nights feel peaceful and creative for me.But my family is strict about late nights, so I’m a night owl living under morning-person surveillanceI naturally think and work better at night — it’s quiet, creative, and helps me focus deeply.However, I also understand the importance of discipline and routine, so I adjust when needed.Right now, my family prefers a more structured schedule, so I balance both.In short: I can thrive in both schedules, but my brain secretly votes for nighttime productivity",
+   
+   
+   
     }
 
     const getBotResponse = (userInput) => {
@@ -79,9 +91,7 @@ export default function ChatBot() {
             return `People call me different names: ${knowledgeBase.nicknames.join(', ')}. I'm basically a multi-version human release! 😄`;
         }
 
-        if (input.includes('age') || input.includes('old') || input.includes('birth') || input.includes('dob') || input.includes('born')) {
-            return `${knowledgeBase.dob}.   🎂`;
-        }
+
         if (/\b(where\s+(?:are\s+)?(?:you|u|i)?\s*(?:from|live|located|staying|do\s+you\s+stay|do\s+you\s+live)?|your\s+(?:city|town|place|home|location)|hometown|which\s+(?:place|city|country)|current\s+location|present\s+location|share\s+your\s+location|drop\s+location|situated|location|place)\b/i.test(input)) {
             return knowledgeBase.location;
         }
@@ -118,9 +128,7 @@ export default function ChatBot() {
         
         
 
-        if (input.includes('skill') || input.includes('tech stack') || input.includes('technology')) {
-            return `${knowledgeBase.primaryStack}. I work with Django, React, PostgreSQL, Tailwind, Docker, AWS, REST APIs, and more! Full-stack specialist 💪`;
-        }
+        
         
         if (/\b(python|pyhton|py|your python|python level|python skills|python experience|python expert|python dev|python developer|know python|can you code python|python knowledge|how good are you in python|strong in python|python proficiency|python ability|python rating|python background)\b/i.test(input)) {
             return `${knowledgeBase.pythonLevel} Check my GitHub: ${github}`
@@ -163,9 +171,7 @@ export default function ChatBot() {
         if (/\b(database|databases|db|postgres|postgresql|mysql|mongo|mongodb|nosql|relational database|sql database|db experience)\b/i.test(input)) {
             return knowledgeBase.databases;
         }
-        if (input.includes('skill') || input.includes('tech stack') ||input.includes('tech')||input.includes('stack')|| input.includes('technology')) {
-            return `${knowledgeBase.primaryStack}. I work with Django, React, PostgreSQL, Tailwind, Docker, AWS, REST APIs, and more! Full-stack specialist 💪`;
-        }
+        
         if (input.includes('resumatch') || input.includes('resume')) {
             return `ResuMatch: ${knowledgeBase.projects.resumatch}`;
         }
@@ -225,12 +231,46 @@ export default function ChatBot() {
         }
         
 
+
+        if (/\b(game|games|gaming|play game|play games|chess|video game|video games|board game|board games|online game|online games|pc game|mobile game|console game)\b/i.test(input)) {
+            return knowledgeBase.gaming;
+        }
+
+        if (/\b(sport|sports|fitness|workout|exercise|exercising|gym|training|physical activity|cardio|strength training|athletics|yoga|pilates|running|jogging|cycling|swimming|team sport|individual sport)\b/i.test(input)) {
+            return knowledgeBase.sports;
+        }
+        if (/\b(draw|drawing|sketch|sketching|paint|painting|art|artist|illustration|illustrate|doodle|digital art|graphic design|creative|craft|crafting|design)\b/i.test(input)) {
+            return knowledgeBase.creative;
+        }
+        if (input.includes('skill') || input.includes('tech stack') ||input.includes('tech')||input.includes('stack')|| input.includes('technology')) {
+            return `${knowledgeBase.primaryStack}. I work with Django, React, PostgreSQL, Tailwind, Docker, AWS, REST APIs, and more! Full-stack specialist 💪`;
+        }
+        if (input.includes('skill') || input.includes('tech stack') || input.includes('technology')) {
+            return `${knowledgeBase.primaryStack}. I work with Django, React, PostgreSQL, Tailwind, Docker, AWS, REST APIs, and more! Full-stack specialist 💪`;
+        }
+        if (/\b(travel|travelling|trip|journey|vacation|holiday|tour|explore|adventure|backpacking|roadtrip|globetrot|tourism|traveling)\b/i.test(input)) {
+            return knowledgeBase.travel;
+        }
+        if (/\b(fav|fave|favorite|favourite)\b.*\b(language|programming language|coding language|prog language)\b/i.test(input)) {
+            return knowledgeBase.favoriteLanguage;
+        }
+        if (input.includes('age') || input.includes('old') || input.includes('birth') || input.includes('dob') || input.includes('born')) {
+            return `${knowledgeBase.dob}.   🎂`;
+        }
         if (/\b(experience|experiences|exp|how long|how many years|years|developing|coding|programming|since when|started coding|started programming|background)\b/i.test(input) 
             && !/\b(python|react|django)\b/i.test(input)) {
             return knowledgeBase.codingExperience;
         }
+        if (/\b(goal|career goal|future|future plan|future plans|ambition|career ambition|career objective|long[-\s]?term goal|long[-\s]?term plan|professional goal|professional ambition)\b/i.test(input)) {
+            return knowledgeBase.careerGoal;
+        }
+        if (/(coffee|tea|drink|beverage|hot drink|morning drink|caffeinated drink|your favorite drink|tea or coffee|coffee or tea|tea\/coffee)/i.test(input)) {
+            return knowledgeBase.coffeeOrTea;
+        }
+        if (/\b(food|eat|eating|meal|meals|cuisine|favorite food|favorite meal|what do you eat|what's your favorite food|your cuisine|food preference|meal preference|snack|dinner|lunch|breakfast)\b/i.test(input)) {
+            return knowledgeBase.food;
+        }
 
- 
 
 
     } 
