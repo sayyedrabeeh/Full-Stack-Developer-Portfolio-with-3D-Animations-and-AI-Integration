@@ -19,6 +19,8 @@ export default function ChatBot() {
     useEffect(() => {
         scrollToBottom()
     }, [message])
+
+    const github = `<a href="https://github.com/sayyedrabeeh" target="_blank"  rel="noopener noreferrer" class="text-blue-500 font-semibold underline hover:text-blue-700 transition duration-200">github.com/sayyedrabeeh</a>`
     
     const knowledgeBase = {
 
@@ -33,11 +35,11 @@ export default function ChatBot() {
         codingExperience: "I have around 1.5 years of hands-on development experience — built through serious self-learning, bootcamp training, and working on real‐world personal projects , 1,000+ GitHub commits,   and practical problem-solving experience.No company tag yet, but trust me…I’ve written enough code, fixed enough bugs,  enough deployments to count as real-world experience 😌💪In short:Not “corporate experience” yet —but practical,problem-solving experience?✅ Absolutely.And now I’m ready to bring that same energy to a professional team ",
         primaryStack: "Full Stack Developer - Python, Django, React",
         pythonLevel: "I'd call myself an intermediate Python developer.I can Build real-world projects Turn “why isn’t this working???” code into “oh wow it runs!” code 😌 Solve problems and debug confidently Work with frameworks like Django & automation tools Write clean code that future-me doesn't fight with  I'm not calling myself an expert yet — Python gurus can probably write code in their sleep.I still need internet + ai tools + Stack Overflow…  If you check my GitHub, you’ll get a clear picture of my journey & progress Growing every day, writing better code every night — Intermediate now, future expert loading…",
-        
+        django: `I’ve built quite a lot of Django projects over time — some purely for practice and experimentation,some backend + templates full–stack,and some full–stack with Django + React.Not every project reached GitHub (some were beautiful disasters from my learning phase 😅),but the polished ones are there if you want check — 👉  ${github} So yeah, I’ve been coding, breaking, fixing, and learning continuously…and if you ask how many Django projects I've actually built?Let’s just say… around 10 and more not know exact .`,
     
 
 
-        github: `<a href="https://github.com/sayyedrabeeh" target="_blank"  rel="noopener noreferrer" class="text-blue-500 font-semibold underline hover:text-blue-700 transition duration-200">github.com/sayyedrabeeh</a>`
+        
     
     }
 
@@ -227,8 +229,36 @@ export default function ChatBot() {
         input.includes("python rating") ||
         input.includes("python background")
         ) {
-            return `${knowledgeBase.pythonLevel} Check my GitHub: ${knowledgeBase.github}`;
+            return `${knowledgeBase.pythonLevel} Check my GitHub: ${github}`;
         }
+        if (
+            input.includes("django") ||
+            input.includes("dangoo") || 
+            input.includes("djanngo") ||
+            input.includes("djngo") ||
+            input.includes("dnago") ||
+            input.includes("djang") ||
+            input.includes("python django") ||
+            input.includes("django experience") ||
+            input.includes("django projects") ||
+            input.includes("django level") ||
+            input.includes("django skills") ||
+            input.includes("django dev") ||
+            input.includes("know django") ||
+            input.includes("can you do django") ||
+            input.includes("django proficiency") ||
+            input.includes("strong in django") ||
+            input.includes("django background") ||
+            input.includes("django developer") ||
+            input.includes("django expert") ||
+            input.includes("django rating") ||
+            input.includes("how good in django") ||
+            input.includes("django knowledge") ||
+            input.includes("django framework")
+        ) {
+            return `${knowledgeBase.django}`;
+        }
+
 
 
 
