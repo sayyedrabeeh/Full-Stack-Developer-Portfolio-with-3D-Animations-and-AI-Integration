@@ -36,7 +36,7 @@ export default function ChatBot() {
         primaryStack: "Full Stack Developer - Python, Django, React",
         pythonLevel: "I'd call myself an intermediate Python developer.I can Build real-world projects Turn “why isn’t this working???” code into “oh wow it runs!” code 😌 Solve problems and debug confidently Work with frameworks like Django & automation tools Write clean code that future-me doesn't fight with  I'm not calling myself an expert yet — Python gurus can probably write code in their sleep.I still need internet + ai tools + Stack Overflow…  If you check my GitHub, you’ll get a clear picture of my journey & progress Growing every day, writing better code every night — Intermediate now, future expert loading…",
         django: `I’ve built quite a lot of Django projects over time — some purely for practice and experimentation,some backend + templates full–stack,and some full–stack with Django + React.Not every project reached GitHub (some were beautiful disasters from my learning phase 😅),but the polished ones are there if you want check — 👉  ${github} So yeah, I’ve been coding, breaking, fixing, and learning continuously…and if you ask how many Django projects I've actually built?Let’s just say… around 10 and more not know exact .`,
-    
+        react: "I’ve built quite a good number of React projects too — not as many as Django, since I started with Django + HTML first,and later moved into the React world.Some were experiments, some were serious full-stack builds,some are on GitHub, some are…well, hiding in my old folders like secret missions 😅If you check my GitHub, you'll get the exact count —but yeahhh,i think around 10+ React projects too.",
 
 
         
@@ -258,6 +258,44 @@ export default function ChatBot() {
         ) {
             return `${knowledgeBase.django}`;
         }
+        if (
+        input.includes("react") ||
+        input.includes("recat") ||
+        input.includes("raect") ||
+        input.includes("reactjs") ||
+        input.includes("react js") ||
+        input.includes("recat js") ||
+        input.includes("reaact") ||
+        input.includes("ract") ||
+        input.includes("recat") ||
+        input.includes("react developer") ||
+        input.includes("react dev") ||
+        input.includes("react engineer") ||
+        input.includes("react projects") ||
+        input.includes("react experience") ||
+        input.includes("react apps") ||
+        input.includes("build react") ||
+        input.includes("can you do react") ||
+        input.includes("know react") ||
+        input.includes("react knowledge") ||
+        input.includes("react skills") ||
+        input.includes("react level") ||
+        input.includes("react proficiency") ||
+        input.includes("react expertise") ||
+        input.includes("react background") ||
+        input.includes("react strong") ||
+        input.includes("strong in react") ||
+        input.includes("how good in react") ||
+        input.includes("react rating") ||
+        input.includes("react framework") ||  
+        input.includes("frontend react") ||
+        input.includes("react frontend") ||
+        input.includes("react proficiency") ||
+        input.includes("react role") ||
+        input.includes("react knowledge level")
+    ) {
+        return `${knowledgeBase.react} You can explore projects here: ${github}; `;
+    }
 
 
 
