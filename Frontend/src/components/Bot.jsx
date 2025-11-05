@@ -41,8 +41,8 @@ export default function ChatBot() {
         docker: `Yes — I’ve worked with Docker in one of my projects, TaleTailor (an AI-powered storytelling platform with social features). I containerized the application as part of the deployment flow.I'm not a Docker Guru yet, but I understand the fundamentals:- Writing Dockerfiles  - Building & running containers  - Understanding images & layers  - Docker Compose basics  I can confidently work with Docker, and if deeper Docker magic is needed, I'll dive in fast 🚀  You can check the project here: <a href="https://github.com/sayyedrabeeh/taletailor" target="_blank" rel="noopener noreferrer" class="text-blue-500 font-semibold underline hover:text-blue-700 transition duration-200">github.com/sayyedrabeeh/taletailor</a>`,        
         git: "I’ve been using Git and GitHub since the start of my developer journey —  one  and half yer plus now. I use Git daily for version control, branching, merging, resolving conflicts, and collaborating on projects.Also, fun fact: I  crossed 1,000+ GitHub commits — so you could say git is part of my everyday muscle memory now.😌🔥",
         cloud: "My first real deployment was on AWS — I set up EC2, S3 for static files, and got my app live there. After that, I explored Render, Railway, and Vercel for hosting other projects (mostly because… let's be honest… they are free and AWS is not 🤝💸).So yes — I’ve worked with AWS, but I also know how to survive in the “developer on a budget” world too",
-
-
+        apis: "I have strong REST API experience — I build backend APIs using Django REST Framework and integrate them with React frontends in full-stack projects.GraphQL? Haven’t used it much yet — REST keeps me pretty happy for now — but if a project needs GraphQL, I’ll pick it up fast (just like I did with Django & React)",
+        typescript: " I’ve been working mostly with JavaScript so far.But TypeScript is definitely on my list, and with my habit of self-learning , I’m confident I can pick it up quickly when needed.",
 
     }
 
@@ -133,6 +133,13 @@ export default function ChatBot() {
         ) {
             return knowledgeBase.cloud;
         }
+        if (/\b(api|rest|graphql|rest api|graphql api|restful|restful api|api development|api experience|build api|develop api|backend api|api skills|api knowledge)\b/i.test(input)) {
+            return knowledgeBase.apis;
+        }
+        if (/\b(typescript|ts|type script|type-sript|typscript|tye script|ts lang)\b/i.test(input)) {
+            return knowledgeBase.typescript;
+        }
+
 
 
 
