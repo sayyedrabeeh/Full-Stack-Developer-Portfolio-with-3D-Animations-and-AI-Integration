@@ -37,7 +37,7 @@ export default function ChatBot() {
         pythonLevel: "I'd call myself an intermediate Python developer.I can Build real-world projects Turn “why isn’t this working???” code into “oh wow it runs!” code 😌 Solve problems and debug confidently Work with frameworks like Django & automation tools Write clean code that future-me doesn't fight with  I'm not calling myself an expert yet — Python gurus can probably write code in their sleep.I still need internet + ai tools + Stack Overflow…  If you check my GitHub, you’ll get a clear picture of my journey & progress Growing every day, writing better code every night — Intermediate now, future expert loading…",
         django: `I’ve built quite a lot of Django projects over time — some purely for practice and experimentation,some backend + templates full–stack,and some full–stack with Django + React.Not every project reached GitHub (some were beautiful disasters from my learning phase 😅),but the polished ones are there if you want check — 👉  ${github} So yeah, I’ve been coding, breaking, fixing, and learning continuously…and if you ask how many Django projects I've actually built?Let’s just say… around 10 and more not know exact .`,
         react: "I’ve built quite a good number of React projects too — not as many as Django, since I started with Django + HTML first,and later moved into the React world.Some were experiments, some were serious full-stack builds,some are on GitHub, some are…well, hiding in my old folders like secret missions 😅If you check my GitHub, you'll get the exact count —but yeahhh,i think around 10+ React projects too.",
-
+        nodeExpress: "To be honest — I don’t know Node.js or Express yet.Not even a single line But here’s the thing:I learned Python, Django, and React completely through self-study,so if I decide to pick up Node & Express,’m confident I can learn it pretty fast Tech is just logic — once you know how to learn,new stacks are just another level in the game.",
 
         
     
@@ -295,7 +295,53 @@ export default function ChatBot() {
         input.includes("react knowledge level")
     ) {
         return `${knowledgeBase.react} You can explore projects here: ${github}; `;
-    }
+        }
+    if (
+            input.includes("node") ||
+            input.includes("nodejs") ||
+            input.includes("node js") ||
+            input.includes("node.js") ||
+            input.includes("node express") ||
+            input.includes("node and express") ||
+            input.includes("express") ||
+            input.includes("expressjs") ||
+            input.includes("express js") ||
+            input.includes("express.js") ||
+            input.includes("nide") ||
+            input.includes("nod") ||
+            input.includes("notejs") ||
+            input.includes("nodej") ||
+            input.includes("nod js") ||
+            input.includes("nod express") ||
+            input.includes("expres") ||
+            input.includes("exprss") ||
+            input.includes("exprees") ||
+            input.includes("know node") ||
+            input.includes("know express") ||
+            input.includes("learn node") ||
+            input.includes("learn express") ||
+            input.includes("node skills") ||
+            input.includes("express skills") ||
+            input.includes("node level") ||
+            input.includes("express level") ||
+            input.includes("node experience") ||
+            input.includes("express experience") ||
+            input.includes("how good in node") ||
+            input.includes("how good in express") ||
+            input.includes("node projects") ||
+            input.includes("express projects") ||
+            input.includes("node developer") ||
+            input.includes("express developer") ||
+            input.includes("do you know node") ||
+            input.includes("do you know express") ||
+            input.includes("can you do node") ||
+            input.includes("can you do express") ||
+            input.includes("worked with node") ||
+            input.includes("worked with express")
+        ) {
+            return knowledgeBase.nodeExpress;
+        }
+
 
 
 
