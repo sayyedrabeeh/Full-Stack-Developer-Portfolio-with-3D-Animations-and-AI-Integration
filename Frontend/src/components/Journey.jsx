@@ -337,13 +337,25 @@ const TOTAL_PATH_HEIGHT = Math.max(
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <h1 className="text-6xl md:text-7xl font-bold mb-3 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
+            <motion.h1
+                initial={{ opacity: 0, y: 400 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false ,amount: 0.5 }}
+                transition={{duration:1}}
+            
+              className="text-6xl md:text-7xl font-bold mb-3 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
             Journey Timeline
-          </h1>
-          <p className="text-cyan-300/70 text-lg flex items-center justify-center gap-2">
+          </motion.h1>
+            <motion.p
+                initial={{ opacity: 0, x: 400 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false ,amount: 0.5 }}
+                transition={{duration:1}}
+            
+              className="text-cyan-300/70 text-lg flex items-center justify-center gap-2">
             <Sparkles className="w-5 h-5" />
             Follow the curved path Explore each point 
-          </p>
+          </motion.p>
               </motion.div>
              {isSuperUser && (
           <div className="flex justify-center mb-6">
