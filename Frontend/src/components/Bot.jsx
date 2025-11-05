@@ -43,6 +43,20 @@ export default function ChatBot() {
         cloud: "My first real deployment was on AWS — I set up EC2, S3 for static files, and got my app live there. After that, I explored Render, Railway, and Vercel for hosting other projects (mostly because… let's be honest… they are free and AWS is not 🤝💸).So yes — I’ve worked with AWS, but I also know how to survive in the “developer on a budget” world too",
         apis: "I have strong REST API experience — I build backend APIs using Django REST Framework and integrate them with React frontends in full-stack projects.GraphQL? Haven’t used it much yet — REST keeps me pretty happy for now — but if a project needs GraphQL, I’ll pick it up fast (just like I did with Django & React)",
         typescript: " I’ve been working mostly with JavaScript so far.But TypeScript is definitely on my list, and with my habit of self-learning , I’m confident I can pick it up quickly when needed.",
+        css: "I am  actively use Tailwind CSS, and it has become my favorite for building fast, modern UI. I’ve also used Semantic UI in the past (RIP to that era 😅 — it's outdated now so I retired it from my toolkit).Currently, I prefer Tailwind + custom components, and I’m exploring component libraries.",
+        databases: "PostgreSQL (primary) i know well,I’ve worked with MySQL and MongoDB, but only at a basic level so far.I can perform core operations and build functional DB structures,but I wouldn’t claim “deep expertise” yet.That said, learning new tools is kind of my hobby at this point — so if the project needs it, give me a little time and I'll level up fast",
+
+        projects: {
+            resumatch: "ResuMatch - Resume & job-hunting assistant. Analyzes resumes, matches with jobs, scores them, suggests improvements, 100+ HR questions, chatbot for interview practice. Django + React + Tailwind",
+            taletailor: "TaleTailor - AI-powered storytelling platform with social features. Generate stories, real-time collaboration (WebSockets), mood-based theming, reactions, comments, chat, share as PDF. Like Wattpad + AI + Social platform",
+            jarvis: "Jarvis AI - Desktop voice assistant inspired by Marvel. Speech recognition, plays music, Wikipedia, calculations, opens YouTube/sites, jokes. Better listener than some humans 😌",
+            viAssistant: "VI Assistant - Web-based JARVIS chatbot. Django-powered, performs searches, opens sites, plays media. Live at jarvis-ai-2nfc.onrender.com",
+            gestureGames: "Multiple gesture-controlled games: Dino Runner (hand controls Chrome dino), Doctor Strange Simulator (hand gestures for shields/portals), Virtual Painter (air-pen drawing), Gesture Game Controller (human joystick for Subway Surfers/Temple Run). Python + OpenCV + MediaPipe",
+            aiSketch: "AI Sketch Studio - Converts images to artistic styles (pencil, watercolor, oil). Django + OpenCV with drag-and-drop UI",
+            portfolio: "Full-Stack Portfolio - Production-level project with Django + React, Tailwind + Framer Motion, Matter.js & Three.js for 3D/physics, JWT auth, email verification. Represents personality and skills"
+        },
+        
+
 
     }
 
@@ -139,8 +153,36 @@ export default function ChatBot() {
         if (/\b(typescript|ts|type script|type-sript|typscript|tye script|ts lang)\b/i.test(input)) {
             return knowledgeBase.typescript;
         }
-
-
+        if (/\b(css|tailwind|tailwind css|bootstrap|semantic ui|styling|ui framework|component library|material ui|material-ui)\b/i.test(input)) {
+            return knowledgeBase.css;
+        }
+        if (/\b(database|databases|db|postgres|postgresql|mysql|mongo|mongodb|nosql|relational database|sql database|db experience)\b/i.test(input)) {
+            return knowledgeBase.databases;
+        }
+        if (input.includes('skill') || input.includes('tech stack') ||input.includes('tech')||input.includes('stack')|| input.includes('technology')) {
+            return `${knowledgeBase.primaryStack}. I work with Django, React, PostgreSQL, Tailwind, Docker, AWS, REST APIs, and more! Full-stack specialist 💪`;
+        }
+        if (input.includes('resumatch') || input.includes('resume')) {
+            return `ResuMatch: ${knowledgeBase.projects.resumatch}`;
+        }
+        if (input.includes('taletailor') || input.includes('story maker') || input.includes('storytelling')) {
+            return `TaleTailor: ${knowledgeBase.projects.taletailor}`;
+        }
+        if (input.includes('jarvis') || input.includes('voice assistant')) {
+            return `${knowledgeBase.projects.jarvis}`;
+        }
+        if (input.includes('vi assistant')) {
+            return `${knowledgeBase.projects.viAssistant}`;
+        }
+        if (input.includes('gesture') || input.includes('game control') || input.includes('hand control')) {
+            return `${knowledgeBase.projects.gestureGames}`;
+        }
+        if (input.includes('ai sketch') || input.includes('artist')) {
+            return `${knowledgeBase.projects.aiSketch}`;
+        }
+        if (input.includes('portfolio') && input.includes('project')) {
+            return `${knowledgeBase.projects.portfolio}`;
+        }
 
 
 
