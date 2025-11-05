@@ -106,7 +106,7 @@ function HeroSection({ dragAreaRef }) {
           </div>
         </motion.div>
         <p className="mt-4 text-gray-400 text-sm font-medium select-none">
-    Drag the image anywhere 😎
+    Drag the image anywhere 😎 NB: everything has a limit.
   </p>
       </div>
 

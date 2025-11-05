@@ -379,6 +379,8 @@ Meanwhile, you can still ask me about skills, projects, background, hobbies, fav
                     alt="sayyed rabeeh"
                     className="w-14 h-14 rounded-full object-cover ring-2 ring-gray-800 shadow-lg "
                 />
+    <span className="absolute bottom-1 right-1 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span>
+
             <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-purple-500/10 to-transparent skew-x-12 group-hover:translate-x-full transition-transform duration-1000"></div>
         </button>
             {isOpen && (
