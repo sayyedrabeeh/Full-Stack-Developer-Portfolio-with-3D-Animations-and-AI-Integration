@@ -24,6 +24,9 @@ export default function ChatBot() {
 
         fullName: "Officially, I'm Sayyed Rabeeh.Unofficially, it depends who you ask — Rabeeh, Thangal, Sayyed, or Rabi.",
         nicknames: ["Rabeeh", "Thangal", "Sayyed", "Rabi"],
+        dob: "Well… I usually don’t share it with everyone, but you seem special 😌  I was born on 27 March 2004 (21 year old).So yes, I’m a 2K kid Bro — not too old, not too young…  Maturity? Flexible — depends on situation",
+        location: "I’m from a   village called Puzhakkattiri near Perinthalmanna in Malappuram, Kerala,india.  but I’m definitely a city-vibe person — I love the energy and opportunities cities bring",
+        background: "I am Studied at a religious Arabic college for 9+ years training to become a Hudawi (parents' dream). Did +2 Humanities because that's only they allowed. Then realized 'Life is short, Wi-Fi is fast, and my passion is tech' - so Ctrl+Alt+Exit! Switched to tech 1.5-2 years ago and never looked back.",
 
     }
 
@@ -64,7 +67,41 @@ export default function ChatBot() {
         ) {
             return `People call me different names: ${knowledgeBase.nicknames.join(', ')}. I'm basically a multi-version human release! 😄`;
         }
-
+        if (input.includes('age') || input.includes('old') || input.includes('birth') || input.includes('dob') || input.includes('born')) {
+            return `${knowledgeBase.dob}.   🎂`;
+        }
+        if (
+            (input.includes("where") && input.includes("from")) ||
+            (input.includes("where") && input.includes("live")) ||
+            (input.includes("where") && input.includes("location")) ||
+            (input.includes("your") && input.includes("location")) ||
+            (input.includes("where") && input.includes("you from")) ||
+            input.includes("your city") ||
+            input.includes("your town") ||
+            input.includes("your place") ||
+            input.includes("where do you stay") ||
+            input.includes("where do you live") ||
+            input.includes("what is your location") ||
+            input.includes("which place") ||
+            input.includes("which city") ||
+            input.includes("which country") ||
+            input.includes("your home") ||
+            input.includes("hometown") ||
+            input.includes("location") ||
+            input.includes("place") ||
+            input.includes("where are you staying") ||
+            input.includes("where are you located") ||
+            input.includes("share your location") ||
+            input.includes("drop location") ||
+            input.includes("current location") ||
+            input.includes("present location") ||
+            input.includes("situated")
+        ) {
+            return knowledgeBase.location;
+        }
+        if (input.includes('background') || input.includes('story') || input.includes('humanities') || input.includes('religious') || input.includes('college')) {
+            return knowledgeBase.background;
+        }
 
 
     } 
@@ -85,7 +122,7 @@ export default function ChatBot() {
 
     const handleKeyPress = (e) => {
         
-        if (e.key === 'enter') {
+        if (e.key === 'Enter') {
             handleSend()
         }
 
@@ -168,7 +205,7 @@ export default function ChatBot() {
                                     type="text"
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
-                                    onKeyPress={handleKeyPress}
+                                    onKeyDown={handleKeyPress}
                                     placeholder="Ask me anything..."
                                     className="flex-1 p-3 bg-gray-800/50 border border-purple-500/30 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm text-gray-100 placeholder-gray-500 backdrop-blur-sm"
                                 />
