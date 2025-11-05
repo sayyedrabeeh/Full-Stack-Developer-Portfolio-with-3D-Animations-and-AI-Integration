@@ -30,6 +30,8 @@ export default function ChatBot() {
         transitionStory: "Honestly, Humanities and I were never a love story — we were more like an arranged marriage that I didn’t sign up for 😅I studied at a religious Arabic college, and there the only option was Humanities. So I took it, not because I loved it, but because… well, no Ctrl+Z in real life 😂But deep down, I was always a tech person —the kid who preferred computers over textbooks, circuits over poetry, and coding over calligraphy.One day I realized:“If I'm going to spend my life working hard,I should at least work hard on something I love.”So I switched to tech, and honestly?Best plot twist of my life. Now I'm building things, learning fast, and loving every moment.In short —Forced into Humanities, chosen by Tech. And I’m happily taken now.",
         qualification: "+2 Humanities (haven't taken degree yet, plan to soon)",
         currentStatus: "Student at Brototype, the No.1 IT bootcamp in Kerala. Training like it's a full-time job!",
+        codingExperience: "I have around 1.5 years of hands-on development experience — built through serious self-learning, bootcamp training, and working on real‐world personal projects , 1,000+ GitHub commits,   and practical problem-solving experience.No company tag yet, but trust me…I’ve written enough code, fixed enough bugs,  enough deployments to count as real-world experience 😌💪In short:Not “corporate experience” yet —but practical,problem-solving experience?✅ Absolutely.And now I’m ready to bring that same energy to a professional team ",
+
     }
 
     const getBotResponse = (userInput) => {
@@ -167,6 +169,29 @@ export default function ChatBot() {
         if (input.includes('current') && (input.includes('study') || input.includes('work') || input.includes('doing'))) {
             return knowledgeBase.currentStatus;
         }
+        
+        if (
+        (
+            input.includes("experience") ||
+            input.includes("experiences") ||
+            input.includes("exp") ||
+            input.includes("how long") ||
+            input.includes("how many years") ||
+            input.includes("years") ||
+            input.includes("developing") ||
+            input.includes("coding") ||
+            input.includes("programming") ||
+            input.includes("since when") ||
+            input.includes("started coding") ||
+            input.includes("started programming") ||
+            input.includes("background")
+        )
+        && !input.includes("django")
+        && !input.includes("react")
+        ) {
+            return knowledgeBase.codingExperience;
+        }
+
 
 
 
