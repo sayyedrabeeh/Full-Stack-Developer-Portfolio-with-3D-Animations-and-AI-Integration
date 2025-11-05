@@ -60,8 +60,10 @@ export default function ChatBot() {
         openSource: "Yes — I have started contributing to open-source.Right now, most of my contributions are learning-focused, like contributing to beginner-friendly repositories such as First-Contributions and Code-Contributions, mainly to understand workflow, PR reviews, and community standards. I also attempted a contribution to Supabase-related project, but I realized the task required Subabase expertise and the code I wrote was in Python using SQL logic, which didn’t match the project requirements.Since I was balancing bootcamp + major personal projects at that time, I paused it rather than pushing incomplete work. Even though I'm early in my open-source journey, I enjoy it and plan to contribute more seriously going forward — especially in areas I work with daily like Django, React, and AI tools.",
         lookingForJob: "Yes, I am actively looking for job opportunities — ideally in Full-Stack Development, followed by Backend roles, and I’m open to Frontend roles as well.If the right company and role match my skills and offer good growth (and a good package 😉), I’m definitely ready to move forward 😉",
         workPreference: "I prefer on-site work.Remote isn’t really my style, and I’m not very interested in hybrid either — especially in Kerala.I enjoy being physically present with the team, collaborating directly, and learning from the environment.",
-   
-   
+        companySize: "I prefer startup environments first — I love fast-paced learning and being hands-on with real problems.Mid-sized and enterprise companies are also great if the role and package are strong.However, I am specifically looking for product-based companies, not service-based ones.",
+        dreamCompany: "My dream workplace is within the FAANG ecosystem — especially companies likeGoogle, Meta (Facebook), Amazon, Apple, or Netflix.These companies focus on innovation, large-scale engineering challenges, and real-world impact. admire environments where creativity and engineering excellence come together, and those companies strongly represent that culture.",
+        hobbies: "Outside of coding, I’m really into movies and music. I don’t stick to one genre — if it’s good, I’m watching it. I'm a cinematic enjoyer, especially high-voltage movies like Lokesh universe, Bahubali, Salaar, KGF and all those goosebumps-triggers 😌🔥 I also love analyzing sound effects, background score, and visual shots — sometimes more than the story itself. If a movie has insane BGM and stylish scenes, I'm locked in",
+    
     }
 
     const getBotResponse = (userInput) => {
@@ -196,14 +198,26 @@ export default function ChatBot() {
         if (/\b(remote|onsite|on-site|hybrid|work preference|work mode|working remotely|working onsite|working on-site|working hybrid|remote work|office work|office-based|work from home|wfh|work from office|flexible work|flexible mode)\b/i.test(input)) {
             return knowledgeBase.workPreference;
         }
-        if (/\b(project|projects|built|work|worked|working)\b/i.test(input)) {
-            return `I've built 30+ projects! Key ones: ResuMatch (resume assistant), TaleTailor (AI stories), Jarvis AI (voice assistant), gesture-controlled games, AI Sketch Studio, and my full-stack portfolio. Check them out: ${github}`;
-        }
+        
          if (/\b(open[\s-]?source|contribution|contributing|contributed|contribute|first[-\s]?contributions|code[-\s]?contributions|github[-\s]?contribution|oss|open-source project)\b/i.test(input)) {
             return knowledgeBase.openSource;
         }
         if (/\b(job|jobs|hire|hiring|hired|looking|looking for|looking to work|seeking|seeking job|employment|work opportunity|career opportunity|available for work)\b/i.test(input)) {
             return knowledgeBase.lookingForJob;
+        }
+        if (/\b(dream\s+(company|job|role|workplace)|preferred\s+(company|job|role|workplace)|favorite\s+(company|job|role|workplace)|faang|facebook|amazon|apple|netflix|google|meta|microsoft|big tech|company\s+you\s+love\s+to\s+work|which\s+company\s+do\s+you\s+like|company\s+you\s+prefer)\b/i.test(input)) {
+            return knowledgeBase.dreamCompany;
+        }
+
+        if (/\b(company|companies|startup|startups|enterprise|enterprises|firm|organization|organisation|business|corporation|corp)\b/i.test(input)) {
+            return knowledgeBase.companySize;
+        }
+        if (/\b(project|projects|built|work|worked|working)\b/i.test(input)) {
+            return `I've built 30+ projects! Key ones: ResuMatch (resume assistant), TaleTailor (AI stories), Jarvis AI (voice assistant), gesture-controlled games, AI Sketch Studio, and my full-stack portfolio. Check them out: ${github}`;
+        }
+
+        if (/\b(hobbi|hobby|hobbies|free\s+time|fun|pastime|leisure|spare\s+time|things\s+I\s+like\s+to\s+do|activities|recreation|interest|interests|what\s+do\s+you\s+do\s+for\s+fun)\b/i.test(input)) {
+            return knowledgeBase.hobbies;
         }
 
  
