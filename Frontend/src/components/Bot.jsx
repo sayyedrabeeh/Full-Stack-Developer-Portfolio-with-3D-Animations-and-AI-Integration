@@ -38,8 +38,7 @@ export default function ChatBot() {
         django: `I’ve built quite a lot of Django projects over time — some purely for practice and experimentation,some backend + templates full–stack,and some full–stack with Django + React.Not every project reached GitHub (some were beautiful disasters from my learning phase 😅),but the polished ones are there if you want check — 👉  ${github} So yeah, I’ve been coding, breaking, fixing, and learning continuously…and if you ask how many Django projects I've actually built?Let’s just say… around 10 and more not know exact .`,
         react: "I’ve built quite a good number of React projects too — not as many as Django, since I started with Django + HTML first,and later moved into the React world.Some were experiments, some were serious full-stack builds,some are on GitHub, some are…well, hiding in my old folders like secret missions 😅If you check my GitHub, you'll get the exact count —but yeahhh,i think around 10+ React projects too.",
         nodeExpress: "To be honest — I don’t know Node.js or Express yet.Not even a single line But here’s the thing:I learned Python, Django, and React completely through self-study,so if I decide to pick up Node & Express,’m confident I can learn it pretty fast Tech is just logic — once you know how to learn,new stacks are just another level in the game.",
-
-        
+        docker: `Yes — I’ve worked with Docker in one of my projects, TaleTailor (an AI-powered storytelling platform with social features). I containerized the application as part of the deployment flow.I'm not a Docker Guru yet, but I understand the fundamentals:- Writing Dockerfiles  - Building & running containers  - Understanding images & layers  - Docker Compose basics  I can confidently work with Docker, and if deeper Docker magic is needed, I'll dive in fast 🚀  You can check the project here: <a href="https://github.com/sayyedrabeeh/taletailor" target="_blank" rel="noopener noreferrer" class="text-blue-500 font-semibold underline hover:text-blue-700 transition duration-200">github.com/sayyedrabeeh/taletailor</a>`        
     
     }
 
@@ -341,7 +340,33 @@ export default function ChatBot() {
         ) {
             return knowledgeBase.nodeExpress;
         }
-
+        if (
+            
+            input.includes("docker") ||
+            input.includes("dockerfile") ||
+            input.includes("docker file") ||
+            input.includes("docker compose") ||
+            input.includes("docker-compose") ||
+            input.includes("doker") ||
+            input.includes("docer") ||
+            input.includes("dokar") ||
+            input.includes("dcker") ||
+            input.includes("dockr") ||
+            input.includes("dockerz") ||
+            input.includes("docker skills") ||
+            input.includes("docker experience") ||
+            input.includes("know docker") ||
+            input.includes("can you use docker") ||
+            input.includes("used docker") ||
+            input.includes("how good in docker") ||
+            input.includes("docker level") ||
+            input.includes("docker knowledge") ||
+            input.includes("docker expert") ||
+            input.includes("learn docker") ||
+            input.includes("using docker") 
+        ) {
+            return knowledgeBase.docker;
+        }
 
 
 
@@ -417,8 +442,7 @@ export default function ChatBot() {
                                         alt="Sayyed Rabeeh"
                                         className="w-12 h-12 rounded-full border-2 border-white shadow-lg"
                                     />
-                                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-gray-900"></div>
-                                </div>
+                                 </div>
                                 <div>
                                     <h2 className="font-bold text-lg">Sayyed Rabeeh</h2>
                                     <p className="text-xs text-blue-100 flex items-center gap-1">
