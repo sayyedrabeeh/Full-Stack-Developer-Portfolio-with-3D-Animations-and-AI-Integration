@@ -27,7 +27,7 @@ export default function ChatBot() {
         dob: "Well… I usually don’t share it with everyone, but you seem special 😌  I was born on 27 March 2004 (21 year old).So yes, I’m a 2K kid Bro — not too old, not too young…  Maturity? Flexible — depends on situation",
         location: "I’m from a   village called Puzhakkattiri near Perinthalmanna in Malappuram, Kerala,india.  but I’m definitely a city-vibe person — I love the energy and opportunities cities bring",
         background: "I am Studied at a religious Arabic college for 9+ years training to become a Hudawi (parents' dream). Did +2 Humanities because that's only they allowed. Then realized 'Life is short, Wi-Fi is fast, and my passion is tech' - so Ctrl+Alt+Exit! Switched to tech 1.5-2 years ago and never looked back.",
-
+        transitionStory: "Honestly, Humanities and I were never a love story — we were more like an arranged marriage that I didn’t sign up for 😅I studied at a religious Arabic college, and there the only option was Humanities. So I took it, not because I loved it, but because… well, no Ctrl+Z in real life 😂But deep down, I was always a tech person —the kid who preferred computers over textbooks, circuits over poetry, and coding over calligraphy.One day I realized:“If I'm going to spend my life working hard,I should at least work hard on something I love.”So I switched to tech, and honestly?Best plot twist of my life. Now I'm building things, learning fast, and loving every moment.In short —Forced into Humanities, chosen by Tech. And I’m happily taken now.",
     }
 
     const getBotResponse = (userInput) => {
@@ -102,23 +102,89 @@ export default function ChatBot() {
         if (input.includes('background') || input.includes('story') || input.includes('humanities') || input.includes('religious') || input.includes('college')) {
             return knowledgeBase.background;
         }
-
+        if (input.includes('why tech') || input.includes('transition') || input.includes('switch')) {
+            return knowledgeBase.transitionStory;
+        }
+        if (
+            input.includes("why tech") ||
+            input.includes("why did you choose tech") ||
+            input.includes("why choose tech") ||
+            input.includes("why you choose tech") ||
+            input.includes("why you selected tech") ||
+            input.includes("why tech field") ||
+            input.includes("why tech industry") ||
+            input.includes("love tech") ||
+            input.includes("passion for tech") ||
+            input.includes("interest in tech") ||
+            input.includes("why into tech") ||
+            input.includes("how you got into tech") ||
+            input.includes("how you entered tech") ||
+            input.includes("tech journey") ||
+            input.includes("field change") ||
+            input.includes("career change") ||
+            input.includes("career switch") ||
+            input.includes("switch to tech") ||
+            input.includes("transition to tech") ||
+            input.includes("shift to tech") ||
+            input.includes("move to tech") ||
+            input.includes("why transition") ||
+            input.includes("why switched") ||
+            input.includes("why shift") ||
+            input.includes("why it") ||
+            input.includes("non tech to tech") ||
+            
+            input.includes("coming from non tech") ||
+            input.includes("non background to tech") ||
+            input.includes("your background to tech") ||
+            input.includes("why programming") ||
+            input.includes("why coding") ||
+            input.includes("why software") ||
+            input.includes("why developer") ||
+            input.includes("what made you choose tech") ||
+            input.includes("what inspired you to choose tech") ||
+            input.includes("why engineering") ||
+            input.includes("why it field") ||
+            input.includes("why software field")
+        ) {
+            return knowledgeBase.transitionStory;
+        }
+   
+        if (input.includes("clear") && input.includes("chat")) {
+            return { action: "clear" };
+        }
+    
+        if (input.includes("close") && input.includes("chat")) {
+            return { action: "close" };
+        }
 
     } 
     
     const handleSend = () => {
-        
-        if (!input.trim()) return 
-        const userMessage = { type: 'user', text: input }
-        setMessage(prev => [...prev, userMessage])
-        
-        setTimeout(() => {
-            const botResponse = { type: 'bot', text: getBotResponse(input) }
-            setMessage(prev =>[...prev,botResponse])
-        }, 500)
-        setInput('')
+        if (!input.trim()) return;
 
-    }
+        const userMessage = { type: 'user', text: input };
+        setMessage(prev => [...prev, userMessage]);
+        const userInput = input; 
+        setInput(""); 
+        setTimeout(() => {
+            const botReply = getBotResponse(userInput);
+            if (botReply?.action === "clear") {
+                setMessage([
+                    { type: "bot", text: "Chat cleared ✅" }
+                ]);
+                return;
+            }
+            if (botReply?.action === "close") {
+                setIsOpen(false);
+                return;
+            }
+            let textResponse = botReply?.text || botReply;
+            const botMessage = { type: "bot", text: textResponse };
+            setMessage(prev => [...prev, botMessage]);
+            
+        }, 500);
+    };
+
 
     const handleKeyPress = (e) => {
         
