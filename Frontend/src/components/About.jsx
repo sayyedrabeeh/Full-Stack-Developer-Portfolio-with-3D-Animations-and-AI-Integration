@@ -8,18 +8,18 @@ function About() {
             <div className="absolute top-40 left-10 w-96 bg-blue-500/20 blur-[150px] rounded-full pointer-events-none"></div>
             <div className="absolute bottom-0 right-0 w-[28rem] h-[28rem] bg-purple-600/10 blur-[180px] rounded-full pointer-events-none"></div>
             <motion.h2 className="text-5xl md:text-6xl font-bold text-center mb-20 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-transparent bg-clip-text tracking-wide "
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 400 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: false ,amount: 0.5 }}
                 transition={{duration:1}}
             >
                 Who Am I
             </motion.h2>
             <div className="max-w-6xl  mx-auto flex flex-col md:flex-row items-center gap-12" >
                 <motion.div className="flex-1 text-lg  md:text-xl leading-relaxed text-gray-300 space-y-6"
-                    initial={{ opacity: 0, x: -40 }}
+                    initial={{ opacity: 0, x: 300 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: false,amount: 0.5  }}
                     transition={{ duration: 1.5 }}
                     >
                     <p>I'm <span className="text-blue-400 font-semibold">sayyed rabeeh </span>
@@ -55,9 +55,9 @@ function About() {
                   
  
                 <motion.div className="flex-1 flex justify-center relative"
-                    initial={{ opacity: 0, x: -40 }}
+                    initial={{ opacity: 0, x: -300 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: false ,amount: 0.5 }}
                     transition={{ duration: 1.5 }}
                     >
                     <motion.div
