@@ -28,6 +28,8 @@ export default function ChatBot() {
         location: "I’m from a   village called Puzhakkattiri near Perinthalmanna in Malappuram, Kerala,india.  but I’m definitely a city-vibe person — I love the energy and opportunities cities bring",
         background: "I am Studied at a religious Arabic college for 9+ years training to become a Hudawi (parents' dream). Did +2 Humanities because that's only they allowed. Then realized 'Life is short, Wi-Fi is fast, and my passion is tech' - so Ctrl+Alt+Exit! Switched to tech 1.5-2 years ago and never looked back.",
         transitionStory: "Honestly, Humanities and I were never a love story — we were more like an arranged marriage that I didn’t sign up for 😅I studied at a religious Arabic college, and there the only option was Humanities. So I took it, not because I loved it, but because… well, no Ctrl+Z in real life 😂But deep down, I was always a tech person —the kid who preferred computers over textbooks, circuits over poetry, and coding over calligraphy.One day I realized:“If I'm going to spend my life working hard,I should at least work hard on something I love.”So I switched to tech, and honestly?Best plot twist of my life. Now I'm building things, learning fast, and loving every moment.In short —Forced into Humanities, chosen by Tech. And I’m happily taken now.",
+        qualification: "+2 Humanities (haven't taken degree yet, plan to soon)",
+        currentStatus: "Student at Brototype, the No.1 IT bootcamp in Kerala. Training like it's a full-time job!",
     }
 
     const getBotResponse = (userInput) => {
@@ -156,6 +158,17 @@ export default function ChatBot() {
         if (input.includes("close") && input.includes("chat")) {
             return { action: "close" };
         }
+        if (input.includes('when') && input.includes('started') && (input.includes('coding') || input.includes('programming'))) {
+            return "I started coding around 1.5 to 2 years ago.Basically, one fine day I quit my religious Arabic college, packed my dreams, and walked straight into a bootcamp… and never looked back 💻✨Since then, it’s been non-stop coding, learning, breaking things, fixing them again, and leveling up every single day.You can say my journey started with:“Bismillah… console.log('Hello World');” 😌🤣And honestly? That was the day life changed — I switched from memorizing texts to building stuff the world can actually use. Best decision ever.";
+        }
+        if (input.includes('qualification') || input.includes('education') || input.includes('degree') || input.includes('study')) {
+            return knowledgeBase.qualification;
+        }
+        if (input.includes('current') && (input.includes('study') || input.includes('work') || input.includes('doing'))) {
+            return knowledgeBase.currentStatus;
+        }
+
+
 
     } 
     
