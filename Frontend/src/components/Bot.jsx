@@ -63,7 +63,8 @@ export default function ChatBot() {
         companySize: "I prefer startup environments first — I love fast-paced learning and being hands-on with real problems.Mid-sized and enterprise companies are also great if the role and package are strong.However, I am specifically looking for product-based companies, not service-based ones.",
         dreamCompany: "My dream workplace is within the FAANG ecosystem — especially companies likeGoogle, Meta (Facebook), Amazon, Apple, or Netflix.These companies focus on innovation, large-scale engineering challenges, and real-world impact. admire environments where creativity and engineering excellence come together, and those companies strongly represent that culture.",
         hobbies: "Outside of coding, I’m really into movies and music. I don’t stick to one genre — if it’s good, I’m watching it. I'm a cinematic enjoyer, especially high-voltage movies like Lokesh universe, Bahubali, Salaar, KGF and all those goosebumps-triggers 😌🔥 I also love analyzing sound effects, background score, and visual shots — sometimes more than the story itself. If a movie has insane BGM and stylish scenes, I'm locked in",
-    
+        music: "I enjoy music based on my mood. My playlist shifts between emotional, energetic, and calm tracks depending on how I feel — I love exploring different genres rather than sticking to just one.I listen to music based on my mood — emotional songs when I'm sad, energetic ones when I'm happy. I don't have one fixed genre; I enjoy everything depending on how I feel.",
+        codingMusic: "Depends on mood: Lo-fi (calm debugging), Trap/EDM (speed-coding), Instrumental BGM from KGF/Salaar/Baahubali (feel like saving world with terminal 🔥), sometimes emotional songs (debugging needs emotional support 😄)",
     }
 
     const getBotResponse = (userInput) => {
@@ -115,10 +116,7 @@ export default function ChatBot() {
             return knowledgeBase.currentStatus;
         }
         
-        if (/\b(experience|experiences|exp|how long|how many years|years|developing|coding|programming|since when|started coding|started programming|background)\b/i.test(input) 
-            && !/\b(python|react|django)\b/i.test(input)) {
-            return knowledgeBase.codingExperience;
-        }
+        
 
         if (input.includes('skill') || input.includes('tech stack') || input.includes('technology')) {
             return `${knowledgeBase.primaryStack}. I work with Django, React, PostgreSQL, Tailwind, Docker, AWS, REST APIs, and more! Full-stack specialist 💪`;
@@ -218,6 +216,18 @@ export default function ChatBot() {
 
         if (/\b(hobbi|hobby|hobbies|free\s+time|fun|pastime|leisure|spare\s+time|things\s+I\s+like\s+to\s+do|activities|recreation|interest|interests|what\s+do\s+you\s+do\s+for\s+fun)\b/i.test(input)) {
             return knowledgeBase.hobbies;
+        }
+        if (/\b(coding\s+music|coding\s+songs|music\s+while\s+coding|songs\s+while\s+coding|work\s+music|work\s+songs|study\s+music|study\s+songs|playlist|playlists|coding\s+playlist|study\s+playlist|work\s+playlist)\b/i.test(input)) {
+            return knowledgeBase.codingMusic;
+        }
+        if (/\b(music|song|songs|listening\s+to\s+music|favorite\s+song|favorite\s+music|playing\s+music|singing|playlist|audio|tunes|melody|melodies|soundtrack|favorite\s+track|tracks|listen|listens|listened)\b/i.test(input)) {
+            return knowledgeBase.music;
+        }
+        
+
+        if (/\b(experience|experiences|exp|how long|how many years|years|developing|coding|programming|since when|started coding|started programming|background)\b/i.test(input) 
+            && !/\b(python|react|django)\b/i.test(input)) {
+            return knowledgeBase.codingExperience;
         }
 
  
