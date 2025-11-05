@@ -31,11 +31,18 @@ export default function ChatBot() {
         qualification: "+2 Humanities (haven't taken degree yet, plan to soon)",
         currentStatus: "Student at Brototype, the No.1 IT bootcamp in Kerala. Training like it's a full-time job!",
         codingExperience: "I have around 1.5 years of hands-on development experience — built through serious self-learning, bootcamp training, and working on real‐world personal projects , 1,000+ GitHub commits,   and practical problem-solving experience.No company tag yet, but trust me…I’ve written enough code, fixed enough bugs,  enough deployments to count as real-world experience 😌💪In short:Not “corporate experience” yet —but practical,problem-solving experience?✅ Absolutely.And now I’m ready to bring that same energy to a professional team ",
+        primaryStack: "Full Stack Developer - Python, Django, React",
+        pythonLevel: "I'd call myself an intermediate Python developer.I can Build real-world projects Turn “why isn’t this working???” code into “oh wow it runs!” code 😌 Solve problems and debug confidently Work with frameworks like Django & automation tools Write clean code that future-me doesn't fight with  I'm not calling myself an expert yet — Python gurus can probably write code in their sleep.I still need internet + ai tools + Stack Overflow…  If you check my GitHub, you’ll get a clear picture of my journey & progress Growing every day, writing better code every night — Intermediate now, future expert loading…",
+        
+    
 
+
+        github: `<a href="https://github.com/sayyedrabeeh" target="_blank"  rel="noopener noreferrer" class="text-blue-500 font-semibold underline hover:text-blue-700 transition duration-200">github.com/sayyedrabeeh</a>`
+    
     }
 
     const getBotResponse = (userInput) => {
-        const input = userInput.toLowerCase()
+        const input = userInput.toLowerCase().trim().replace(/\s+/g, " ").replace(/[?.,!]/g, "");
         if (
             input.includes("your name") ||
             input.includes("who are you") ||
@@ -103,7 +110,10 @@ export default function ChatBot() {
         ) {
             return knowledgeBase.location;
         }
-        if (input.includes('background') || input.includes('story') || input.includes('humanities') || input.includes('religious') || input.includes('college')) {
+        if ((input.includes('background') || input.includes('story') || input.includes('humanities') || input.includes('religious') || input.includes('college'))
+        && !input.includes("python")
+        && !input.includes("react")
+        && !input.includes("django")) {
             return knowledgeBase.background;
         }
         if (input.includes('why tech') || input.includes('transition') || input.includes('switch')) {
@@ -136,7 +146,6 @@ export default function ChatBot() {
             input.includes("why shift") ||
             input.includes("why it") ||
             input.includes("non tech to tech") ||
-            
             input.includes("coming from non tech") ||
             input.includes("non background to tech") ||
             input.includes("your background to tech") ||
@@ -186,10 +195,39 @@ export default function ChatBot() {
             input.includes("started programming") ||
             input.includes("background")
         )
-        && !input.includes("django")
+        && !input.includes("python")
         && !input.includes("react")
+        && !input.includes("django")
+
         ) {
             return knowledgeBase.codingExperience;
+        }
+        if (input.includes('skill') || input.includes('tech stack') || input.includes('technology')) {
+            return `${knowledgeBase.primaryStack}. I work with Django, React, PostgreSQL, Tailwind, Docker, AWS, REST APIs, and more! Full-stack specialist 💪`;
+        }
+        
+        if (
+        input.includes("python") ||
+        input.includes("pyhton") ||  
+        input.includes("py") ||
+        input.includes("your python") ||
+        input.includes("python level") ||
+        input.includes("python skills") ||
+        input.includes("python experience") ||
+        input.includes("python expert") ||
+        input.includes("python dev") ||
+        input.includes("python developer") ||
+        input.includes("know python") ||
+        input.includes("can you code python") ||
+        input.includes("python knowledge") ||
+        input.includes("how good are you in python") ||
+        input.includes("strong in python") ||
+        input.includes("python proficiency") ||
+        input.includes("python ability") ||
+        input.includes("python rating") ||
+        input.includes("python background")
+        ) {
+            return `${knowledgeBase.pythonLevel} Check my GitHub: ${knowledgeBase.github}`;
         }
 
 
@@ -296,7 +334,11 @@ export default function ChatBot() {
                                                 : 'bg-gray-800/80 text-gray-100 rounded-bl-none border border-purple-500/20 shadow-lg'
                                         }`}
                                     >
-                                        <p className="text-sm whitespace-pre-line leading-relaxed">{msg.text}</p>
+                                     <p
+                                    className="text-sm whitespace-pre-line leading-relaxed"
+                                    dangerouslySetInnerHTML={{ __html: msg.text }}
+                                    ></p>
+
                                     </div>
                                 </div>
                             ))}
