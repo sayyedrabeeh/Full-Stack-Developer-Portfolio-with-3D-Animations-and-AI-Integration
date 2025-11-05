@@ -47,125 +47,36 @@ export default function ChatBot() {
     }
 
     const getBotResponse = (userInput) => {
+
         const input = userInput.toLowerCase().trim().replace(/\s+/g, " ").replace(/[?.,!]/g, "");
-        if (
-            input.includes("your name") ||
-            input.includes("who are you") ||
-            input.includes("what is your name") ||
-            input.includes("tell me your name") ||
-            input.includes("may i know your name") ||
-            input.includes("name please") ||
-            input.includes("who r u") ||
-            input.includes("you are who") ||
-            input.includes("identify yourself") ||
-            input.includes("what do i call you") ||
-            input.includes("can i know your name") ||
-            input.includes("what's your name") ||
-            input.includes("whats your name") || 
-            input.includes("who is this") ||
-            input.trim() === "name"
-        ) {
-            return ` ${knowledgeBase.fullName}`;
+
+        if (/\b(your name|who are you|what is your name|tell me your name|may i know your name|name please|who r u|you are who|identify yourself|what do i call you|can i know your name|what's your name|whats your name|who is this|name)\b/i.test(input.trim())) {
+            return `${knowledgeBase.fullName}`;
         }
-        if (
-            input.includes("nickname") ||
-            input.includes("other name") ||
-            input.includes("what should i call you") ||
-            input.includes("your nick name") ||
-            input.includes("do you have a nickname") ||
-            input.includes("any nickname") ||
-            input.includes("what are you called") ||
-            input.includes("people call you") ||
-            input.includes("pet name") ||
-            input.includes("short name") ||
-            input.includes("your short name") ||
-            input.includes("your pet name")
-        ) {
+
+        if (/\b(nickname|other name|what should i call you|your nick name|do you have a nickname|any nickname|what are you called|people call you|pet name|short name|your short name|your pet name)\b/i.test(input)) {
             return `People call me different names: ${knowledgeBase.nicknames.join(', ')}. I'm basically a multi-version human release! 😄`;
         }
+
         if (input.includes('age') || input.includes('old') || input.includes('birth') || input.includes('dob') || input.includes('born')) {
             return `${knowledgeBase.dob}.   🎂`;
         }
-        if (
-            (input.includes("where") && input.includes("from")) ||
-            (input.includes("where") && input.includes("live")) ||
-            (input.includes("where") && input.includes("location")) ||
-            (input.includes("your") && input.includes("location")) ||
-            (input.includes("where") && input.includes("you from")) ||
-            input.includes("your city") ||
-            input.includes("your town") ||
-            input.includes("your place") ||
-            input.includes("where do you stay") ||
-            input.includes("where do you live") ||
-            input.includes("what is your location") ||
-            input.includes("which place") ||
-            input.includes("which city") ||
-            input.includes("which country") ||
-            input.includes("your home") ||
-            input.includes("hometown") ||
-            input.includes("location") ||
-            input.includes("place") ||
-            input.includes("where are you staying") ||
-            input.includes("where are you located") ||
-            input.includes("share your location") ||
-            input.includes("drop location") ||
-            input.includes("current location") ||
-            input.includes("present location") ||
-            input.includes("situated")
-        ) {
+        if (/\b(where\s+(?:are\s+)?(?:you|u|i)?\s*(?:from|live|located|staying|do\s+you\s+stay|do\s+you\s+live)?|your\s+(?:city|town|place|home|location)|hometown|which\s+(?:place|city|country)|current\s+location|present\s+location|share\s+your\s+location|drop\s+location|situated|location|place)\b/i.test(input)) {
             return knowledgeBase.location;
         }
-        if ((input.includes('background') || input.includes('story') || input.includes('humanities') || input.includes('religious') || input.includes('college'))
-        && !input.includes("python")
-        && !input.includes("react")
-        && !input.includes("django")) {
+
+        if (/\b(background|story|humanities|religious|college)\b/i.test(input) && !/\b(python|react|django)\b/i.test(input)) {
             return knowledgeBase.background;
         }
+
         if (input.includes('why tech') || input.includes('transition') || input.includes('switch')) {
             return knowledgeBase.transitionStory;
         }
-        if (
-            input.includes("why tech") ||
-            input.includes("why did you choose tech") ||
-            input.includes("why choose tech") ||
-            input.includes("why you choose tech") ||
-            input.includes("why you selected tech") ||
-            input.includes("why tech field") ||
-            input.includes("why tech industry") ||
-            input.includes("love tech") ||
-            input.includes("passion for tech") ||
-            input.includes("interest in tech") ||
-            input.includes("why into tech") ||
-            input.includes("how you got into tech") ||
-            input.includes("how you entered tech") ||
-            input.includes("tech journey") ||
-            input.includes("field change") ||
-            input.includes("career change") ||
-            input.includes("career switch") ||
-            input.includes("switch to tech") ||
-            input.includes("transition to tech") ||
-            input.includes("shift to tech") ||
-            input.includes("move to tech") ||
-            input.includes("why transition") ||
-            input.includes("why switched") ||
-            input.includes("why shift") ||
-            input.includes("why it") ||
-            input.includes("non tech to tech") ||
-            input.includes("coming from non tech") ||
-            input.includes("non background to tech") ||
-            input.includes("your background to tech") ||
-            input.includes("why programming") ||
-            input.includes("why coding") ||
-            input.includes("why software") ||
-            input.includes("why developer") ||
-            input.includes("what made you choose tech") ||
-            input.includes("what inspired you to choose tech") ||
-            input.includes("why engineering") ||
-            input.includes("why it field") ||
-            input.includes("why software field")
-        ) {
-            return knowledgeBase.transitionStory;
-        }
+        if (/(why tech|why did you choose tech|why choose tech|why choose it|why you choose tech|why you selected tech|why tech field|why tech industry|love tech|passion for tech|interest in tech|why into tech|how you got into tech|how you entered tech|tech journey|field change|career change|career switch|switch to tech|transition to tech|shift to tech|move to tech|why transition|why switched|why shift|why it|non tech to tech|coming from non tech|non background to tech|your background to tech|why programming|why coding|why software|why developer|what made you choose tech|what inspired you to choose tech|why engineering|why it field|why software field)/i.test(input)) {
+        return knowledgeBase.transitionStory;
+    }
+
+
    
         if (input.includes("clear") && input.includes("chat")) {
             return { action: "clear" };
@@ -184,166 +95,31 @@ export default function ChatBot() {
             return knowledgeBase.currentStatus;
         }
         
-        if (
-        (
-            input.includes("experience") ||
-            input.includes("experiences") ||
-            input.includes("exp") ||
-            input.includes("how long") ||
-            input.includes("how many years") ||
-            input.includes("years") ||
-            input.includes("developing") ||
-            input.includes("coding") ||
-            input.includes("programming") ||
-            input.includes("since when") ||
-            input.includes("started coding") ||
-            input.includes("started programming") ||
-            input.includes("background")
-        )
-        && !input.includes("python")
-        && !input.includes("react")
-        && !input.includes("django")
-
-        ) {
+        if (/\b(experience|experiences|exp|how long|how many years|years|developing|coding|programming|since when|started coding|started programming|background)\b/i.test(input) 
+            && !/\b(python|react|django)\b/i.test(input)) {
             return knowledgeBase.codingExperience;
         }
+
         if (input.includes('skill') || input.includes('tech stack') || input.includes('technology')) {
             return `${knowledgeBase.primaryStack}. I work with Django, React, PostgreSQL, Tailwind, Docker, AWS, REST APIs, and more! Full-stack specialist 💪`;
         }
         
-        if (
-        input.includes("python") ||
-        input.includes("pyhton") ||  
-        input.includes("py") ||
-        input.includes("your python") ||
-        input.includes("python level") ||
-        input.includes("python skills") ||
-        input.includes("python experience") ||
-        input.includes("python expert") ||
-        input.includes("python dev") ||
-        input.includes("python developer") ||
-        input.includes("know python") ||
-        input.includes("can you code python") ||
-        input.includes("python knowledge") ||
-        input.includes("how good are you in python") ||
-        input.includes("strong in python") ||
-        input.includes("python proficiency") ||
-        input.includes("python ability") ||
-        input.includes("python rating") ||
-        input.includes("python background")
-        ) {
-            return `${knowledgeBase.pythonLevel} Check my GitHub: ${github}`;
-        }
-        if (
-            input.includes("django") ||
-            input.includes("dangoo") || 
-            input.includes("djanngo") ||
-            input.includes("djngo") ||
-            input.includes("dnago") ||
-            input.includes("djang") ||
-            input.includes("python django") ||
-            input.includes("django experience") ||
-            input.includes("django projects") ||
-            input.includes("django level") ||
-            input.includes("django skills") ||
-            input.includes("django dev") ||
-            input.includes("know django") ||
-            input.includes("can you do django") ||
-            input.includes("django proficiency") ||
-            input.includes("strong in django") ||
-            input.includes("django background") ||
-            input.includes("django developer") ||
-            input.includes("django expert") ||
-            input.includes("django rating") ||
-            input.includes("how good in django") ||
-            input.includes("django knowledge") ||
-            input.includes("django framework")
-        ) {
-            return `${knowledgeBase.django}`;
-        }
-        if (
-        input.includes("react") ||
-        input.includes("recat") ||
-        input.includes("raect") ||
-        input.includes("reactjs") ||
-        input.includes("react js") ||
-        input.includes("recat js") ||
-        input.includes("reaact") ||
-        input.includes("ract") ||
-        input.includes("recat") ||
-        input.includes("react developer") ||
-        input.includes("react dev") ||
-        input.includes("react engineer") ||
-        input.includes("react projects") ||
-        input.includes("react experience") ||
-        input.includes("react apps") ||
-        input.includes("build react") ||
-        input.includes("can you do react") ||
-        input.includes("know react") ||
-        input.includes("react knowledge") ||
-        input.includes("react skills") ||
-        input.includes("react level") ||
-        input.includes("react proficiency") ||
-        input.includes("react expertise") ||
-        input.includes("react background") ||
-        input.includes("react strong") ||
-        input.includes("strong in react") ||
-        input.includes("how good in react") ||
-        input.includes("react rating") ||
-        input.includes("react framework") ||  
-        input.includes("frontend react") ||
-        input.includes("react frontend") ||
-        input.includes("react proficiency") ||
-        input.includes("react role") ||
-        input.includes("react knowledge level")
-    ) {
-        return `${knowledgeBase.react} You can explore projects here: ${github}; `;
-        }
-    if (
-            input.includes("node") ||
-            input.includes("nodejs") ||
-            input.includes("node js") ||
-            input.includes("node.js") ||
-            input.includes("node express") ||
-            input.includes("node and express") ||
-            input.includes("express") ||
-            input.includes("expressjs") ||
-            input.includes("express js") ||
-            input.includes("express.js") ||
-            input.includes("nide") ||
-            input.includes("nod") ||
-            input.includes("notejs") ||
-            input.includes("nodej") ||
-            input.includes("nod js") ||
-            input.includes("nod express") ||
-            input.includes("expres") ||
-            input.includes("exprss") ||
-            input.includes("exprees") ||
-            input.includes("know node") ||
-            input.includes("know express") ||
-            input.includes("learn node") ||
-            input.includes("learn express") ||
-            input.includes("node skills") ||
-            input.includes("express skills") ||
-            input.includes("node level") ||
-            input.includes("express level") ||
-            input.includes("node experience") ||
-            input.includes("express experience") ||
-            input.includes("how good in node") ||
-            input.includes("how good in express") ||
-            input.includes("node projects") ||
-            input.includes("express projects") ||
-            input.includes("node developer") ||
-            input.includes("express developer") ||
-            input.includes("do you know node") ||
-            input.includes("do you know express") ||
-            input.includes("can you do node") ||
-            input.includes("can you do express") ||
-            input.includes("worked with node") ||
-            input.includes("worked with express")
-        ) {
-            return knowledgeBase.nodeExpress;
-        }
+        if (/\b(python|pyhton|py|your python|python level|python skills|python experience|python expert|python dev|python developer|know python|can you code python|python knowledge|how good are you in python|strong in python|python proficiency|python ability|python rating|python background)\b/i.test(input)) {
+            return `${knowledgeBase.pythonLevel} Check my GitHub: ${github}`
+        };
+
+        if (/\b(django|dangoo|djanngo|djngo|dnago|djang|python django|django experience|django projects|django level|django skills|django dev|know django|can you do django|django proficiency|strong in django|django background|django developer|django expert|django rating|how good in django|django knowledge|django framework)\b/i.test(input)) {
+            return `${knowledgeBase.django}`
+        };
+
+        if (/\b(react|recat|raect|reactjs|react js|recat js|reaact|ract|react developer|react dev|react engineer|react projects|react experience|react apps|build react|can you do react|know react|react knowledge|react skills|react level|react proficiency|react expertise|react background|react strong|strong in react|how good in react|react rating|react framework|frontend react|react frontend|react role|react knowledge level)\b/i.test(input)) {
+            return `${knowledgeBase.react} You can explore projects here: ${github};`
+        };
+
+        if (/\b(node|nodejs|node js|node\.js|node express|node and express|express|expressjs|express js|express\.js|nide|nod|notejs|nodej|nod js|nod express|expres|exprss|exprees|know node|know express|learn node|learn express|node skills|express skills|node level|express level|node experience|express experience|how good in node|how good in express|node projects|express projects|node developer|express developer|do you know node|do you know express|can you do node|can you do express|worked with node|worked with express)\b/i.test(input)) {
+            return knowledgeBase.nodeExpress
+        };
+
         if (/\b(docker|dockerfile|docker file|docker compose|docker-compose|doker|docer|dokar|dcker|dockr|dockerz|docker skills|docker experience|know docker|can you use docker|used docker|how good in docker|docker level|docker knowledge|docker expert|learn docker|using docker)\b/i.test(input)) {
             return knowledgeBase.docker;
         } 
