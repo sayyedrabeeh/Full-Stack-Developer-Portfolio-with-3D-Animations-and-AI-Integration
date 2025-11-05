@@ -55,7 +55,8 @@ export default function ChatBot() {
             aiSketch: "AI Sketch Studio - Converts images to artistic styles (pencil, watercolor, oil). Django + OpenCV with drag-and-drop UI",
             portfolio: "Full-Stack Portfolio - Production-level project with Django + React, Tailwind + Framer Motion, Matter.js & Three.js for 3D/physics, JWT auth, email verification. Represents personality and skills"
         },
-        
+        favoriteProject: "Two projects are my absolute favorites:1️⃣ My Full-Stack Portfolio Platform This wasn't just a portfolio — I treated it like a full-fledged production project.It includes:Django + React full stack architecture Tailwind CSS + Framer Motion for modern UI animations Matter.js & Three.js for interactive 3D/physics effects Swiper.js for interactive carousels JWT authentication It represents my personality, skills, animation sense, and backend capability — all in one place.2️⃣ TaleTailor — AI-Powered Story Generator This one is special because it's creative and technically challenging. Generates stories using AI Real-time collaboration editing (Django Channels / WebSockets) User accounts & profile system Like/comment interaction system Dynamic theaming accroding to story mood This project pushes boundaries — AI + real-time communication + storytelling platform.",
+        challengingProject: "Honestly, every project I built has been challenging in different ways, because I work on them while learning and balancing a bootcamp — some took 1–4 months.But the most challenging experience not challanging fursrating was during my full-stack portfolio project.one of The Challenge  isI accidentally duplicated my login page component.I kept editing one file locally, but the deployed version wasn’t updating — because I was unknowingly modifying the wrong duplicate file.This created:UI conflicts Routing confusion Time wasted debugging “ghost bugs” It was frustrating because everything looked correct in code, but nothing changed on the site. I treated it like a production debugging task and: Re-audited the file structure Carefully inspected all auth component files Searched for duplicates in the repository Used Git history to track changes Saw where the wrong file started getting updated Identified the duplicated component Clean-up & Refactor Deleted duplicate file Standardized component naming Reorganized folder structure for clarity Set up a practice going forward ✅ Enforced clean folder structure ✅ Naming conventions ✅ Verified file references before coding This project taught me the importance of: Folder architecture discipline Consistent naming conventions Systematic debugging Using Git as a tracking tool, not just a backupPatience and persistence — because real dev bugs are rarely obvious 😄",
 
 
     }
@@ -88,7 +89,7 @@ export default function ChatBot() {
         }
         if (/(why tech|why did you choose tech|why choose tech|why choose it|why you choose tech|why you selected tech|why tech field|why tech industry|love tech|passion for tech|interest in tech|why into tech|how you got into tech|how you entered tech|tech journey|field change|career change|career switch|switch to tech|transition to tech|shift to tech|move to tech|why transition|why switched|why shift|why it|non tech to tech|coming from non tech|non background to tech|your background to tech|why programming|why coding|why software|why developer|what made you choose tech|what inspired you to choose tech|why engineering|why it field|why software field)/i.test(input)) {
         return knowledgeBase.transitionStory;
-    }
+        }
 
 
    
@@ -183,8 +184,18 @@ export default function ChatBot() {
         if (input.includes('portfolio') && input.includes('project')) {
             return `${knowledgeBase.projects.portfolio}`;
         }
+        if (/\b(fav|fave|favorite|favourite)\s+projects?\b/i.test(input)) {
+            return knowledgeBase.favoriteProject;
+        }
+        if (/\b(challeng(?:e|ing)?|difficult|hard|tough|problematic|tricky)\b/i.test(input)) {
+            return knowledgeBase.challengingProject;
+        }
 
-
+        if (/\b(project|projects|built|work|worked|working)\b/i.test(input)) {
+            return `I've built 30+ projects! Key ones: ResuMatch (resume assistant), TaleTailor (AI stories), Jarvis AI (voice assistant), gesture-controlled games, AI Sketch Studio, and my full-stack portfolio. Check them out: ${github}`;
+        }
+         
+         
 
 
     } 
