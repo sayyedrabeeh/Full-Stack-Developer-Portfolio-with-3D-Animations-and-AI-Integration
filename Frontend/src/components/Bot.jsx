@@ -38,8 +38,12 @@ export default function ChatBot() {
         django: `I’ve built quite a lot of Django projects over time — some purely for practice and experimentation,some backend + templates full–stack,and some full–stack with Django + React.Not every project reached GitHub (some were beautiful disasters from my learning phase 😅),but the polished ones are there if you want check — 👉  ${github} So yeah, I’ve been coding, breaking, fixing, and learning continuously…and if you ask how many Django projects I've actually built?Let’s just say… around 10 and more not know exact .`,
         react: "I’ve built quite a good number of React projects too — not as many as Django, since I started with Django + HTML first,and later moved into the React world.Some were experiments, some were serious full-stack builds,some are on GitHub, some are…well, hiding in my old folders like secret missions 😅If you check my GitHub, you'll get the exact count —but yeahhh,i think around 10+ React projects too.",
         nodeExpress: "To be honest — I don’t know Node.js or Express yet.Not even a single line But here’s the thing:I learned Python, Django, and React completely through self-study,so if I decide to pick up Node & Express,’m confident I can learn it pretty fast Tech is just logic — once you know how to learn,new stacks are just another level in the game.",
-        docker: `Yes — I’ve worked with Docker in one of my projects, TaleTailor (an AI-powered storytelling platform with social features). I containerized the application as part of the deployment flow.I'm not a Docker Guru yet, but I understand the fundamentals:- Writing Dockerfiles  - Building & running containers  - Understanding images & layers  - Docker Compose basics  I can confidently work with Docker, and if deeper Docker magic is needed, I'll dive in fast 🚀  You can check the project here: <a href="https://github.com/sayyedrabeeh/taletailor" target="_blank" rel="noopener noreferrer" class="text-blue-500 font-semibold underline hover:text-blue-700 transition duration-200">github.com/sayyedrabeeh/taletailor</a>`        
-    
+        docker: `Yes — I’ve worked with Docker in one of my projects, TaleTailor (an AI-powered storytelling platform with social features). I containerized the application as part of the deployment flow.I'm not a Docker Guru yet, but I understand the fundamentals:- Writing Dockerfiles  - Building & running containers  - Understanding images & layers  - Docker Compose basics  I can confidently work with Docker, and if deeper Docker magic is needed, I'll dive in fast 🚀  You can check the project here: <a href="https://github.com/sayyedrabeeh/taletailor" target="_blank" rel="noopener noreferrer" class="text-blue-500 font-semibold underline hover:text-blue-700 transition duration-200">github.com/sayyedrabeeh/taletailor</a>`,        
+        git: "I’ve been using Git and GitHub since the start of my developer journey —  one  and half yer plus now. I use Git daily for version control, branching, merging, resolving conflicts, and collaborating on projects.Also, fun fact: I  crossed 1,000+ GitHub commits — so you could say git is part of my everyday muscle memory now.😌🔥",
+        cloud: "My first real deployment was on AWS — I set up EC2, S3 for static files, and got my app live there. After that, I explored Render, Railway, and Vercel for hosting other projects (mostly because… let's be honest… they are free and AWS is not 🤝💸).So yes — I’ve worked with AWS, but I also know how to survive in the “developer on a budget” world too",
+
+
+
     }
 
     const getBotResponse = (userInput) => {
@@ -340,32 +344,18 @@ export default function ChatBot() {
         ) {
             return knowledgeBase.nodeExpress;
         }
-        if (
-            
-            input.includes("docker") ||
-            input.includes("dockerfile") ||
-            input.includes("docker file") ||
-            input.includes("docker compose") ||
-            input.includes("docker-compose") ||
-            input.includes("doker") ||
-            input.includes("docer") ||
-            input.includes("dokar") ||
-            input.includes("dcker") ||
-            input.includes("dockr") ||
-            input.includes("dockerz") ||
-            input.includes("docker skills") ||
-            input.includes("docker experience") ||
-            input.includes("know docker") ||
-            input.includes("can you use docker") ||
-            input.includes("used docker") ||
-            input.includes("how good in docker") ||
-            input.includes("docker level") ||
-            input.includes("docker knowledge") ||
-            input.includes("docker expert") ||
-            input.includes("learn docker") ||
-            input.includes("using docker") 
-        ) {
+        if (/\b(docker|dockerfile|docker file|docker compose|docker-compose|doker|docer|dokar|dcker|dockr|dockerz|docker skills|docker experience|know docker|can you use docker|used docker|how good in docker|docker level|docker knowledge|docker expert|learn docker|using docker)\b/i.test(input)) {
             return knowledgeBase.docker;
+        } 
+        if (/\b(git|github|githhub|git hub|guthub|giithub|gitlab|version control|know git|use git|git skills|git experience|git level|git proficiency|git workflow|git knowledge|git rating|git background|github experience|github profile|github projects|github link|github repo|github repository|github commits)\b/i.test(input)) {
+            return `${knowledgeBase.git}. Check my GitHub: ${github}`;
+        }
+
+        if (
+        /\b(cloud hosting|cloud experience|cloud services|cloud platforms|amazon web services|aws ec2|aws s3|aws deployment|server deploy|production deploy|how do you deploy|production server|free hosting|deploy app|upload project online|go live|make website live|publish project|cloud|aws|ec2|s3|host|hosting|deploy|deployed|deployment|deploying|render|railway|vercel)\b/i
+        .test(input)
+        ) {
+            return knowledgeBase.cloud;
         }
 
 
