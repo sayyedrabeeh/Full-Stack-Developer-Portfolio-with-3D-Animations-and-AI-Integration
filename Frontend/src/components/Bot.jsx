@@ -21,6 +21,8 @@ export default function ChatBot() {
     }, [message])
 
     const github = `<a href="https://github.com/sayyedrabeeh" target="_blank"  rel="noopener noreferrer" class="text-blue-500 font-semibold underline hover:text-blue-700 transition duration-200">github.com/sayyedrabeeh</a>`
+    const linkedin = `<a href="https://linkedin.com/in/sayyed-rabeeh/" target="_blank"  rel="noopener noreferrer" class="text-blue-500 font-semibold underline hover:text-blue-700 transition duration-200">Linkedin.com/in/sayyed-rabeeh</a>`
+    const leetcode = `<a href="https://leetcode.com/u/sayyed-rabeeh/" target="_blank"  rel="noopener noreferrer" class="text-blue-500 font-semibold underline hover:text-blue-700 transition duration-200">Leetcode.com/u/sayyed-rabeeh</a>`
     
     const knowledgeBase = {
 
@@ -74,9 +76,10 @@ export default function ChatBot() {
         coffeeOrTea: "I’m not really a big coffee person — I prefer tea when I need something. But honestly, I don’t rely much on either; I stay more focused without it.r",
         food: " I enjoy trying different snacks and flavors. I haven’t explored many cuisines yet, but once I’m financially stable, I’m planning to try everything—from burgers with cheese to international street food. I love experimenting with food, so I know I'll develop many favorites soon.",
         schedule: "I'm a night owl by nature — nights feel peaceful and creative for me.But my family is strict about late nights, so I’m a night owl living under morning-person surveillanceI naturally think and work better at night — it’s quiet, creative, and helps me focus deeply.However, I also understand the importance of discipline and routine, so I adjust when needed.Right now, my family prefers a more structured schedule, so I balance both.In short: I can thrive in both schedules, but my brain secretly votes for nighttime productivity",
-   
-   
-   
+        ide: "My favorite code editor is VS Code.It’s lightweight, fast, highly customizable, and has powerful extensions that support both backend and frontend development.From Django tooling to React productivity plugins, it perfectly fits my full-stack workflow.",
+        os: "My heart says Mac, my wallet says Windows.I absolutely love macOS — clean, smooth, developer-friendly, and honestly just gives main character energy.But right now… finance said “no bro”, so I'm rocking Windows like a loyal soldier 💻🤣(One day soon thogh… MacBook will be mine. Manifesting it.",
+        techChannels: "Fireship, Traversy Media, Tech With Tim, Code With Harry, freeCodeCamp, Corey Schafer - basically YouTube university!",
+         tabsOrSpaces: "Spaces. Always spaces. Consistency matters! Tabs are chaos, spaces are peace 😌",
     }
 
     const getBotResponse = (userInput) => {
@@ -145,7 +148,9 @@ export default function ChatBot() {
         if (/\b(node|nodejs|node js|node\.js|node express|node and express|express|expressjs|express js|express\.js|nide|nod|notejs|nodej|nod js|nod express|expres|exprss|exprees|know node|know express|learn node|learn express|node skills|express skills|node level|express level|node experience|express experience|how good in node|how good in express|node projects|express projects|node developer|express developer|do you know node|do you know express|can you do node|can you do express|worked with node|worked with express)\b/i.test(input)) {
             return knowledgeBase.nodeExpress
         };
-
+        if (/\b(github|git hub|gh|git repository|git repo|git projects|github profile|github projects|github link|github repo|github repository|github commits|git commits)\b/i.test(input)) {
+            return `Check out my GitHub: ${github} - 1,000+ commits and counting! 🔥`;
+        }
         if (/\b(docker|dockerfile|docker file|docker compose|docker-compose|doker|docer|dokar|dcker|dockr|dockerz|docker skills|docker experience|know docker|can you use docker|used docker|how good in docker|docker level|docker knowledge|docker expert|learn docker|using docker)\b/i.test(input)) {
             return knowledgeBase.docker;
         } 
@@ -216,10 +221,7 @@ export default function ChatBot() {
         if (/\b(company|companies|startup|startups|enterprise|enterprises|firm|organization|organisation|business|corporation|corp)\b/i.test(input)) {
             return knowledgeBase.companySize;
         }
-        if (/\b(project|projects|built|work|worked|working)\b/i.test(input)) {
-            return `I've built 30+ projects! Key ones: ResuMatch (resume assistant), TaleTailor (AI stories), Jarvis AI (voice assistant), gesture-controlled games, AI Sketch Studio, and my full-stack portfolio. Check them out: ${github}`;
-        }
-
+        
         if (/\b(hobbi|hobby|hobbies|free\s+time|fun|pastime|leisure|spare\s+time|things\s+I\s+like\s+to\s+do|activities|recreation|interest|interests|what\s+do\s+you\s+do\s+for\s+fun)\b/i.test(input)) {
             return knowledgeBase.hobbies;
         }
@@ -242,9 +244,7 @@ export default function ChatBot() {
         if (/\b(draw|drawing|sketch|sketching|paint|painting|art|artist|illustration|illustrate|doodle|digital art|graphic design|creative|craft|crafting|design)\b/i.test(input)) {
             return knowledgeBase.creative;
         }
-        if (input.includes('skill') || input.includes('tech stack') ||input.includes('tech')||input.includes('stack')|| input.includes('technology')) {
-            return `${knowledgeBase.primaryStack}. I work with Django, React, PostgreSQL, Tailwind, Docker, AWS, REST APIs, and more! Full-stack specialist 💪`;
-        }
+       
         if (input.includes('skill') || input.includes('tech stack') || input.includes('technology')) {
             return `${knowledgeBase.primaryStack}. I work with Django, React, PostgreSQL, Tailwind, Docker, AWS, REST APIs, and more! Full-stack specialist 💪`;
         }
@@ -270,8 +270,62 @@ export default function ChatBot() {
         if (/\b(food|eat|eating|meal|meals|cuisine|favorite food|favorite meal|what do you eat|what's your favorite food|your cuisine|food preference|meal preference|snack|dinner|lunch|breakfast)\b/i.test(input)) {
             return knowledgeBase.food;
         }
+        if (/\b(morning|night|owl|early riser|late night|night owl|morning person|evening person|preferred time|work schedule| active hours|productive hours|working hours)\b/i.test(input)) {
+            return knowledgeBase.schedule;
+        }
+        if (/\b(project|projects|built|work|worked|working)\b/i.test(input)) {
+            return `I've built 30+ projects! Key ones: ResuMatch (resume assistant), TaleTailor (AI stories), Jarvis AI (voice assistant), gesture-controlled games, AI Sketch Studio, and my full-stack portfolio. Check them out: ${github}`;
+        }
+
+        if (/\b(ide|editor|code editor|vscode|vs code|visual studio code|intellij|pycharm|sublime|atom|netbeans|eclipse|webstorm|phpstorm|codeblocks|textmate|vim|emacs|notepad\+\+)\b/i.test(input)) {
+            return knowledgeBase.ide;
+        }
+        if (/\b(linux|ubuntu|debian|fedora|red hat|centos|arch|mint|windows|win10|win11|mac|macos|osx|apple mac|operating system|os)\b/i.test(input)) {
+            return knowledgeBase.os;
+        }
+        if (/\b(channel|youtube|youtube channel|podcast|tech podcast|tech channel|video channel|youtube videos|vlog|tech vlog|stream|live stream|tech stream)\b/i.test(input)) {
+            return knowledgeBase.techChannels;
+        }
+         if (input.includes('skill') || input.includes('tech stack') ||input.includes('tech')||input.includes('stack')|| input.includes('technology')) {
+            return `${knowledgeBase.primaryStack}. I work with Django, React, PostgreSQL, Tailwind, Docker, AWS, REST APIs, and more! Full-stack specialist 💪`;
+        }
+
+        if (/\b(tab|tabs|space|spaces|indent|indentation|tabs vs spaces|space vs tab)\b/i.test(input)) {
+            return knowledgeBase.tabsOrSpaces;
+        }
+
+        if (/\b(linkedin|linkd|linkdn|lnkd|linked in|linkedin profile|linkedin account|linkedin page)\b/i.test(input)) {
+            return `Connect with me on LinkedIn: ${linkedin}`;
+        }
+        if (/\b(leetcode|leet code|leet-code|coding platform|competitive coding|practice coding|online judge|problem solving platform)\b/i.test(input)) {
+            return `My LeetCode profile: ${leetcode}`;
+        }
+        if (/\b(contact|reach|email|get in touch|message me|how to reach|how to contact|connect with me|contact info|contact details|call me|text me|dm me|message me|my number|my whatsapp|whatsapp|mobile|phone)\b|\b\d{10}\b|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}\b/i.test(input)) {
+            return `You can reach me via:\nEmail: sayyedrabeehom240@gmail.com\nWhatsApp/Mobile: 9207286895\nLinkedIn: ${linkedin}`;
+        }
+        if (/\b(about|tell me about|introduce yourself|introduce|who are you|yourself|your story|bio|background|profile|information about you|can you introduce yourself|say something about you|who is|about you)\b/i.test(input)) {
+            return `I'm Sayyed Rabeeh, a passionate Full Stack Developer from Kerala with a unique Humanities background. I switched to tech 1.5 years ago and haven't looked back! Building AI apps, gesture games, and full-stack platforms. Currently at Brototype bootcamp. Love Python, Django, React. Night owl, Mac dreamer, space-user, billionaire-in-progress 😎`;
+        }
+        if (/\b(hi|hello|hey|hlo|hey there|hi there|hello there|hiya|yo|greetings|sup|good morning|good afternoon|good evening)\b/i.test(input)) {
+            return `Hey! 👋 I'm Sayyed Rabeeh's AI assistant. Ask me anything - tech skills, projects, hobbies, favorite food, dream company, or even tabs vs spaces! 😄`;
+        }
+        if (/\b(bye|goodbye|see you|see ya|catch you later|later|okk|okkk|take care|farewell|ciao|adios|peace|ttyl|talk to you later|see you soon)\b/i.test(input)) {
+            return `Goodbye! 👋 It was nice chatting with you.`;
+        }
+        if (/\b(thanks|thank you|thx|ty|much appreciated|cheers|grateful|thanks a lot)\b/i.test(input)) {
+            return "You're welcome! 😊";
+        }
+        if (/\b(ok|okay|sure|yep|yeah|yup|nope|nah|alright|perfect|sounds good|got it|understood|great|good|awesome|cool|nice|love it)\b/i.test(input)) {
+            return "Got it! 👍";
+        }
+        if (/\b(how are you|what's up|whats up|how's it going|how are things|how you doing|how do you do)\b/i.test(input)) {
+            return "I'm doing great, thanks for asking! 😄  ";
+        }
 
 
+         return `😎 Hey there! Great question! I'm currently in training (learning all the cool stuff about Sayyed), so I might not get it 100% right just yet. After I finish my training, I promise to give a proper answer!  
+If it's urgent, you can reach out at this number 📞 – 9207286895 My boss will pick the call , just one tiny request: whenever you send me something, please double-check your spelling 😅.  
+Meanwhile, you can still ask me about skills, projects, background, hobbies, favorite things, career goals, work preferences… basically, anything! Even fun stuff like "what's your favorite movie" or "tabs vs spaces". 😄`;
 
     } 
     
