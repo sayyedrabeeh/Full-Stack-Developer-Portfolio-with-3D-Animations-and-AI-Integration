@@ -57,8 +57,11 @@ export default function ChatBot() {
         },
         favoriteProject: "Two projects are my absolute favorites:1️⃣ My Full-Stack Portfolio Platform This wasn't just a portfolio — I treated it like a full-fledged production project.It includes:Django + React full stack architecture Tailwind CSS + Framer Motion for modern UI animations Matter.js & Three.js for interactive 3D/physics effects Swiper.js for interactive carousels JWT authentication It represents my personality, skills, animation sense, and backend capability — all in one place.2️⃣ TaleTailor — AI-Powered Story Generator This one is special because it's creative and technically challenging. Generates stories using AI Real-time collaboration editing (Django Channels / WebSockets) User accounts & profile system Like/comment interaction system Dynamic theaming accroding to story mood This project pushes boundaries — AI + real-time communication + storytelling platform.",
         challengingProject: "Honestly, every project I built has been challenging in different ways, because I work on them while learning and balancing a bootcamp — some took 1–4 months.But the most challenging experience not challanging fursrating was during my full-stack portfolio project.one of The Challenge  isI accidentally duplicated my login page component.I kept editing one file locally, but the deployed version wasn’t updating — because I was unknowingly modifying the wrong duplicate file.This created:UI conflicts Routing confusion Time wasted debugging “ghost bugs” It was frustrating because everything looked correct in code, but nothing changed on the site. I treated it like a production debugging task and: Re-audited the file structure Carefully inspected all auth component files Searched for duplicates in the repository Used Git history to track changes Saw where the wrong file started getting updated Identified the duplicated component Clean-up & Refactor Deleted duplicate file Standardized component naming Reorganized folder structure for clarity Set up a practice going forward ✅ Enforced clean folder structure ✅ Naming conventions ✅ Verified file references before coding This project taught me the importance of: Folder architecture discipline Consistent naming conventions Systematic debugging Using Git as a tracking tool, not just a backupPatience and persistence — because real dev bugs are rarely obvious 😄",
-
-
+        openSource: "Yes — I have started contributing to open-source.Right now, most of my contributions are learning-focused, like contributing to beginner-friendly repositories such as First-Contributions and Code-Contributions, mainly to understand workflow, PR reviews, and community standards. I also attempted a contribution to Supabase-related project, but I realized the task required Subabase expertise and the code I wrote was in Python using SQL logic, which didn’t match the project requirements.Since I was balancing bootcamp + major personal projects at that time, I paused it rather than pushing incomplete work. Even though I'm early in my open-source journey, I enjoy it and plan to contribute more seriously going forward — especially in areas I work with daily like Django, React, and AI tools.",
+        lookingForJob: "Yes, I am actively looking for job opportunities — ideally in Full-Stack Development, followed by Backend roles, and I’m open to Frontend roles as well.If the right company and role match my skills and offer good growth (and a good package 😉), I’m definitely ready to move forward 😉",
+        workPreference: "I prefer on-site work.Remote isn’t really my style, and I’m not very interested in hybrid either — especially in Kerala.I enjoy being physically present with the team, collaborating directly, and learning from the environment.",
+   
+   
     }
 
     const getBotResponse = (userInput) => {
@@ -190,12 +193,20 @@ export default function ChatBot() {
         if (/\b(challeng(?:e|ing)?|difficult|hard|tough|problematic|tricky)\b/i.test(input)) {
             return knowledgeBase.challengingProject;
         }
-
+        if (/\b(remote|onsite|on-site|hybrid|work preference|work mode|working remotely|working onsite|working on-site|working hybrid|remote work|office work|office-based|work from home|wfh|work from office|flexible work|flexible mode)\b/i.test(input)) {
+            return knowledgeBase.workPreference;
+        }
         if (/\b(project|projects|built|work|worked|working)\b/i.test(input)) {
             return `I've built 30+ projects! Key ones: ResuMatch (resume assistant), TaleTailor (AI stories), Jarvis AI (voice assistant), gesture-controlled games, AI Sketch Studio, and my full-stack portfolio. Check them out: ${github}`;
         }
-         
-         
+         if (/\b(open[\s-]?source|contribution|contributing|contributed|contribute|first[-\s]?contributions|code[-\s]?contributions|github[-\s]?contribution|oss|open-source project)\b/i.test(input)) {
+            return knowledgeBase.openSource;
+        }
+        if (/\b(job|jobs|hire|hiring|hired|looking|looking for|looking to work|seeking|seeking job|employment|work opportunity|career opportunity|available for work)\b/i.test(input)) {
+            return knowledgeBase.lookingForJob;
+        }
+
+ 
 
 
     } 
