@@ -45,23 +45,32 @@ export default function Projects() {
 
     return (
         <motion.section id="projects"
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 0,y:50 }}
             animate={{ opacity: 1 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="min-h-screen  text-white  px-6 py-12 flex items-center justify-center relative overflow-hidden ">
             <div className="relative z-10 w-full max-w-[1600px] mx-auto flex flex-col lg:flex-row  items-center">
             <div className="w-full lg:w-1/2  flex flex-col justify-center p-4 lg:p-16 space-y-6">
                 <motion.h1 className="text-4xl lg:text-7xl font-extrabold tracking-tight text-transparent bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text"
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{duration: 0.8}}
+                    initial={{ opacity: 0, x: -300 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false }}
+            transition={{ duration: 0.8 }}
+            
                 >
                     My Projects
                 </motion.h1>
                 <motion.p className="text-gray-300 text-lg lg:text-xl leading-relaxed"
-                    initial={{ x: -50, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{duration:0.9,delay:0.1}}
+                     variants={{
+                        hidden: { opacity: 0, x: 300 },
+                        visible: { opacity: 1, x: 0 }
+                        }}
+                          initial="hidden"
+                        whileInView="visible"
+                        transition={{ duration: 0.8 }}
+                          viewport={{ once: false, amount: 0.5 }}
+  
                 >
                     Explore some of my featured projects built with modern web technologies — each
                     showcasing creative UI, clean code, and robust performance.
@@ -76,8 +85,8 @@ export default function Projects() {
             </div>
 
                 <motion.div className="lg:w-[900px] w-full"
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, x: 250 }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.7 }}
                 >
                 <div className="[perspective:2000px]" >
