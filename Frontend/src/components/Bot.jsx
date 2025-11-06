@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { MessageCircle,X,Send } from "lucide-react";
-import { error } from "three";
+ 
 
 export default function ChatBot() {
     const [isOpen, setIsOpen] = useState(false)
@@ -85,9 +85,9 @@ export default function ChatBot() {
 
 
 
-    async function get_hugging_response(input) {
+    async function get_hugging_response(userInput) {
         
-        const input = input.toLowerCase().trim().replace(/\s+/g, " ").replace(/[?.,!]/g, "");
+        const input = userInput.toLowerCase().trim().replace(/\s+/g, " ").replace(/[?.,!]/g, "");
 
         try {
             
@@ -128,11 +128,6 @@ export default function ChatBot() {
         }
 
     }
-
-
-
-
-
 
 
     const getBotResponse = (userInput) => {
@@ -379,15 +374,18 @@ export default function ChatBot() {
          return get_hugging_response(input)
     } 
     
-    const handleSend = () => {
+    const handleSend = async () => {
         if (!input.trim()) return;
 
         const userMessage = { type: 'user', text: input };
         setMessage(prev => [...prev, userMessage]);
         const userInput = input; 
         setInput(""); 
-        setTimeout(() => {
-            const botReply = getBotResponse(userInput);
+        setTimeout(async() => {
+            let botReply = getBotResponse(userInput);
+            if (botReply && typeof botReply.then === 'function') {
+                botReply = await botReply;
+            }
             if (botReply?.action === "clear") {
                 setMessage([
                     { type: "bot", text: "Chat cleared ✅" }
@@ -408,13 +406,20 @@ export default function ChatBot() {
 
     const handleKeyPress = (e) => {
         
-        if (e.key === 'Enter') {
-            handleSend()
-        }
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSend();
 
+        }
     }
 
-
+    useEffect(() => {
+        const textarea = document.querySelector('textarea');
+        if (textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = `${textarea.scrollHeight}px`;
+        }
+    }, [input]);
 
 
 
@@ -492,14 +497,15 @@ export default function ChatBot() {
  
                         <div className="p-4 bg-gradient-to-r from-gray-900 to-black border-t border-purple-500/20">
                             <div className="flex gap-2">
-                                <input
-                                    type="text"
+                                <textarea
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
                                     onKeyDown={handleKeyPress}
-                                    placeholder="Ask me anything..."
-                                    className="flex-1 p-3 bg-gray-800/50 border border-purple-500/30 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm text-gray-100 placeholder-gray-500 backdrop-blur-sm"
-                                />
+                                    placeholder="Ask me anything...."
+                                    className="flex-1 p-3 bg-gray-800/50 border border-purple-500/30 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm text-gray-100 placeholder-gray-500 backdrop-blur-sm"
+                                    rows={1}
+                                    style={{ minHeight: '44px', maxHeight: '120px' }}
+                                    />
                                 <button
                                     onClick={handleSend}
                                     className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white p-3 rounded-full hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105"
