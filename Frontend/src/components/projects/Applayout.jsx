@@ -139,7 +139,7 @@ useEffect(() => {
  
  
         {isSuperUser ? (
-  
+  <>
           <div
             onClick={() => navigate("/projects/add_project")}
             className="flex items-center justify-center gap-2 py-2 
@@ -149,8 +149,18 @@ useEffect(() => {
           >
             <FolderPlus size={18} className="text-green-400" />
             <span>Add Project</span>
+            </div>
+                 <div
+            onClick={() => navigate("/projects/saved_projects")}
+            className="flex items-center justify-center gap-2 py-2 
+                      text-gray-200 font-semibold text-base 
+                      cursor-pointer hover:text-green-400 
+                      transition-all duration-200"
+          >
+            <Bookmark size={18} className="text-green-400" />
+            <span>Saved Projects</span>
           </div>
- 
+ </>
         ):          <div
             onClick={() => navigate("/projects/saved_projects")}
             className="flex items-center justify-center gap-2 py-2 

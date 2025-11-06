@@ -124,6 +124,8 @@ def project_counts(request):
 @api_view(['GET'])
 def get_projects(request):
     project_type = request.GET.get('project_type',None)
+    offset = int(request.GET.get('offset', 0))
+    limit = int(request.GET.get('limit', 10))
 
     if project_type:
         projects = Project.objects.filter(project_type= project_type)
@@ -131,9 +133,11 @@ def get_projects(request):
         projects = Project.objects.all()
  
     user = request.user if request.user.is_authenticated else None
+    total_count = projects.count()
+    project_batch = projects[offset:offset + limit]
  
     data = []
-    for p in projects:
+    for p in project_batch:
         item ={
             'id':p.id,
             'name':p.name,
@@ -158,7 +162,11 @@ def get_projects(request):
 
 
         data.append(item)
-    return Response(data)
+    return Response({
+        'projects': data,
+        'hasMore': (offset + limit) < total_count,
+        'total': total_count
+    })
 
 
 @api_view(['POST'])
@@ -248,11 +256,15 @@ def toggle_bookmark(request, pk):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def saved_projects(request):
+    offset = int(request.GET.get('offset', 0))
+    limit = int(request.GET.get('limit', 10))
     user = request.user
     bookmarks = ProjectBookmark.objects.filter(user=user).select_related('project')
     data = []
+    total_count = bookmarks.count()
+    bookmarks_batch = bookmarks[offset:offset+limit]
     
-    for bookmark in bookmarks:
+    for bookmark in bookmarks_batch:
         p = bookmark.project  
         item = {
             'id': p.id,
@@ -279,7 +291,11 @@ def saved_projects(request):
             
         data.append(item)
     
-    return Response(data)
+    return Response({
+        'projects': data,
+        'hasMore': (offset + limit) < total_count,
+        'total': total_count
+    })
 
 
 
@@ -386,16 +402,19 @@ def open_router_response(request):
 
     try: 
         OPENROUTER_KEY = config('OPENROUTER_KEY')
+      
         if not OPENROUTER_KEY:
             raise Exception("OPENROUTER_KEY not found")
         model_name = "mistralai/mistral-7b-instruct:free"
         payload = {
             "model": model_name,
             "messages": [
-                {"role": "system", "content": "You are RabiBot, a friendly and helpful assistant."},
+                {"role": "system", "content": "You are RabiBot, a smart, friendly, and helpful assistant. Always provide detailed and clear answers."},
                 {"role": "user", "content": user_input}
             ],
-            "max_tokens": 300
+            "max_tokens": 300,
+            "temperature": 0.7,
+            "top_p": 0.9,
         }
         headers = {
             "Authorization": f"Bearer {OPENROUTER_KEY}",
@@ -418,17 +437,18 @@ def open_router_response(request):
             raise Exception(f"OpenRouter API error {resp.status_code}")
 
         data = resp.json()
+        print("Full OpenRouter response:", data)
         message = (
             data.get("choices", [{}])[0]
             .get("message", {})
             .get("content", "")
         )
+        cleaned_message = message.replace("[OUT]", "").replace("<s>", "").strip()
+        if not cleaned_message.strip():
+            cleaned_message = "🤖 Hmm… I'm not sure how to respond to that right now."
 
-        if not message.strip():
-            message = "🤖 Hmm… I'm not sure how to respond to that right now."
-
-        print("Model reply:", message[:200])
-        return Response({'generated_text': message})
+        print("Model reply:", cleaned_message[:200])
+        return Response({'generated_text': cleaned_message})
 
     except Exception as e:
  
@@ -442,3 +462,17 @@ def open_router_response(request):
         return Response({'generated_text': fallback_message}, status=200)
 
  
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def delete_comment(request, comment_id):
+    try:
+        comment = ProjectComment.objects.get(id=comment_id)
+    except ProjectComment.DoesNotExist:
+        return Response({"detail": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
+ 
+    if request.user.is_superuser or comment.user == request.user:
+        comment.delete()
+        return Response({"detail": "Comment deleted"}, status=status.HTTP_200_OK)
+    else:
+        return Response({"detail": "Not authorized to delete this comment"}, status=status.HTTP_403_FORBIDDEN)

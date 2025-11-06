@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect,useCallback,useRef } from "react"
  
 import { ArrowLeft, Heart, MessageCircle, Share2Icon, Trash2 ,Github,Bookmark, BookmarkCheck, ExternalLink, X,ChevronLeft, ChevronRight, Calendar, Send } from "lucide-react"
 import moment from "moment";
@@ -28,43 +28,105 @@ export default function Project_Component({ Project_type }) {
     const [commentText, setCommentText] = useState('')
     const [comments, setComments] = useState([])
     const [isSuperUser, setIsSuperUser] = useState(false);
+    const [currentUserId, setCurrentUserId] = useState(null);
     
+    const [offset, setOffset] = useState(0)
+    const [hasMore, setHasMore] = useState(true)
+    const [loading, setLoading] = useState(false)
+    const [initialLoad, setInitialLoad] = useState(true)
+
+    const [commentToDelete, setCommentToDelete] = useState(null);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [projectToDelete, setProjectToDelete] = useState(null);
+
+    
+    const observerTarget = useRef(null)
+    const LIMIT = 3;
      
  
     const baseURL = "http://127.0.0.1:8000"
 
-
-    useEffect(() => {
- 
+    const fetchProjects = useCallback(async (currentOffset, isInitial = false) => { 
+        if (loading || (!hasMore && !isInitial)) return;
+        setLoading(true);
         const token = localStorage.getItem("access");
+    const url = Project_type 
+            ? `${baseURL}/api/accounts/projects?project_type=${Project_type}&offset=${currentOffset}&limit=${LIMIT}`
+            : `${baseURL}/api/accounts/projects?offset=${currentOffset}&limit=${LIMIT}`;
 
-        const url = Project_type 
-            ? `${baseURL}/api/accounts/projects?project_type=${Project_type}`
-            : `${baseURL}/api/accounts/projects`;
-
-        fetch(url, {
-            headers: token ? { Authorization: `Bearer ${token}` } : {}
-        })
-        .then( safeJson)
-
-
-            .then((data) => {
-            if (!Array.isArray(data)) {
-                 
-                setProject([]);
-                return;
+        try {
+            const response = await fetch(url, {
+                headers: token ? { Authorization: `Bearer ${token}` } : {}
+            });
+            
+            const result = await safeJson(response);
+            const newProjects = result.projects || [];
+            
+            setHasMore(result.hasMore);
+            
+            if (isInitial) {
+                setProject(newProjects);
+                const idx = {};
+                newProjects.forEach((p) => { idx[p.id] = 0 });
+                setCurrentImgIdx(idx);
+            } else {
+                setProject(prev => [...prev, ...newProjects]);
+                setCurrentImgIdx(prev => {
+                    const newIdx = { ...prev };
+                    newProjects.forEach((p) => { newIdx[p.id] = 0 });
+                    return newIdx;
+                });
             }
-            const sorted = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-                setProject(sorted)
-                
+        } catch (e) {
+            console.log('load error', e);
+            toast.error("Failed to load projects");
+        } finally {
+               setTimeout(() => {
+                setLoading(false);
+                setInitialLoad(false);
+            }, 1000);
+        }
+    }, [Project_type, loading, hasMore]);
 
-            const idx = {}
-            sorted.forEach((p) => { idx[p.id] = 0 })
-            setCurrentImgIdx(idx)
-            })
-            .catch((e) => console.log('load error', e))
-        }, [Project_type])
- 
+    
+    useEffect(() => {
+        setProject([]);
+        setOffset(0);
+        setHasMore(true);
+        setInitialLoad(true);
+        fetchProjects(0, true);
+    }, [Project_type]);
+
+     
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            entries => {
+                if (entries[0].isIntersecting && hasMore && !loading && !initialLoad) {
+                    const newOffset = offset + LIMIT;
+                    setOffset(newOffset);
+                    fetchProjects(newOffset);
+                }
+            },
+            { threshold: 0.5 }
+        );
+
+        const currentTarget = observerTarget.current;
+        if (currentTarget) {
+            observer.observe(currentTarget);
+        }
+
+        return () => {
+            if (currentTarget) {
+                observer.unobserve(currentTarget);
+            }
+        };
+    }, [hasMore, loading, offset, fetchProjects, initialLoad]);
+
+
+
+     
     
     const nextImag = (id, total) => {
         setCurrentImgIdx((prev) => ({
@@ -86,29 +148,12 @@ export default function Project_Component({ Project_type }) {
     const user = stored && stored !== 'undefined' && stored !== 'null' 
       ? JSON.parse(stored) 
       : null;
-      
+    setCurrentUserId(user?.id);
     setIsSuperUser(user?.is_superuser || false);
      
   }, []);
   
-const handleDeleteProject = async (id) => {
-  if (!window.confirm("Are you sure? This project will be deleted.")) return;
-
-  try {
-    await api.delete(`/api/accounts/projects/${id}/delete/`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("access")}`,
-      },
-    });
-
-    setProject((prev) => prev.filter((p) => p.id !== id));
-
-    toast.success("Project deleted successfully ");
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to delete project ");
-  }
-};
+ 
  
 
   const fmtDate = (d) => {
@@ -208,6 +253,7 @@ const handleDeleteProject = async (id) => {
             toast.error("Something went wrong");
         }
 };
+ 
 
 
    
@@ -356,13 +402,57 @@ const handleDeleteProject = async (id) => {
                                         
                                     {isSuperUser && (
                                     <button
-                                    onClick={() => handleDeleteProject(p.id)}
+                                    onClick={() => {
+                                    setProjectToDelete(p.id);
+                                    setShowDeleteModal(true);
+                                    }}
                                     className="flex items-center gap-1.5 text-red-500 hover:scale-110 transition-all"
                                     >
                                     <Trash2 className="w-6 h-6" />
                                     </button>
                                 )}
                                     </div>
+
+                                {showDeleteModal && (
+                                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                                    <div className="bg-gray-800 rounded-xl p-6 w-80 text-center">
+                                    <h2 className="text-lg font-bold text-white mb-4">Confirm Delete</h2>
+                                    <p className="text-gray-300 mb-6">
+                                        Are you sure you want to delete this project? This action cannot be undone.
+                                    </p>
+                                    <div className="flex justify-center gap-4">
+                                        <button
+                                        onClick={() => setShowDeleteModal(false)}
+                                        className="px-4 py-2 rounded-lg bg-gray-600 text-white hover:bg-gray-700"
+                                        >
+                                        Cancel
+                                        </button>
+                                        <button
+                                        onClick={async () => {
+                                            if (!projectToDelete) return;
+                                            try {
+                                            await api.delete(`/api/accounts/projects/${projectToDelete}/delete/`, {
+                                                headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
+                                            });
+                                            setProject(prev => prev.filter(p => p.id !== projectToDelete));
+                                            toast.success("Project deleted successfully");
+                                            } catch (err) {
+                                            console.error(err);
+                                            toast.error("Failed to delete project");
+                                            } finally {
+                                            setShowDeleteModal(false);
+                                            setProjectToDelete(null);
+                                            }
+                                        }}
+                                        className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700"
+                                        >
+                                        Delete
+                                        </button>
+                                    </div>
+                                    </div>
+                                </div>
+                                )}
+
 
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isCommentsOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
                                     <div className=" bg-gray-900/50 px-4 py-4">
@@ -398,7 +488,16 @@ const handleDeleteProject = async (id) => {
                                                         <p className="text-sm text-gray-300 mt-1 break-words">
                                                             {c.text}
                                                         </p>
-                                                    </div>
+                                                            </div>
+                                                       {(isSuperUser || c.user_id === currentUserId) && (
+                                                <button   onClick={() => {
+                                                    setCommentToDelete(c.id);
+                                                    setShowDeleteConfirm(true);
+                                                }} className="ml-2 text-red-500 hover:text-red-400">
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
+                                                )}
+
                                                         </div>
                                                     </div>
                                                 ))
@@ -411,6 +510,52 @@ const handleDeleteProject = async (id) => {
                                                 </div>
                                             )}
                                         </div>
+                            {showDeleteConfirm && (
+                            <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+                                <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-xs w-full text-center">
+                                <p className="text-white mb-4">Are you sure you want to delete this comment?</p>
+                                <div className="flex justify-center gap-4">
+                                    <button
+                                    onClick={async () => {
+                                        try {
+                                        await api.post(
+                                            `/api/accounts/comments/${commentToDelete}/delete/`,
+                                            {},
+                                            { headers: { Authorization: `Bearer ${localStorage.getItem("access")}` } }
+                                        );
+                                            setComments(prev => prev.filter(c => c.id !== commentToDelete));
+                                              setProject(prevProjects => 
+                                                prevProjects.map(p => 
+                                                    p.id === currentProjectId 
+                                                    ? { ...p, comments: (p.comments || 1) - 1 } 
+                                                    : p
+                                                ))
+                                        toast.success("Comment deleted successfully");
+                                        } catch (err) {
+                                        console.error(err);
+                                        toast.error("Failed to delete comment");
+                                        } finally {
+                                        setShowDeleteConfirm(false);
+                                        setCommentToDelete(null);
+                                        }
+                                    }}
+                                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                                    >
+                                    Delete
+                                    </button>
+                                    <button
+                                    onClick={() => {
+                                        setShowDeleteConfirm(false);
+                                        setCommentToDelete(null);
+                                    }}
+                                    className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                                    >
+                                    Cancel
+                                    </button>
+                                </div>
+                                </div>
+                            </div>
+                            )}
 
                                       
                                         <div className="relative">
@@ -481,6 +626,13 @@ const handleDeleteProject = async (id) => {
                                         )  }    
                                         </div>
                                     </div>
+                                    <div ref={observerTarget}></div> 
+                                    {loading && (
+                                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                                        <div className="w-16 h-16 border-4 border-t-transparent border-purple-600 border-solid rounded-full animate-spin"></div>
+                                    </div>
+                                    )}
+
                                  </article>
                             )
 

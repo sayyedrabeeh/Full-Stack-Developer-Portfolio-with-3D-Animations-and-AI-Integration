@@ -94,7 +94,7 @@ export default function ChatBot() {
     const cleanedInput = userInput.trim();
 
     try {
-        const response = await fetch('http://127.0.0.1:8000/api/accounts/api/open_Router/', {   
+        const response = await fetch('http://127.0.0.1:8000/api/accounts/api/open_router/', {   
 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
