@@ -361,7 +361,7 @@ export default function ChatBot() {
          return getHuggingFaceResponse(input)
     } 
     
-    const handleSend = () => {
+    const handleSend =async () => {
  
         if (!input.trim()) return;
 
@@ -487,7 +487,11 @@ export default function ChatBot() {
                                     className="text-sm whitespace-pre-line leading-relaxed"
                                     dangerouslySetInnerHTML={{ __html: msg.text }}
                                         ></p>
-                                        {isTyping && (
+                                      
+                                    </div>
+                                </div>
+                            ))}
+                              {isTyping && (
                                     <div className="flex justify-start">
                                         <div className="bg-gray-800/80 p-3 rounded-2xl">
                                             <div className="flex gap-1">
@@ -499,9 +503,6 @@ export default function ChatBot() {
                                     </div>
                                 )}
 
-                                    </div>
-                                </div>
-                            ))}
                             <div ref={messagesEndRef} />
                         </div>
  
