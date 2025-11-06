@@ -12,6 +12,7 @@ export default function ChatBot() {
     ])
     const [input, setInput] = useState('')
     const messagesEndRef = useRef(null)
+    const textareaRef = useRef(null);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({behavior:'smooth'})
@@ -409,16 +410,20 @@ export default function ChatBot() {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             handleSend();
-
-        }
+        }else {
+        setTimeout(resizeTextarea, 0);
     }
-
-    useEffect(() => {
-        const textarea = document.querySelector('textarea');
+    }
+    const resizeTextarea = () => {
+        const textarea = textareaRef.current;
         if (textarea) {
             textarea.style.height = 'auto';
-            textarea.style.height = `${textarea.scrollHeight}px`;
+            textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
         }
+    };
+
+    useEffect(() => {
+     resizeTextarea();
     }, [input]);
 
 
@@ -499,6 +504,7 @@ export default function ChatBot() {
                             <div className="flex gap-2">
                                 <textarea
                                     value={input}
+                                    ref={textareaRef}
                                     onChange={(e) => setInput(e.target.value)}
                                     onKeyDown={handleKeyPress}
                                     placeholder="Ask me anything...."
