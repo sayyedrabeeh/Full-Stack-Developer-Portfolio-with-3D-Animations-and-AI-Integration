@@ -386,7 +386,7 @@ def hf_proxy(request):
         print("Using HF Token:", hf_token[:10] + "..." if hf_token else "MISSING")
 
         hf_response = requests.post(
-            'https://router.huggingface.co/hf-inference/models/google/gemma-2-2b-it',
+            'https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.3',
             headers={
                 'Authorization': f'Bearer {hf_token}',
                 'Content-Type': 'application/json'
