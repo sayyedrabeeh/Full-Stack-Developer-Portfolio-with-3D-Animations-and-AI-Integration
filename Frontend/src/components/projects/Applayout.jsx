@@ -1,7 +1,9 @@
 import React, { useState,useEffect } from "react";
+ 
 import { Home,Globe,Layers,Zap,Terminal,Brain,Puzzle,BookOpen ,Github,Mail, TrendingUp, Linkedin,Menu,X,LogOut,FolderPlus,ArrowLeft,Bookmark  } from "lucide-react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { SiLeetcode } from "react-icons/si";
+ 
 
 export default function AppLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -33,7 +35,9 @@ export default function AppLayout() {
   const handleLogout = () => {
  
     localStorage.clear();
+ 
     navigate("/");
+ 
   };
 
   const refreshCounts = () => {
@@ -43,6 +47,7 @@ export default function AppLayout() {
     .catch(err => console.log(err));
 };
 
+ 
 useEffect(() => {
  
   const stored = localStorage.getItem('user');
@@ -53,6 +58,7 @@ useEffect(() => {
   setIsSuperUser(user?.is_superuser || false);
   refreshCounts();
 }, []);
+ 
 
   return (
     <div className="flex w-full bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white ">
@@ -82,11 +88,13 @@ useEffect(() => {
             <Github size={18} />
           </a>
           <a
+ 
               href="https://leetcode.com/u/sayyed-rabeeh/"
               target="_blank"
             className="p-2.5 bg-gray-800 rounded-lg hover:bg-gray-700 transition-all duration-200"
           >
             <SiLeetcode size={18} />
+ 
           </a>
           <a
             href="https://linkedin.com"
@@ -128,7 +136,9 @@ useEffect(() => {
           })}
         </nav>
        <div className="p-4 border-t border-gray-800 space-y-3">
+ 
         {isSuperUser ? (
+ 
           <div
             onClick={() => navigate("/projects/add_project")}
             className="flex items-center justify-center gap-2 py-2 
@@ -139,6 +149,7 @@ useEffect(() => {
             <FolderPlus size={18} className="text-green-400" />
             <span>Add Project</span>
           </div>
+ 
         ):          <div
             onClick={() => navigate("/projects/saved_projects")}
             className="flex items-center justify-center gap-2 py-2 
@@ -149,6 +160,7 @@ useEffect(() => {
             <Bookmark size={18} className="text-green-400" />
             <span>Saved Projects</span>
           </div>}
+ 
       </div>
     </aside>
 

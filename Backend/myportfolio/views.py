@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view,parser_classes,permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.parsers import MultiPartParser,FormParser
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
@@ -11,7 +11,9 @@ from .models import Project,ProjectImage,ProjectVideo,ProjectComment,ProjectLike
 from django.shortcuts import get_object_or_404
 from django.utils.timezone import localtime
 import json
-
+import os
+import requests
+ 
 
 
 # Create your views here.
@@ -365,3 +367,48 @@ def delete_journey(request,pk):
     m.delete()
     return Response({'message':'milestone deleted'})
 
+ 
+
+ 
+ 
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def hf_proxy(request):
+    user_input = request.data.get('inputs', '')
+    if not user_input:
+        return Response({'error': 'input not provided'}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        hf_token = os.getenv('HF_TOKEN')
+
+        hf_response = requests.post(
+            'https://api-inference.huggingface.co/models/google/gemma-2b',
+            headers={
+                'Authorization': f'Bearer {hf_token}',
+                'Content-Type': 'application/json'
+            },
+            json={'inputs': user_input},
+            timeout=30
+        )
+
+        if hf_response.status_code != 200:
+            raise Exception(f"HF API error: {hf_response.status_code}")
+
+        data = hf_response.json()
+        generated_text = None
+
+        if isinstance(data, list) and len(data) > 0:
+            generated_text = data[0].get('generated_text', '')
+        elif isinstance(data, dict):
+            generated_text = data.get('generated_text', '')
+
+        if generated_text and user_input.lower() in generated_text.lower():
+            generated_text = generated_text[len(user_input):].strip()
+
+        return Response({'generated_text': generated_text or "Hmm..."})
+    except Exception as e:
+        print("HF Proxy Error:", str(e))
+        return Response({
+            'generated_text': " 😎 Hey there! Great question! I'm currently in training (learning all the cool stuff about Sayyed), so I might not get it 100% right just yet. After I finish my training, I promise to give a proper answer!  If it's urgent, you can reach out at this number 📞 – 9207286895 My boss will pick the call , just one tiny request: whenever you send me something, please double-check your spelling 😅.  Meanwhile, you can still ask me about skills, projects, background, hobbies, favorite things, career goals, work preferences… basically, anything! Even fun stuff like what's your favorite movie or tabs vs spaces. 😄"
+        }, status=200)
+ 

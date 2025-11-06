@@ -3,7 +3,9 @@ import { Autoplay, EffectCoverflow } from "swiper/modules"
 import { Swiper,SwiperSlide } from "swiper/react"
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+ 
 import React,{ useState,useEffect } from "react";
+ 
 
 import "swiper/css";
 import "swiper/css/effect-coverflow";
@@ -14,7 +16,9 @@ import "swiper/css/effect-coverflow";
 
 export default function Projects() {
     const navigate = useNavigate();
+ 
     const [projects, setProjects] = useState([])
+ 
 
     const handleautheticate = () => {
         const token = localStorage.getItem("access");
@@ -25,6 +29,7 @@ export default function Projects() {
     }
     }
 
+ 
     useEffect(() => {
         fetch('http://127.0.0.1:8000/api/accounts/projects')
             .then(r => r.json())
@@ -43,6 +48,7 @@ export default function Projects() {
             .catch(e => console.log(e))
     },[])
 
+ 
     return (
         <motion.section id="projects"
             initial={{ opacity: 0,y:50 }}

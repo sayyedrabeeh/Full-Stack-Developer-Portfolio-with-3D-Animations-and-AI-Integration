@@ -95,6 +95,9 @@ class ProjectBookmark(models.Model):
 
 
 class JourneyMilestone(models.Model):
+ 
+  
+ 
     year = models.CharField(max_length=50)
     date = models.DateField()
     title = models.CharField(max_length=200)
@@ -108,6 +111,7 @@ class JourneyAchievement(models.Model):
     name = models.CharField(max_length=200)
     github_link = models.URLField(blank=True,null=True)
     image = models.ImageField(upload_to='achievements/', blank=True, null=True)
+ 
  
     def __str__(self):
         return f'{self.name}'

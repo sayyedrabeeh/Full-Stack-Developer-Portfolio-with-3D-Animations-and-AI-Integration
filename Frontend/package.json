@@ -11,6 +11,12 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+ 
+    "@react-oauth/google": "^0.12.2",
+    "@react-three/drei": "^10.0.8",
+    "@react-three/fiber": "^9.1.2",
+    "axios": "^1.12.2",
+ 
     "@gsap/react": "^2.1.2",
     "@headlessui/react": "^2.2.9",
     "@react-oauth/google": "^0.12.2",
@@ -20,6 +26,7 @@
     "animejs": "^4.2.2",
     "axios": "^1.12.2",
     "date-fns": "^4.1.0",
+ 
     "framer-motion": "^12.23.24",
     "gsap": "^3.13.0",
     "lottie-react": "^2.4.1",
@@ -37,9 +44,13 @@
     "react-vertical-timeline-component": "^3.5.3",
     "swiper": "^12.0.2",
     "three": "^0.180.0",
+ 
+    "threejs-toys": "^0.0.8"
+ 
     "threejs-toys": "^0.0.8",
     "use-sound": "^5.0.0",
     "vanilla-tilt": "^1.8.1"
+ 
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
