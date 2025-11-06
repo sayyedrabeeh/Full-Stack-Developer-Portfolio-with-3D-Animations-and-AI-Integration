@@ -6,6 +6,9 @@ import api from "../api/axios";
 import { Home } from "lucide-react";
  
  
+ 
+ 
+ 
 
 export default function Login3D() {
   const mountRef = useRef(null);
@@ -231,6 +234,7 @@ export default function Login3D() {
     }
   };
      
+ 
    useEffect(() => {
   const access = localStorage.getItem("access");
 
@@ -253,6 +257,7 @@ export default function Login3D() {
 
   return (
     
+ 
     <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-purple-950 via-indigo-950 to-violet-950">
       <div ref={mountRef} className="absolute inset-0 z-0" />
 
@@ -420,7 +425,11 @@ export default function Login3D() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm password"
+ 
+ 
                   className="w-full pl-10 pr-12 py-3 text-sm rounded-xl bg-white/5 text-white placeholder-purple-300/50 border border-purple-500/20 focus:ring-2 focus:ring-purple-500/40 focus:border-transparent"
+ 
+ 
                                   />
                     <button
                   type="button"
@@ -472,6 +481,7 @@ export default function Login3D() {
                   {isSignUp ? "Sign In" : "Sign Up"}
                 </button>
               </p>
+ 
       <div className="flex justify-center">
             <motion.button
               onClick={() => navigate("/")}
@@ -492,6 +502,7 @@ export default function Login3D() {
               <span>Home</span>
             </motion.button>
           </div>
+ 
 
             </div>
                               

@@ -1,6 +1,9 @@
 from django.urls import path
  
-from .views import signUp, login,create_project,project_counts,get_projects,toggle_like,add_comment,get_comments,toggle_bookmark,saved_projects,delete_project,add_journey,get_journey,delete_journey 
+ 
+from .views import signUp, login,create_project,project_counts,get_projects,toggle_like,add_comment,get_comments,toggle_bookmark,saved_projects,delete_project,add_journey,get_journey,delete_journey,open_router_response 
+ 
+ 
  
  
 from rest_framework_simplejwt.views import (
@@ -24,7 +27,20 @@ urlpatterns = [
     path("projects/<int:pk>/delete/", delete_project, name="delete_project"),
     path('journey/',get_journey),
     path('journey/add/',add_journey),
+  
+    path('api/open_router/', open_router_response, name='open_router'),
+ 
+ 
     path('journey/delete/<int:pk>/',delete_journey),
+ 
+ 
+    
+    
+ 
+    
+ 
+ 
+ 
 
 
 

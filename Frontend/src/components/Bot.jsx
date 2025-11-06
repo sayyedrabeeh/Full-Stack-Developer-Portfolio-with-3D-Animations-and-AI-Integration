@@ -89,12 +89,13 @@ export default function ChatBot() {
 
  
 
-
+ 
     async function getOpenRouterResponse(userInput) {
     const cleanedInput = userInput.trim();
 
     try {
         const response = await fetch('http://127.0.0.1:8000/api/accounts/api/open_Router/', {   
+
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ inputs: cleanedInput })
@@ -358,7 +359,9 @@ export default function ChatBot() {
 
 
  
+ 
          return getOpenRouterResponse(input)
+ 
     } 
     
         const handleSend = async () => {

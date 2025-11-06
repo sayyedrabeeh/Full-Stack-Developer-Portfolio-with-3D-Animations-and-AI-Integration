@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view,parser_classes,permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.parsers import MultiPartParser,FormParser
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
@@ -11,7 +11,11 @@ from .models import Project,ProjectImage,ProjectVideo,ProjectComment,ProjectLike
 from django.shortcuts import get_object_or_404
 from django.utils.timezone import localtime
 import json
-
+import os
+import requests
+  
+from decouple import config
+ 
 
 
 # Create your views here.
@@ -365,3 +369,76 @@ def delete_journey(request,pk):
     m.delete()
     return Response({'message':'milestone deleted'})
 
+ 
+
+ 
+ 
+
+ 
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def open_router_response(request):
+    user_input = request.data.get('inputs', '').strip()
+    if not user_input:
+ 
+        return Response({'error': 'input not provided'}, status=400)
+
+    try: 
+        OPENROUTER_KEY = config('OPENROUTER_KEY')
+        if not OPENROUTER_KEY:
+            raise Exception("OPENROUTER_KEY not found")
+        model_name = "mistralai/mistral-7b-instruct:free"
+        payload = {
+            "model": model_name,
+            "messages": [
+                {"role": "system", "content": "You are RabiBot, a friendly and helpful assistant."},
+                {"role": "user", "content": user_input}
+            ],
+            "max_tokens": 300
+        }
+        headers = {
+            "Authorization": f"Bearer {OPENROUTER_KEY}",
+            "Content-Type": "application/json",
+            # "Referer": "https://your-site-name.com",   
+            "X-Title": "RabiBot Django API"
+        }
+        resp = requests.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers=headers,
+            json=payload,
+            timeout=60
+ 
+        )
+
+        print(f"OpenRouter Status: {resp.status_code}")
+
+        if resp.status_code != 200:
+            print("OpenRouter Error:", resp.text)
+            raise Exception(f"OpenRouter API error {resp.status_code}")
+
+        data = resp.json()
+        message = (
+            data.get("choices", [{}])[0]
+            .get("message", {})
+            .get("content", "")
+        )
+
+        if not message.strip():
+            message = "🤖 Hmm… I'm not sure how to respond to that right now."
+
+        print("Model reply:", message[:200])
+        return Response({'generated_text': message})
+
+    except Exception as e:
+ 
+        print("OpenRouter Proxy Error:", str(e))
+        fallback_message = (
+            "😎 Hey there! Great question! I'm currently in training (learning all the cool stuff about Sayyed), "
+            "so I might not get it 100% right just yet. After I finish my training, I promise to give a proper answer! "
+            "If it's urgent, you can reach out at 📞 9207286895 — my boss will pick up. "
+            "Meanwhile, you can still ask me about skills, projects, hobbies, or anything fun! 😄"
+        )
+        return Response({'generated_text': fallback_message}, status=200)
+
+ 
