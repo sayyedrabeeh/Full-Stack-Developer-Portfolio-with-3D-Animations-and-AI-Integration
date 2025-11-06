@@ -4,6 +4,7 @@ import { MessageCircle,X,Send } from "lucide-react";
 
 export default function ChatBot() {
     const [isOpen, setIsOpen] = useState(false)
+    const [isTyping, setIsTyping] = useState(false);
     const [message, setMessage] = useState([
         {
             type: 'bot',
@@ -89,49 +90,29 @@ export default function ChatBot() {
  
 
 
-    async function get_hugging_response(userInput) {
-        
-        const input = userInput.toLowerCase().trim().replace(/\s+/g, " ").replace(/[?.,!]/g, "");
+    async function getHuggingFaceResponse(userInput) {
+    const cleanedInput = userInput.trim();
 
-        try {
-            
-            const response = await fetch('https://api-inference.huggingface.co/models/google/gemma-2b', {
-                method: 'POST',
-                headers: {
-                    Authorization: "Bearer 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",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ inputs: input })
-            })
-            if (!response.ok) {
-                throw new Error(`Hugging Face API error: ${response.status}`)
-            }
-            const data = await response.json()
-            let generatedText = null;
+    try {
+        const response = await fetch('http://127.0.0.1:8000/api/accounts/api/hf/', {   
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ inputs: cleanedInput })
+        });
 
-            if (Array.isArray(data) && data[0]?.generated_text) {
-                generatedText = data[0].generated_text;
-            } else if (data?.generated_text) {
-                generatedText = data.generated_text;
-            } else if (data?.outputs?.[0]?.generated_text) {
-                generatedText = data.outputs[0].generated_text;
-            }
+        if (!response.ok) throw new Error('Proxy error');
 
-            if (!generatedText || generatedText.trim() === '') {
-                throw new Error('Empty model response ')
-            }
-            return generatedText.trim()
-        } catch (error) {
-            console.warn("⚠️ Hugging Face fallback triggered:", error.message);
+        const data = await response.json();
+        return data.generated_text || "No response";
 
-            return `😎 Hey there! Great question! I'm currently in training (learning all the cool stuff about Sayyed), so I might not get it 100% right just yet. After I finish my training, I promise to give a proper answer!  
-                    If it's urgent, you can reach out at this number 📞 – 9207286895 My boss will pick the call , just one tiny request: whenever you send me something, please double-check your spelling 😅.  
-                    Meanwhile, you can still ask me about skills, projects, background, hobbies, favorite things, career goals, work preferences… basically, anything! Even fun stuff like "what's your favorite movie" or "tabs vs spaces". 😄`;
-
-
-        }
+    } catch (error) {
+        console.warn("HF fallback:", error.message);
+        return `😎 Hey there! Great question! I'm currently in training (learning all the cool stuff about Sayyed), so I might not get it 100% right just yet. After I finish my training, I promise to give a proper answer!  
+            If it's urgent, you can reach out at this number 📞 – 9207286895 My boss will pick the call , just one tiny request: whenever you send me something, please double-check your spelling 😅.  
+            Meanwhile, you can still ask me about skills, projects, background, hobbies, favorite things, career goals, work preferences… basically, anything! Even fun stuff like "what's your favorite movie" or "tabs vs spaces". 😄`;
 
     }
+}
 
 
  
@@ -377,10 +358,7 @@ export default function ChatBot() {
 
 
  
-         return `😎 Hey there! Great question! I'm currently in training (learning all the cool stuff about Sayyed), so I might not get it 100% right just yet. After I finish my training, I promise to give a proper answer!  
-If it's urgent, you can reach out at this number 📞 – 9207286895 My boss will pick the call , just one tiny request: whenever you send me something, please double-check your spelling 😅.  
-Meanwhile, you can still ask me about skills, projects, background, hobbies, favorite things, career goals, work preferences… basically, anything! Even fun stuff like "what's your favorite movie" or "tabs vs spaces". 😄`;
-
+         return getHuggingFaceResponse(input)
     } 
     
     const handleSend = () => {
@@ -392,7 +370,8 @@ Meanwhile, you can still ask me about skills, projects, background, hobbies, fav
         const userInput = input; 
         setInput(""); 
  
-        setTimeout(async() => {
+        setTimeout(async () => {
+            setIsTyping(true);
             let botReply = getBotResponse(userInput);
             if (botReply && typeof botReply.then === 'function') {
                 botReply = await botReply;
@@ -411,6 +390,7 @@ Meanwhile, you can still ask me about skills, projects, background, hobbies, fav
             let textResponse = botReply?.text || botReply;
             const botMessage = { type: "bot", text: textResponse };
             setMessage(prev => [...prev, botMessage]);
+            setIsTyping(false);
             
         }, 500);
     };
@@ -506,7 +486,18 @@ Meanwhile, you can still ask me about skills, projects, background, hobbies, fav
                                      <p
                                     className="text-sm whitespace-pre-line leading-relaxed"
                                     dangerouslySetInnerHTML={{ __html: msg.text }}
-                                    ></p>
+                                        ></p>
+                                        {isTyping && (
+                                    <div className="flex justify-start">
+                                        <div className="bg-gray-800/80 p-3 rounded-2xl">
+                                            <div className="flex gap-1">
+                                                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
+                                                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100"></span>
+                                                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
 
                                     </div>
                                 </div>
