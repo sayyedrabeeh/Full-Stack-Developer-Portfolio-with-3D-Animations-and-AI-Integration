@@ -4,12 +4,22 @@ import HeroSection from "./components/Hero";
 import About from "./components/About";
 import Skills from "./components/Skills";
 import Projects from "./components/HeroProject";
+ 
+ 
+
+  
+import Journey from './components/Journey'
+import ContactSection from "./components/Contact";
 import Login3D from "./pages/login";
 import AppLayout from "./components/projects/Applayout";
+import ExternalLinks from "./components/ExternalLinks";
+import ChatBot from "./components/Bot";
 import PrivateRoute from "./api/PrivateRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useRef } from "react"
+ 
+ 
 
 
 import HomeProjects from "./components/projects/HomeProjects";
@@ -21,12 +31,23 @@ import AI from "./components/projects/AI";
 import Learning from "./components/projects/Learning";
 import Miniprojects from "./components/projects/MiniProjects";
 import Add_Project from "./components/projects/Add_projects";
+ 
+ 
+ 
+import Saved from "./components/projects/Saved";
+ 
+ 
 
 
 function App() {
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
   const isProjectsPage = location.pathname.startsWith("/projects");
+ 
+ 
+  const dragAreaRef = useRef(null)
+ 
+ 
 
   return (
     <>
@@ -37,13 +58,20 @@ function App() {
         toastStyle={{ background: "#1e293b", color: "#fff" }}
       />
       {!isLoginPage && !isProjectsPage && (
-        <div className="min-h-screen text-white animate-gradient overflow-hidden">
+ 
+        <div ref={dragAreaRef} className="min-h-screen text-white animate-gradient overflow-hidden">
            <Navbar />
-          <HeroSection />
+          <HeroSection dragAreaRef={dragAreaRef} />
           <About />
           <Skills />
           <Projects />
-
+          <Journey />
+          <ExternalLinks/>
+          <ContactSection />
+          <ChatBot/>
+          
+         
+ 
           <style>
             {`
               @keyframes gradient {
@@ -78,6 +106,10 @@ function App() {
                 <Route path="learnings" element={<Learning />} />
                 <Route path="miniprojects" element={<Miniprojects/>}/>
                 <Route path="add_project" element={<Add_Project/>}/>
+ 
+ 
+                <Route path="saved_projects" element={<Saved/>}/>
+ 
               </Route>
             </Routes>
           

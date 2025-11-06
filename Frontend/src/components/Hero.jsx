@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 
 
-function HeroSection() {
+function HeroSection({ dragAreaRef }) {
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const constraintsRef = useRef(null);
 
@@ -33,19 +33,34 @@ function HeroSection() {
   return (
     <section id="Home"  className="min-h-screen    flex flex-col-reverse md:flex-row items-center justify-center text-center md:text-left px-8 md:px-20 relative z-10  ">
       <div className="md:w-1/2 text-white space-y-6">
-        <h1 className="text-5xl md:text-6xl font-bold mb-4">
+        <motion.h1
+                  initial={{ opacity: 0, y: 400 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false ,amount: 0.5 }}
+                transition={{duration:1}}
+          className="text-5xl md:text-6xl font-bold mb-4">
           Hey, I'm <span className="text-blue-400">Sayyed Rabeeh</span>
-        </h1>
+        </motion.h1>
  
 
-        <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
+        <motion.p
+                initial={{ opacity: 0, x: 400 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false ,amount: 0.5 }}
+                transition={{duration:1}}
+          className="text-lg md:text-xl text-gray-300 leading-relaxed">
           A <span className="text-blue-300 font-medium">Full Stack Developer</span> passionate
           about building  interactive, and meaningful websites
           using <span className="text-blue-300 font-medium">React</span> & 
           <span className="text-blue-300 font-medium"> Django</span>.
-        </p>
+        </motion.p>
 
-        <div className="flex gap-4 justify-center md:justify-start pt-4">
+        <motion.div
+                initial={{ opacity: 0, y: -400 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false ,amount: 0.5 }}
+          transition={{ duration: 1 }}
+          className="flex gap-4 justify-center md:justify-start pt-4">
           <a
             href=""
             className="px-6 py-3 bg-blue-500/20 border border-blue-400/30 rounded-xl
@@ -54,20 +69,22 @@ function HeroSection() {
             Resume
           </a>
           <a
-            href=""
+            href="https://github.com/sayyedrabeeh"
+            target="_blank"
             className="px-6 py-3 bg-transparent border border-blue-400/30 rounded-xl
                        hover:bg-blue-500/20 hover:border-blue-400/50 transition-all duration-300 text-2xl"
           >
             Github
           </a>
-        </div>
+        </motion.div>
       </div>
 
-      <div className="md:w-1/2 flex justify-center mb-10 md:mb-0">
+      <div className="md:w-1/2 flex  flex-col items-center mb-10 md:mb-0">
         <motion.div 
           drag
-          dragConstraints={constraintsRef}
+          dragConstraints={dragAreaRef}
           dragElastic={0.5}
+         
     
           className="relative perspective-1000 z-50"
           onMouseMove={handleMouseMove}
@@ -103,11 +120,19 @@ function HeroSection() {
             />
           </div>
         </motion.div>
+        <motion.p
+          initial={{ opacity: 0, x: -400 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: false ,amount: 0.5 }}
+          transition={{ duration: 1 }}
+          className="mt-4 text-gray-400 text-sm font-medium select-none">
+            Drag the image anywhere 😎 NB: everything has a limit.
+      </motion.p>
       </div>
 
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent blur-3xl pointer-events-none" />
 
-      <style jsx>{`
+      <style>{`
         .perspective-1000 {
           perspective: 1000px;
         }

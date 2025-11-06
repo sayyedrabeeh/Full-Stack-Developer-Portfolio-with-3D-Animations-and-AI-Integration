@@ -13,7 +13,9 @@ from django.utils.timezone import localtime
 import json
 import os
 import requests
+ 
 from decouple import config
+ 
 
 
 # Create your views here.
@@ -367,6 +369,7 @@ def delete_journey(request,pk):
     m.delete()
     return Response({'message':'milestone deleted'})
 
+ 
 
  
  
@@ -378,6 +381,7 @@ def delete_journey(request,pk):
 def open_router_response(request):
     user_input = request.data.get('inputs', '').strip()
     if not user_input:
+ 
         return Response({'error': 'input not provided'}, status=400)
 
     try: 
@@ -404,6 +408,7 @@ def open_router_response(request):
             headers=headers,
             json=payload,
             timeout=60
+ 
         )
 
         print(f"OpenRouter Status: {resp.status_code}")
@@ -426,6 +431,7 @@ def open_router_response(request):
         return Response({'generated_text': message})
 
     except Exception as e:
+ 
         print("OpenRouter Proxy Error:", str(e))
         fallback_message = (
             "😎 Hey there! Great question! I'm currently in training (learning all the cool stuff about Sayyed), "
@@ -435,3 +441,4 @@ def open_router_response(request):
         )
         return Response({'generated_text': fallback_message}, status=200)
 
+ 
