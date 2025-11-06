@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { MessageCircle,X,Send } from "lucide-react";
+ 
 
 export default function ChatBot() {
     const [isOpen, setIsOpen] = useState(false)
+    const [isTyping, setIsTyping] = useState(false);
     const [message, setMessage] = useState([
         {
             type: 'bot',
@@ -11,6 +13,9 @@ export default function ChatBot() {
     ])
     const [input, setInput] = useState('')
     const messagesEndRef = useRef(null)
+ 
+    const textareaRef = useRef(null);
+ 
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({behavior:'smooth'})
@@ -82,6 +87,35 @@ export default function ChatBot() {
          tabsOrSpaces: "Spaces. Always spaces. Consistency matters! Tabs are chaos, spaces are peace 😌",
     }
 
+ 
+
+
+    async function getOpenRouterResponse(userInput) {
+    const cleanedInput = userInput.trim();
+
+    try {
+        const response = await fetch('http://127.0.0.1:8000/api/accounts/api/open_Router/', {   
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ inputs: cleanedInput })
+        });
+
+        if (!response.ok) throw new Error('Proxy error');
+
+        const data = await response.json();
+        return data.generated_text || "No response";
+
+    } catch (error) {
+        console.warn("HF fallback:", error.message);
+        return `😎 Hey there! Great question! I'm currently in training (learning all the cool stuff about Sayyed), so I might not get it 100% right just yet. After I finish my training, I promise to give a proper answer!  
+            If it's urgent, you can reach out at this number 📞 – 9207286895 My boss will pick the call , just one tiny request: whenever you send me something, please double-check your spelling 😅.  
+            Meanwhile, you can still ask me about skills, projects, background, hobbies, favorite things, career goals, work preferences… basically, anything! Even fun stuff like "what's your favorite movie" or "tabs vs spaces". 😄`;
+
+    }
+}
+
+
+ 
     const getBotResponse = (userInput) => {
 
         const input = userInput.toLowerCase().trim().replace(/\s+/g, " ").replace(/[?.,!]/g, "");
@@ -323,48 +357,71 @@ export default function ChatBot() {
         }
 
 
-         return `😎 Hey there! Great question! I'm currently in training (learning all the cool stuff about Sayyed), so I might not get it 100% right just yet. After I finish my training, I promise to give a proper answer!  
-If it's urgent, you can reach out at this number 📞 – 9207286895 My boss will pick the call , just one tiny request: whenever you send me something, please double-check your spelling 😅.  
-Meanwhile, you can still ask me about skills, projects, background, hobbies, favorite things, career goals, work preferences… basically, anything! Even fun stuff like "what's your favorite movie" or "tabs vs spaces". 😄`;
-
+ 
+         return getOpenRouterResponse(input)
     } 
     
-    const handleSend = () => {
+        const handleSend = async () => {
         if (!input.trim()) return;
 
         const userMessage = { type: 'user', text: input };
         setMessage(prev => [...prev, userMessage]);
-        const userInput = input; 
-        setInput(""); 
-        setTimeout(() => {
-            const botReply = getBotResponse(userInput);
+        const userInput = input;
+        setInput("");
+        setIsTyping(true);
+
+        try {
+            let botReply = getBotResponse(userInput);
+
+            
+            if (botReply && typeof botReply.then === 'function') {
+            botReply = await botReply;
+            }
+
+            
             if (botReply?.action === "clear") {
-                setMessage([
-                    { type: "bot", text: "Chat cleared ✅" }
-                ]);
-                return;
+            setMessage([{ type: "bot", text: "Chat cleared" }]);
+            return;
             }
             if (botReply?.action === "close") {
-                setIsOpen(false);
-                return;
+            setIsOpen(false);
+            return;
             }
-            let textResponse = botReply?.text || botReply;
-            const botMessage = { type: "bot", text: textResponse };
+
+            const botMessage = { type: "bot", text: botReply };
             setMessage(prev => [...prev, botMessage]);
-            
-        }, 500);
-    };
+        } catch (err) {
+            console.error("Bot error:", err);
+            setMessage(prev => [...prev, { type: "bot", text: "Something went wrong!" }]);
+        } finally {
+            setIsTyping(false);
+        }
+        };
 
 
     const handleKeyPress = (e) => {
         
-        if (e.key === 'Enter') {
-            handleSend()
-        }
-
+ 
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSend();
+        }else {
+        setTimeout(resizeTextarea, 0);
     }
+    }
+    const resizeTextarea = () => {
+        const textarea = textareaRef.current;
+        if (textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
+        }
+    };
 
-
+    useEffect(() => {
+     resizeTextarea();
+    }, [input]);
+ 
+  
 
 
 
@@ -432,24 +489,40 @@ Meanwhile, you can still ask me about skills, projects, background, hobbies, fav
                                      <p
                                     className="text-sm whitespace-pre-line leading-relaxed"
                                     dangerouslySetInnerHTML={{ __html: msg.text }}
-                                    ></p>
-
+                                        ></p>
+                                      
                                     </div>
                                 </div>
                             ))}
+                              {isTyping && (
+                                    <div className="flex justify-start">
+                                        <div className="bg-gray-800/80 p-3 rounded-2xl">
+                                            <div className="flex gap-1">
+                                                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
+                                                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100"></span>
+                                                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
                             <div ref={messagesEndRef} />
                         </div>
  
                         <div className="p-4 bg-gradient-to-r from-gray-900 to-black border-t border-purple-500/20">
                             <div className="flex gap-2">
-                                <input
-                                    type="text"
+ 
+                                <textarea
                                     value={input}
+                                    ref={textareaRef}
                                     onChange={(e) => setInput(e.target.value)}
                                     onKeyDown={handleKeyPress}
-                                    placeholder="Ask me anything..."
-                                    className="flex-1 p-3 bg-gray-800/50 border border-purple-500/30 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm text-gray-100 placeholder-gray-500 backdrop-blur-sm"
-                                />
+                                    placeholder="Ask me anything...."
+                                    className="flex-1 p-3 bg-gray-800/50 border border-purple-500/30 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm text-gray-100 placeholder-gray-500 backdrop-blur-sm"
+                                    rows={1}
+                                    style={{ minHeight: '44px', maxHeight: '120px' }}
+                                    />
+ 
                                 <button
                                     onClick={handleSend}
                                     className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white p-3 rounded-full hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105"
