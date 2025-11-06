@@ -12,7 +12,9 @@ export default function ChatBot() {
     ])
     const [input, setInput] = useState('')
     const messagesEndRef = useRef(null)
+ 
     const textareaRef = useRef(null);
+ 
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({behavior:'smooth'})
@@ -84,6 +86,7 @@ export default function ChatBot() {
          tabsOrSpaces: "Spaces. Always spaces. Consistency matters! Tabs are chaos, spaces are peace 😌",
     }
 
+ 
 
 
     async function get_hugging_response(userInput) {
@@ -131,6 +134,7 @@ export default function ChatBot() {
     }
 
 
+ 
     const getBotResponse = (userInput) => {
 
         const input = userInput.toLowerCase().trim().replace(/\s+/g, " ").replace(/[?.,!]/g, "");
@@ -372,21 +376,28 @@ export default function ChatBot() {
         }
 
 
-         return get_hugging_response(input)
+ 
+         return `😎 Hey there! Great question! I'm currently in training (learning all the cool stuff about Sayyed), so I might not get it 100% right just yet. After I finish my training, I promise to give a proper answer!  
+If it's urgent, you can reach out at this number 📞 – 9207286895 My boss will pick the call , just one tiny request: whenever you send me something, please double-check your spelling 😅.  
+Meanwhile, you can still ask me about skills, projects, background, hobbies, favorite things, career goals, work preferences… basically, anything! Even fun stuff like "what's your favorite movie" or "tabs vs spaces". 😄`;
+
     } 
     
-    const handleSend = async () => {
+    const handleSend = () => {
+ 
         if (!input.trim()) return;
 
         const userMessage = { type: 'user', text: input };
         setMessage(prev => [...prev, userMessage]);
         const userInput = input; 
         setInput(""); 
+ 
         setTimeout(async() => {
             let botReply = getBotResponse(userInput);
             if (botReply && typeof botReply.then === 'function') {
                 botReply = await botReply;
             }
+ 
             if (botReply?.action === "clear") {
                 setMessage([
                     { type: "bot", text: "Chat cleared ✅" }
@@ -407,6 +418,7 @@ export default function ChatBot() {
 
     const handleKeyPress = (e) => {
         
+ 
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             handleSend();
@@ -425,6 +437,8 @@ export default function ChatBot() {
     useEffect(() => {
      resizeTextarea();
     }, [input]);
+ 
+  
 
 
 
@@ -502,6 +516,7 @@ export default function ChatBot() {
  
                         <div className="p-4 bg-gradient-to-r from-gray-900 to-black border-t border-purple-500/20">
                             <div className="flex gap-2">
+ 
                                 <textarea
                                     value={input}
                                     ref={textareaRef}
@@ -512,6 +527,7 @@ export default function ChatBot() {
                                     rows={1}
                                     style={{ minHeight: '44px', maxHeight: '120px' }}
                                     />
+ 
                                 <button
                                     onClick={handleSend}
                                     className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white p-3 rounded-full hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105"
