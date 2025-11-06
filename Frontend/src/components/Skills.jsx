@@ -2,7 +2,9 @@
 import {FaPython,FaReact,FaHtml5,FaCss3Alt,FaBootstrap,FaGitAlt,FaFigma,} from "react-icons/fa";
 import {SiDjango,SiTailwindcss,SiPostgresql,SiOpencv,SiFramer,} from "react-icons/si";
 import Matter from "matter-js";
-import { useState,useRef,useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
+
 const skillsIcons = [
   { icon: FaPython, name: "Python", color: "#3776AB" },
   { icon: SiDjango, name: "Django", color: "#0C4B33" },
@@ -173,8 +175,12 @@ export default function SkillsSection() {
 
         <div className="flex-1 grid  pt-[5.25rem] grid-cols-2 sm:grid-cols-3 gap-6">
           {skillsIcons.map((skill, index) => (
-            <div
+            <motion.div
               key={index}
+                    initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: false, amount: 0.5 }}
+                    transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
               className="flex flex-col items-center justify-center p-5 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover:scale-110 hover:shadow-purple-400/50 hover:bg-white/20 transition-all duration-300"
             >
               <div
@@ -189,7 +195,7 @@ export default function SkillsSection() {
               <span className="text-gray-200 text-sm font-medium">
                 {skill.name}
               </span>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
