@@ -373,14 +373,18 @@ def delete_journey(request,pk):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def hf_proxy(request):
-    user_input = request.data.get('inputs', '')
+    user_input = request.data.get('inputs', '').strip()
     if not user_input:
         return Response({'error': 'input not provided'}, status=status.HTTP_400_BAD_REQUEST)
     try:
-        hf_token = os.getenv('HF_TOKEN')
+        from decouple import config
+        hf_token = config('HF_TOKEN')
+        if not hf_token:
+            raise Exception("HF_TOKEN is not set!")
+        print("Using HF Token:", hf_token[:10] + "..." if hf_token else "MISSING")
 
         hf_response = requests.post(
-            'https://api-inference.huggingface.co/models/google/gemma-2b',
+            'https://router.huggingface.co/hf-inference/models/google/gemma-2b',
             headers={
                 'Authorization': f'Bearer {hf_token}',
                 'Content-Type': 'application/json'
