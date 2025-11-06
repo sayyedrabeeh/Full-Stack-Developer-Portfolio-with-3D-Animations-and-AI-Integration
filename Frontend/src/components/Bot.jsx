@@ -361,39 +361,42 @@ export default function ChatBot() {
          return getHuggingFaceResponse(input)
     } 
     
-    const handleSend =async () => {
- 
+        const handleSend = async () => {
         if (!input.trim()) return;
 
         const userMessage = { type: 'user', text: input };
         setMessage(prev => [...prev, userMessage]);
-        const userInput = input; 
-        setInput(""); 
- 
-        setTimeout(async () => {
-            setIsTyping(true);
+        const userInput = input;
+        setInput("");
+        setIsTyping(true);
+
+        try {
             let botReply = getBotResponse(userInput);
+
+            
             if (botReply && typeof botReply.then === 'function') {
-                botReply = await botReply;
+            botReply = await botReply;
             }
- 
+
+            
             if (botReply?.action === "clear") {
-                setMessage([
-                    { type: "bot", text: "Chat cleared ✅" }
-                ]);
-                return;
+            setMessage([{ type: "bot", text: "Chat cleared" }]);
+            return;
             }
             if (botReply?.action === "close") {
-                setIsOpen(false);
-                return;
+            setIsOpen(false);
+            return;
             }
-            let textResponse = botReply?.text || botReply;
-            const botMessage = { type: "bot", text: textResponse };
+
+            const botMessage = { type: "bot", text: botReply };
             setMessage(prev => [...prev, botMessage]);
+        } catch (err) {
+            console.error("Bot error:", err);
+            setMessage(prev => [...prev, { type: "bot", text: "Something went wrong!" }]);
+        } finally {
             setIsTyping(false);
-            
-        }, 500);
-    };
+        }
+        };
 
 
     const handleKeyPress = (e) => {
