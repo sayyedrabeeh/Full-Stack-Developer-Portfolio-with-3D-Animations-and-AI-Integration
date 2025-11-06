@@ -1,6 +1,8 @@
 from django.urls import path
  
+ 
 from .views import signUp, login,create_project,project_counts,get_projects,toggle_like,add_comment,get_comments,toggle_bookmark,saved_projects,delete_project,add_journey,get_journey,delete_journey,hf_proxy 
+ 
  
  
 from rest_framework_simplejwt.views import (
@@ -24,8 +26,12 @@ urlpatterns = [
     path("projects/<int:pk>/delete/", delete_project, name="delete_project"),
     path('journey/',get_journey),
     path('journey/add/',add_journey),
-    path('journey/delete/<int:id>/',delete_journey),
+ 
+    
     path('api/hf/', hf_proxy, name='hf_proxy'),
+ 
+    path('journey/delete/<int:pk>/',delete_journey),
+ 
 
 
 

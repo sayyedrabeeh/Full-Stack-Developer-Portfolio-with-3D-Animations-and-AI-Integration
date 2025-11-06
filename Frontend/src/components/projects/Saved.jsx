@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react"
- 
- 
-import { ArrowLeft, Heart, MessageCircle, Share2Icon, Trash2 ,Github,Bookmark, BookmarkCheck, ExternalLink, X,ChevronLeft, ChevronRight, Calendar, Send } from "lucide-react"
+import React,{ useState,useEffect  } from "react";
+import { ArrowLeft, Heart, MessageCircle, Share2Icon, Github,Bookmark, BookmarkCheck, ExternalLink, X,ChevronLeft, ChevronRight, Calendar, Send } from "lucide-react"
 import moment from "moment";
 import api from "../../api/axios";
 import { toast } from "react-toastify";
 
- const safeJson = async (response) => {
+
+const safeJson = async (response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const text = await response.text();
          
@@ -17,31 +16,26 @@ import { toast } from "react-toastify";
             console.error("Parse failed:",e, text);
             return [];
         }
-    };
-
-export default function Project_Component({ Project_type }) {
+};
     
-     
+export default function Saved() {
+    
     const [project, setProject] = useState([])
     const [currentImgIdx, setCurrentImgIdx] = useState({})
     const [showCommentBox, setShowCommentBox] = useState(false)
     const [currentProjectId, setCurrentProjectId] = useState(null)
     const [commentText, setCommentText] = useState('')
     const [comments, setComments] = useState([])
-    const [isSuperUser, setIsSuperUser] = useState(false);
-    
-     
- 
+        
+
     const baseURL = "http://127.0.0.1:8000"
 
-
     useEffect(() => {
- 
         const token = localStorage.getItem("access");
 
-        const url = Project_type 
-            ? `${baseURL}/api/accounts/projects?project_type=${Project_type}`
-            : `${baseURL}/api/accounts/projects`;
+         
+            const url= `${baseURL}/api/accounts/projects/saved`
+            
 
         fetch(url, {
             headers: token ? { Authorization: `Bearer ${token}` } : {}
@@ -56,18 +50,16 @@ export default function Project_Component({ Project_type }) {
                 return;
             }
             const sorted = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-                setProject(sorted)
-                
+            setProject(sorted)
 
             const idx = {}
             sorted.forEach((p) => { idx[p.id] = 0 })
             setCurrentImgIdx(idx)
             })
             .catch((e) => console.log('load error', e))
-        }, [Project_type])
+        }, [])
 
- 
-    
+
     const nextImag = (id, total) => {
         setCurrentImgIdx((prev) => ({
             ...prev,
@@ -80,40 +72,7 @@ export default function Project_Component({ Project_type }) {
             [id]:(prev[id] - 1 + total )% total
         }))
     }
-
- 
-  useEffect(() => {
-   
-    const stored = localStorage.getItem('user');
-    const user = stored && stored !== 'undefined' && stored !== 'null' 
-      ? JSON.parse(stored) 
-      : null;
-      
-    setIsSuperUser(user?.is_superuser || false);
-     
-  }, []);
-  
-const handleDeleteProject = async (id) => {
-  if (!window.confirm("Are you sure? This project will be deleted.")) return;
-
-  try {
-    await api.delete(`/api/accounts/projects/${id}/delete/`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("access")}`,
-      },
-    });
-
-    setProject((prev) => prev.filter((p) => p.id !== id));
-
-    toast.success("Project deleted successfully ");
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to delete project ");
-  }
-};
- 
-
-  const fmtDate = (d) => {
+    const fmtDate = (d) => {
     const date = new Date(d);
     const now = new Date();
     const diffH = (now - date) / (1000 * 60 * 60);
@@ -124,7 +83,6 @@ const handleDeleteProject = async (id) => {
     return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   };
 
- 
     const toggle_like = async (id) => {
         const token = localStorage.getItem('access')
         
@@ -211,23 +169,20 @@ const handleDeleteProject = async (id) => {
         }
 };
 
-
-   
     return (
-        <div className="min-h-screen  bg-gray-900">
+         <div className="min-h-screen  bg-gray-900">
             <header className="sticky top-0 z-10   bg-gray-800 border-b  border-gray-700" >
                 <div className="max-w-2xl  mx-auto flex items-center justify-center px-4 py-3" >
                 <div className="mb flex flex-col items-center gap-1">
                     <h1 className="text-[26px] font-extrabold  text-white tracking-tight">
-                        {Project_type?.toUpperCase() || "ALL PROJECTS"}
+                          SAVED PROJECTS
                     </h1>
 
                     <p className="text-sm  text-gray-400">
-                        curated feed of My work
+                        loved feed of My work
                     </p>
 
                     <div className="mt-2 h-1 w-14 rounded-full  bg-white/80"></div>
- 
                     </div>
 
                     <div className="w-8"/>                    
@@ -236,22 +191,18 @@ const handleDeleteProject = async (id) => {
 
             <main className="max-w-2xl mx-auto px-4 py-4 space-y-6 pb-20 ">
                 {project.length === 0 ? (
- 
                     <p className="text-center  text-gray-400 py-12" >
- 
-                        No Projects Yet.
+                        No Saved Projects Yet.
                     </p>
                 ) : (
                         project.map((p) => {
                             const imgIdx = currentImgIdx[p.id] ?? 0
                             const manyImage = p.media_type === 'image' && p.images?.length > 1;
- 
                              const isCommentsOpen = showCommentBox && currentProjectId === p.id;
 
                             return (
                                 <article key={p.id}
                                     className=" bg-gray-800 rounded-2xl shadow-sm overflow-hidden border  border-gray-700"
- 
                                 >
                                     <div className="flex items-center justify-between p-4">
                                         <div className="flex items-center gap-3 " >
@@ -259,12 +210,10 @@ const handleDeleteProject = async (id) => {
                                                 { p.name.charAt(0).toUpperCase() }
                                             </div>
                                             <div>
- 
                                                 <h3 className="font-semibold  text-white" >
                                                     { p.name }
                                                 </h3>
                                                 <div className="flex items-center gap-2 text-sm  text-gray-400" >
- 
                                                     <Calendar className="w-3 h-3" />
                                                     <span>{fmtDate(p.created_at)}</span>
                                                     {p.time_spent && (
@@ -327,7 +276,6 @@ const handleDeleteProject = async (id) => {
                                     )}
                                     
                                     <div className="flex items-center gap-5 p-3" >
- 
                                         <button onClick={() => toggle_like(p.id)}
                                             className={`flex items-centre gap-1.5 transition-all ${p.userLiked ? 'text-red-500' : ' text-gray-300'} hover:scale-110`}
                                         >
@@ -353,16 +301,7 @@ const handleDeleteProject = async (id) => {
                                         <Bookmark className="w-6 h-6" />
                                     )}
                                      
-                                        </button>
-                                        
-                                    {isSuperUser && (
-                                    <button
-                                    onClick={() => handleDeleteProject(p.id)}
-                                    className="flex items-center gap-1.5 text-red-500 hover:scale-110 transition-all"
-                                    >
-                                    <Trash2 className="w-6 h-6" />
                                     </button>
-                                )}
                                     </div>
 
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isCommentsOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
@@ -441,14 +380,11 @@ const handleDeleteProject = async (id) => {
 
                                     <div className="px-4 pb-3 space-y-2"  >
                                         <p className="text-sm  text-gray-100  leading-relaxed" >
- 
                                             { p.description  }
                                         </p>
                                         <div className="flex flex-wrap gap-1.5 " >
                                             {p.tech_stack?.split(',').map((t) => t.trim()).filter(Boolean).map((t, i) => (
- 
                                                  <span key={i} className="text-xs font-medium  text-blue-400">#{t.replace(/\s+/g, "")}</span>
- 
                                              )) }
                                         </div>
                                             
@@ -458,9 +394,7 @@ const handleDeleteProject = async (id) => {
                                                     href={p.live_link}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
- 
                                                     className="flex items-centre gap-1  text-blue-400 hover:underline font-medium ">
- 
                                                     <ExternalLink className="w-3.5 h-3.5" />
                                                     live
                                                 </a>
@@ -470,9 +404,7 @@ const handleDeleteProject = async (id) => {
                                                     href={p.github_link}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
- 
                                                     className="flex items-centre gap-1 text-blue-400 hover:underline font-medium ">
- 
                                                     <Github className="w-3.5 h-3.5" />
                                                     Code
                                                 </a>
@@ -488,11 +420,5 @@ const handleDeleteProject = async (id) => {
             </main>
         
         </div>
-)
-
-
-
+    )
 }
-
-
-

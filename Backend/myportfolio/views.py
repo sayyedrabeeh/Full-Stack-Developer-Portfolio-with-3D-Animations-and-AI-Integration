@@ -13,6 +13,7 @@ from django.utils.timezone import localtime
 import json
 import os
 import requests
+ 
 
 
 # Create your views here.
@@ -366,6 +367,7 @@ def delete_journey(request,pk):
     m.delete()
     return Response({'message':'milestone deleted'})
 
+ 
 
  
  
@@ -409,3 +411,4 @@ def hf_proxy(request):
         return Response({
             'generated_text': " 😎 Hey there! Great question! I'm currently in training (learning all the cool stuff about Sayyed), so I might not get it 100% right just yet. After I finish my training, I promise to give a proper answer!  If it's urgent, you can reach out at this number 📞 – 9207286895 My boss will pick the call , just one tiny request: whenever you send me something, please double-check your spelling 😅.  Meanwhile, you can still ask me about skills, projects, background, hobbies, favorite things, career goals, work preferences… basically, anything! Even fun stuff like what's your favorite movie or tabs vs spaces. 😄"
         }, status=200)
+ 
