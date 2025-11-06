@@ -24,6 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+
 SECRET_KEY = 'django-insecure-4z)g@w4k$=#*5-y%ef-a)y0(u1*%gpkg2mhf6*(24()2a!@ggt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -40,7 +41,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Application definition
 
-HF_TOKEN = config('HF_TOKEN')
+ 
 
 INSTALLED_APPS = [
     'django.contrib.admin',
