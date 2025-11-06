@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { MessageCircle,X,Send } from "lucide-react";
+import { error } from "three";
 
 export default function ChatBot() {
     const [isOpen, setIsOpen] = useState(false)
@@ -81,6 +82,58 @@ export default function ChatBot() {
         techChannels: "Fireship, Traversy Media, Tech With Tim, Code With Harry, freeCodeCamp, Corey Schafer - basically YouTube university!",
          tabsOrSpaces: "Spaces. Always spaces. Consistency matters! Tabs are chaos, spaces are peace 😌",
     }
+
+
+
+    async function get_hugging_response(input) {
+        
+        const input = input.toLowerCase().trim().replace(/\s+/g, " ").replace(/[?.,!]/g, "");
+
+        try {
+            
+            const response = await fetch('https://api-inference.huggingface.co/models/google/gemma-2b', {
+                method: 'POST',
+                headers: {
+                    Authorization: "Bearer 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",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ inputs: input })
+            })
+            if (!response.ok) {
+                throw new Error(`Hugging Face API error: ${response.status}`)
+            }
+            const data = await response.json()
+            let generatedText = null;
+
+            if (Array.isArray(data) && data[0]?.generated_text) {
+                generatedText = data[0].generated_text;
+            } else if (data?.generated_text) {
+                generatedText = data.generated_text;
+            } else if (data?.outputs?.[0]?.generated_text) {
+                generatedText = data.outputs[0].generated_text;
+            }
+
+            if (!generatedText || generatedText.trim() === '') {
+                throw new Error('Empty model response ')
+            }
+            return generatedText.trim()
+        } catch (error) {
+            console.warn("⚠️ Hugging Face fallback triggered:", error.message);
+
+            return `😎 Hey there! Great question! I'm currently in training (learning all the cool stuff about Sayyed), so I might not get it 100% right just yet. After I finish my training, I promise to give a proper answer!  
+                    If it's urgent, you can reach out at this number 📞 – 9207286895 My boss will pick the call , just one tiny request: whenever you send me something, please double-check your spelling 😅.  
+                    Meanwhile, you can still ask me about skills, projects, background, hobbies, favorite things, career goals, work preferences… basically, anything! Even fun stuff like "what's your favorite movie" or "tabs vs spaces". 😄`;
+
+
+        }
+
+    }
+
+
+
+
+
+
 
     const getBotResponse = (userInput) => {
 
@@ -323,10 +376,7 @@ export default function ChatBot() {
         }
 
 
-         return `😎 Hey there! Great question! I'm currently in training (learning all the cool stuff about Sayyed), so I might not get it 100% right just yet. After I finish my training, I promise to give a proper answer!  
-If it's urgent, you can reach out at this number 📞 – 9207286895 My boss will pick the call , just one tiny request: whenever you send me something, please double-check your spelling 😅.  
-Meanwhile, you can still ask me about skills, projects, background, hobbies, favorite things, career goals, work preferences… basically, anything! Even fun stuff like "what's your favorite movie" or "tabs vs spaces". 😄`;
-
+         return get_hugging_response(input)
     } 
     
     const handleSend = () => {
