@@ -13,6 +13,7 @@ from django.utils.timezone import localtime
 import json
 import os
 import requests
+from decouple import config
 
 
 # Create your views here.
@@ -370,46 +371,67 @@ def delete_journey(request,pk):
  
  
 
+ 
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
-def hf_proxy(request):
+def open_router_response(request):
     user_input = request.data.get('inputs', '').strip()
     if not user_input:
-        return Response({'error': 'input not provided'}, status=status.HTTP_400_BAD_REQUEST)
-    try:
-        from decouple import config
-        hf_token = config('HF_TOKEN')
-        if not hf_token:
-            raise Exception("HF_TOKEN is not set!")
-        print("Using HF Token:", hf_token[:10] + "..." if hf_token else "MISSING")
+        return Response({'error': 'input not provided'}, status=400)
 
-        hf_response = requests.post(
-            'https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.3',
-            headers={
-                'Authorization': f'Bearer {hf_token}',
-                'Content-Type': 'application/json'
-            },
-            json={'inputs': user_input},
-            timeout=30
+    try: 
+        OPENROUTER_KEY = config('OPENROUTER_KEY')
+        if not OPENROUTER_KEY:
+            raise Exception("OPENROUTER_KEY not found")
+        model_name = "mistralai/mistral-7b-instruct:free"
+        payload = {
+            "model": model_name,
+            "messages": [
+                {"role": "system", "content": "You are RabiBot, a friendly and helpful assistant."},
+                {"role": "user", "content": user_input}
+            ],
+            "max_tokens": 300
+        }
+        headers = {
+            "Authorization": f"Bearer {OPENROUTER_KEY}",
+            "Content-Type": "application/json",
+            # "Referer": "https://your-site-name.com",   
+            "X-Title": "RabiBot Django API"
+        }
+        resp = requests.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers=headers,
+            json=payload,
+            timeout=60
         )
 
-        if hf_response.status_code != 200:
-            raise Exception(f"HF API error: {hf_response.status_code}")
+        print(f"OpenRouter Status: {resp.status_code}")
 
-        data = hf_response.json()
-        generated_text = None
+        if resp.status_code != 200:
+            print("OpenRouter Error:", resp.text)
+            raise Exception(f"OpenRouter API error {resp.status_code}")
 
-        if isinstance(data, list) and len(data) > 0:
-            generated_text = data[0].get('generated_text', '')
-        elif isinstance(data, dict):
-            generated_text = data.get('generated_text', '')
+        data = resp.json()
+        message = (
+            data.get("choices", [{}])[0]
+            .get("message", {})
+            .get("content", "")
+        )
 
-        if generated_text and user_input.lower() in generated_text.lower():
-            generated_text = generated_text[len(user_input):].strip()
+        if not message.strip():
+            message = "🤖 Hmm… I'm not sure how to respond to that right now."
 
-        return Response({'generated_text': generated_text or "Hmm..."})
+        print("Model reply:", message[:200])
+        return Response({'generated_text': message})
+
     except Exception as e:
-        print("HF Proxy Error:", str(e))
-        return Response({
-            'generated_text': " 😎 Hey there! Great question! I'm currently in training (learning all the cool stuff about Sayyed), so I might not get it 100% right just yet. After I finish my training, I promise to give a proper answer!  If it's urgent, you can reach out at this number 📞 – 9207286895 My boss will pick the call , just one tiny request: whenever you send me something, please double-check your spelling 😅.  Meanwhile, you can still ask me about skills, projects, background, hobbies, favorite things, career goals, work preferences… basically, anything! Even fun stuff like what's your favorite movie or tabs vs spaces. 😄"
-        }, status=200)
+        print("OpenRouter Proxy Error:", str(e))
+        fallback_message = (
+            "😎 Hey there! Great question! I'm currently in training (learning all the cool stuff about Sayyed), "
+            "so I might not get it 100% right just yet. After I finish my training, I promise to give a proper answer! "
+            "If it's urgent, you can reach out at 📞 9207286895 — my boss will pick up. "
+            "Meanwhile, you can still ask me about skills, projects, hobbies, or anything fun! 😄"
+        )
+        return Response({'generated_text': fallback_message}, status=200)
+
