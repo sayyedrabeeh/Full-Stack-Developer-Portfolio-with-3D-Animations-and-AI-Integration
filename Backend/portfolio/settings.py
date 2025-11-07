@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't hardcode secret key in production
 SECRET_KEY = os.getenv("SECRET_KEY", "replace-this-in-production")
 
-DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+# DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = [
     "portfolio-backend-0gnb.onrender.com",  # your Render backend
@@ -88,6 +88,7 @@ DATABASES = {
         },
     }
 }
+DEBUG = True
 
 
 # -----------------------

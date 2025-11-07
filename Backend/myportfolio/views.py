@@ -15,41 +15,46 @@ import os
 import requests
 import random
 from decouple import config
- 
+import traceback
 
 
 # Create your views here.
 
+ 
+
 
 @api_view(['POST'])
-def signUp(request):
-    
-    email = request.data.get('email')
-    password = request.data.get('password')
-    confirmPassword = request.data.get('confirmPassword')
+@permission_classes([AllowAny])
+def signup_view(request):
+    try:
+        email = request.data.get('email')
+        password = request.data.get('password')
+        confirm_password = request.data.get('confirmPassword')
 
-    if not email or not password or not confirmPassword:
-      return Response({'error': 'All fields are required'}, status=status.HTTP_400_BAD_REQUEST)
+        if not email or not password:
+            return Response({'error': 'Email and password required'}, status=400)
+        
+        if password != confirm_password:
+            return Response({'error': 'Passwords do not match'}, status=400)
+        
+        if User.objects.filter(username = email ).exists():
+         return Response({'error':'user already exist '},status=status.HTTP_400_BAD_REQUEST)
+   
+        if len(password) < 6 :
+           return Response({'error':'password must be six character '},status=status.HTTP_400_BAD_REQUEST)
 
+        user = User.objects.create_user(username = email , email = email,password =  password)
+        refresh = RefreshToken.for_user(user)
 
-    if password != confirmPassword:
-        return Response({'error':'Password not match'},status=status.HTTP_400_BAD_REQUEST)
-    
-    if User.objects.filter(username = email ).exists():
-        return Response({'error':'user already exist '},status=status.HTTP_400_BAD_REQUEST)
-    
-    if len(password) < 6 :
-        return Response({'error':'password must be six character '},status=status.HTTP_400_BAD_REQUEST)
-    
-    user = User.objects.create_user(username = email , email = email,password =  password)
+        return Response({
+         'message':'User created Successfully',
+         'refresh' : str(refresh),
+         'access':str(refresh.access_token)
+         },status=status.HTTP_201_CREATED)
 
-    refresh = RefreshToken.for_user(user)
-
-    return Response({
-        'message':'User created Successfully',
-        'refresh' : str(refresh),
-        'access':str(refresh.access_token)
-        },status=status.HTTP_201_CREATED)
+    except Exception as e:
+        traceback.print_exc()  
+        return Response({'error': str(e)}, status=500)
 
 
 @api_view(['POST'])
