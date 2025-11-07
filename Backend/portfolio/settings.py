@@ -93,11 +93,12 @@ import dj_database_url
 
 DATABASES = {
     "default": dj_database_url.parse(
-        "postgres://postgres:YOUR_PASSWORD@db.aptzoxomjcnsihefhkbv.supabase.co:5432/postgres",
+        "postgresql://postgres:915BidDolebW4lyV@db.aptzoxomjcnsihefhkbv.supabase.co:5432/postgres",
         conn_max_age=600,
         ssl_require=True
     )
 }
+
 
 
 DEBUG = True
