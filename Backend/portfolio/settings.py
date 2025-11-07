@@ -97,6 +97,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "https://portfolio-fronted-d3fj.onrender.com",
+    "https://portfolio-fronted-static.onrender.com",
     os.getenv("FRONTEND_URL", ""),  # your render frontend URL
 ]
 
