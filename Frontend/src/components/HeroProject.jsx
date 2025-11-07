@@ -38,7 +38,8 @@ export default function Projects() {
         fetch('http://127.0.0.1:8000/api/accounts/projects')
             .then(r => r.json())
             .then(prev => {
-                const formatted = prev.filter(p => p.images?.length > 0).map(p => ({
+                 
+                const formatted = prev.projects.filter(p => p.images?.length > 0).map(p => ({
                 ...p,
                 img: p.images?.length ? p.images[0].image : null,  
                 title: p.name,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bike, X, Sparkles,Plus,Trash2,Trophy, ExternalLink   } from 'lucide-react';
+import { Bike, X, Sparkles,Plus,Trash2,Trophy, ExternalLink,ChevronLeft    } from 'lucide-react';
 import { toast } from 'react-toastify';
 import api from '../api/axios';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +21,10 @@ const CurvedJourneyTimeline = () => {
   const [isSuperUser, setIsSuperUser] = useState(false);  
   const [showModal, setShowModal] = useState(false);
   const [svgHeight, setSvgHeight] = useState(1200);  
+
+
+  const [showAllCards, setShowAllCards] = useState(false);
+  const INITIAL_CARDS_TO_SHOW = 5;
   
   const navigate = useNavigate()
     
@@ -298,10 +302,11 @@ const handleSubmit = async () => {
   };
 
   const dynamicPath = generateDynamicPath();
- const MILESTONE_SPACING = 180;  
+  const MILESTONE_SPACING = 180;  
+  const displayedMilestones = showAllCards ? milestonePositions.length : Math.min(INITIAL_CARDS_TO_SHOW, milestonePositions.length);
 const TOTAL_PATH_HEIGHT = Math.max(
   800,
-  milestonePositions.length * MILESTONE_SPACING
+  displayedMilestones * MILESTONE_SPACING + 400
 );
      
   return (
@@ -370,8 +375,8 @@ const TOTAL_PATH_HEIGHT = Math.max(
         <div className="relative w-full" style={{ minHeight: `${TOTAL_PATH_HEIGHT + 200}px` }} >
           <svg
             viewBox={`0 0 1000 ${TOTAL_PATH_HEIGHT}`}
-            className="w-full h-full absolute inset-0"
-            style={{ filter: 'drop-shadow(0 0 15px rgba(6, 182, 212, 0.2))', minHeight: `${TOTAL_PATH_HEIGHT}px` }}
+            className="w-full h-full absolute inset-0 pointer-events-none"
+            style={{ filter: 'drop-shadow(0 0 15px rgba(6, 182, 212, 0.2))', minHeight: `${TOTAL_PATH_HEIGHT}px`,zIndex: 1 }}
           >
             <defs>
                <radialGradient id="naturalHeadlight" cx="30%" cy="50%" r="200%">
@@ -413,7 +418,9 @@ const TOTAL_PATH_HEIGHT = Math.max(
               fill="none"
               strokeLinecap="round"
               filter="url(#softGlow)"
-              className="opacity-60"
+                className="opacity-60"
+                strokeDasharray={pathLength}
+                strokeDashoffset={showAllCards ? 0 : pathLength - (pathLength * Math.min(INITIAL_CARDS_TO_SHOW, milestones.length) / Math.max(milestones.length - 1, 1))}
             />
             <motion.path
               d={dynamicPath}
@@ -423,7 +430,7 @@ const TOTAL_PATH_HEIGHT = Math.max(
               strokeLinecap="round"
               initial={{ pathLength: 0 }}
               animate={{ 
-                pathLength: bikeProgress,
+                pathLength: showAllCards ? bikeProgress : Math.min(bikeProgress, Math.min(INITIAL_CARDS_TO_SHOW, milestones.length) / Math.max(milestones.length - 1, 1)),
                 opacity: [0.7, 1, 0.7]
               }}
               transition={{
@@ -431,7 +438,7 @@ const TOTAL_PATH_HEIGHT = Math.max(
                 opacity: { duration: 1.5, repeat: Infinity }
               }}
             />
-            {milestonePositions.map((pos, index) => {
+            {milestonePositions.slice(0, showAllCards ? milestonePositions.length : INITIAL_CARDS_TO_SHOW).map((pos, index) => {
               const illumination = getCardIllumination(index);
               const isActive = illumination > 0.3;
               return (
@@ -567,11 +574,11 @@ const TOTAL_PATH_HEIGHT = Math.max(
         </g>
                     )}
           </svg>
-          {milestonePositions.map((pos, index) => {
+          {milestonePositions.slice(0, showAllCards ? milestonePositions.length : INITIAL_CARDS_TO_SHOW).map((pos, index) => {
             const illumination = getCardIllumination(index);
             const isLeft = index % 2 === 0;
               const offsetX = isLeft ? -350 : 100;
-              const topPercent = (pos.y / svgHeight) * 100
+              const topPercent = (pos.y / TOTAL_PATH_HEIGHT) * 100
             return (
               <motion.div
                 key={index}
@@ -690,6 +697,69 @@ const TOTAL_PATH_HEIGHT = Math.max(
               </motion.div>
             );
           })}
+            {milestones.length > INITIAL_CARDS_TO_SHOW && (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="absolute z-20"
+        style={{
+          left: '50%',
+          top: showAllCards 
+            ? `${(milestonePositions[milestonePositions.length - 1]?.y / svgHeight) * 100 + 12}%`
+            : `${(milestonePositions[INITIAL_CARDS_TO_SHOW - 1]?.y / svgHeight) * 100 + 12}%`,
+          transform: 'translateX(-50%)',
+        }}
+      >
+        <button
+          onClick={() => {
+            setShowAllCards(!showAllCards);
+            if (showAllCards) {
+            
+              const journeySection = document.getElementById('journey');
+              if (journeySection) {
+                journeySection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }
+          }}
+          className="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-xl font-semibold text-white shadow-2xl shadow-cyan-500/50 hover:shadow-cyan-500/70 transition-all duration-300 hover:scale-105"
+        >
+          <motion.div
+            className="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 opacity-0 group-hover:opacity-100 blur-lg transition-opacity"
+            animate={{
+              opacity: [0.5, 0.8, 0.5]
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity
+            }}
+          />
+          <span className="relative flex items-center gap-2">
+            {showAllCards ? (
+              <>
+                <motion.div
+                  animate={{ y: [0, -3, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                >
+                  <ChevronLeft className="w-5 h-5 rotate-90" />
+                </motion.div>
+                Show Less
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-5 h-5" />
+                Show More ({milestones.length - INITIAL_CARDS_TO_SHOW} more)
+                <motion.div
+                  animate={{ y: [0, 3, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                >
+                  <ChevronLeft className="w-5 h-5 -rotate-90" />
+                </motion.div>
+              </>
+            )}
+          </span>
+        </button>
+      </motion.div>
+    )}
         </div>
           </div>
             {showModal && (
