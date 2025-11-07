@@ -46,7 +46,7 @@ export default function Project_Component({ Project_type }) {
     const LIMIT = 3;
      
  
-    const baseURL = "http://127.0.0.1:8000"
+    const baseURL = "https://portfolio-backend-0gnb.onrender.com/api/"
 
     const fetchProjects = useCallback(async (currentOffset, isInitial = false) => { 
         if (loading || (!hasMore && !isInitial)) return;

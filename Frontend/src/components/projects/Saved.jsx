@@ -44,7 +44,7 @@ export default function Saved() {
 const [commentToDelete, setCommentToDelete] = useState(null);
 const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const baseURL = "http://127.0.0.1:8000";
+  const baseURL = "https://portfolio-backend-0gnb.onrender.com/api/";
   const LIMIT = 3;
 
   const observerTarget = useRef(null);

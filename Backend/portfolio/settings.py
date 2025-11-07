@@ -13,7 +13,12 @@ SECRET_KEY = os.getenv("SECRET_KEY", "replace-this-in-production")
 
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
+ALLOWED_HOSTS = [
+    "portfolio-backend-0gnb.onrender.com",  # your Render backend
+    "127.0.0.1",
+    "localhost",
+]
+
 
 # -----------------------
 # APPLICATIONS
@@ -85,6 +90,7 @@ DATABASES = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "https://portfolio-fronted-d3fj.onrender.com",
     os.getenv("FRONTEND_URL", ""),  # your render frontend URL
 ]
 
