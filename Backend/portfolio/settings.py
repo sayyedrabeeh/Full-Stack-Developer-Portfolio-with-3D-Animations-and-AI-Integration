@@ -39,9 +39,9 @@ INSTALLED_APPS = [
 # MIDDLEWARE
 # -----------------------
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # added
-    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -98,9 +98,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
     "https://portfolio-fronted-d3fj.onrender.com",
     "https://portfolio-fronted-static.onrender.com",
-    os.getenv("FRONTEND_URL", ""),  # your render frontend URL
+    # your render frontend URL
 ]
-
+CORS_ALLOW_CREDENTIALS = True
 # -----------------------
 # JWT + REST FRAMEWORK
 # -----------------------

@@ -35,7 +35,7 @@ export default function Projects() {
 
  
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/accounts/projects')
+        fetch('https://portfolio-backend-0gnb.onrender.com/api/accounts/projects')
             .then(r => r.json())
             .then(prev => {
                  

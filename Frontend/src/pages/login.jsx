@@ -215,7 +215,7 @@ export default function Login3D() {
     e.preventDefault();
     setMessage('')
     setError('')
-    const url = isSignUp ? 'api/accounts/signup/' : 'api/accounts/login/';
+    const url = isSignUp ? '/api/accounts/signup/' : '/api/accounts/login/';
     const payload = isSignUp ? {email: signupEmail,password : signupPassword,confirmPassword}:{ email : signinEmail,password : signinPassword  }
     
     try {

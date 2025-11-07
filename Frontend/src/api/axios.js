@@ -3,7 +3,7 @@ import axios from 'axios';
  
 
 const api = axios.create({
-    baseURL: "https://portfolio-backend-0gnb.onrender.com/api/",
+    baseURL: "https://portfolio-backend-0gnb.onrender.com",
     headers: { "Content-Type": "application/json" }
 });
 

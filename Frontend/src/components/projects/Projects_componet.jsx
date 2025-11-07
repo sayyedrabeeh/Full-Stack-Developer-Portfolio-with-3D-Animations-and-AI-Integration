@@ -46,7 +46,7 @@ export default function Project_Component({ Project_type }) {
     const LIMIT = 3;
      
  
-    const baseURL = "https://portfolio-backend-0gnb.onrender.com/api/"
+    const baseURL = "https://portfolio-backend-0gnb.onrender.com"
 
     const fetchProjects = useCallback(async (currentOffset, isInitial = false) => { 
         if (loading || (!hasMore && !isInitial)) return;
@@ -171,7 +171,7 @@ export default function Project_Component({ Project_type }) {
     const toggle_like = async (id) => {
         const token = localStorage.getItem('access')
         
-        const res = await fetch(`http://127.0.0.1:8000/api/accounts/projects/${id}/likes`, {
+        const res = await fetch(`https://portfolio-backend-0gnb.onrender.com/api/accounts/projects/${id}/likes`, {
             
             method: 'POST',
             headers: {
@@ -186,7 +186,7 @@ export default function Project_Component({ Project_type }) {
     const addComment = async () => {
         const token = localStorage.getItem('access')
         if (!commentText.trim()) return
-        const res =  await fetch(`http://127.0.0.1:8000/api/accounts/projects/${currentProjectId}/comments`, {
+        const res =  await fetch(`https://portfolio-backend-0gnb.onrender.com/api/accounts/projects/${currentProjectId}/comments`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -217,7 +217,7 @@ export default function Project_Component({ Project_type }) {
         setShowCommentBox(true)
         setCurrentProjectId(projectId)
         const token = localStorage.getItem('access')
-        const res = await fetch(`http://127.0.0.1:8000/api/accounts/projects/${projectId}/get_comments/`, {
+        const res = await fetch(`https://portfolio-backend-0gnb.onrender.com/api/accounts/projects/${projectId}/get_comments/`, {
              headers: { "Authorization": `Bearer ${token}` }
         }) 
         const data = await safeJson(res)
@@ -324,7 +324,7 @@ export default function Project_Component({ Project_type }) {
                                     </div>
                                     {p.media_type === 'image' && p.images?.length > 0 && (
                                         <div className="relative bg-black" >
-                                            <img src={`${baseURL}${p.images[imgIdx].image}`}
+                                            <img src={`${baseURL}/${p.images[imgIdx].image}`}
                                                 alt={`${p.name} – ${imgIdx + 1}`}
                                                 className="w-full max-h-96 object-contain"
                                             />
@@ -362,10 +362,10 @@ export default function Project_Component({ Project_type }) {
                                                 className="w-full max-h-96 object-contain"
                                                 poster={
                                                 p.video.thumbnail
-                                            ? `${baseURL}${p.video.thumbnail}`
+                                            ? `${baseURL}/${p.video.thumbnail}`
                                             : undefined
                                             }>
-                                            <source src={`${baseURL}${p.video.video}`} type="video/mp4" />
+                                            <source src={`${baseURL}/${p.video.video}`} type="video/mp4" />
                                                 Your browser does not support video.
                                             </video>
                                         </div>

@@ -41,7 +41,7 @@ export default function AppLayout() {
   };
 
   const refreshCounts = () => {
-  fetch("http://127.0.0.1:8000/api/accounts/counts/")
+  fetch("https://portfolio-backend-0gnb.onrender.com/api/accounts/counts/")
     .then(res => res.json())
     .then(data => setCounts(data))
     .catch(err => console.log(err));
