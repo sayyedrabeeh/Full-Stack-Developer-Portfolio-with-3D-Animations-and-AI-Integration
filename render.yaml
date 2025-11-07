@@ -6,10 +6,10 @@ services:
       cd Backend
       pip install -r requirements.txt
       python manage.py collectstatic --noinput
-    startCommand: gunicorn backend.wsgi:application
+    startCommand: gunicorn portfolio.wsgi:application
     envVars:
       - key: DJANGO_SETTINGS_MODULE
-        value: backend.settings
+        value: portfolio.settings
       - key: PYTHON_VERSION
         value: 3.11.5
       - key: SECRET_KEY
