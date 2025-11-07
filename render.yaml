@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: sayyed-portfolio-backend
+    env: python
+    buildCommand: |
+      cd Backend
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
+    startCommand: gunicorn backend.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: backend.settings
+      - key: PYTHON_VERSION
+        value: 3.11.5
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: ALLOWED_HOSTS
+        value: "*"
+
+  - type: web
+    name: sayyed-portfolio-frontend
+    env: node
+    buildCommand: |
+      cd Frontend
+      npm install
+      npm run build
+    staticPublishPath: Frontend/build

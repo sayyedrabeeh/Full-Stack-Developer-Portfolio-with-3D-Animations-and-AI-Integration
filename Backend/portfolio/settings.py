@@ -28,7 +28,27 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-4z)g@w4k$=#*5-y%ef-a)y0(u1*%gpkg2mhf6*(24()2a!@ggt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+import os
+import dj_database_url
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DEBUG = os.getenv("DEBUG", "False") == "True"
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
+
+# Static files
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+# Database (Render provides DATABASE_URL automatically)
+DATABASES = {
+    'default': dj_database_url.config(default='sqlite:///db.sqlite3')
+}
+
+ 
 
 ALLOWED_HOSTS = []
 
@@ -71,6 +91,7 @@ MIDDLEWARE = [
     
 
 ]
+MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
 
 ROOT_URLCONF = 'portfolio.urls'
 
