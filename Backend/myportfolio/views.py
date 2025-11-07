@@ -25,7 +25,7 @@ import traceback
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
-def signup_view(request):
+def signUp(request):
     try:
         email = request.data.get('email')
         password = request.data.get('password')
