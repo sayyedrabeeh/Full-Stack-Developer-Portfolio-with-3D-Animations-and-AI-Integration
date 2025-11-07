@@ -75,19 +75,31 @@ WSGI_APPLICATION = 'portfolio.wsgi.application'
 import dj_database_url
 import os
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',        # Supabase DB name
+#         'USER': 'postgres',        # Supabase user
+#         'PASSWORD': '915BidDolebW4lyV',    # Supabase password
+#         'HOST': 'db.aptzoxomjcnsihefhkbv.supabase.co', # Supabase host
+#         'PORT': '5432',
+#         'OPTIONS': {
+#             'sslmode': 'require',  # Supabase requires SSL
+#         },
+#     }
+# }
+
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',        # Supabase DB name
-        'USER': 'postgres',        # Supabase user
-        'PASSWORD': '915BidDolebW4lyV',    # Supabase password
-        'HOST': 'db.aptzoxomjcnsihefhkbv.supabase.co', # Supabase host
-        'PORT': '5432',
-        'OPTIONS': {
-            'sslmode': 'require',  # Supabase requires SSL
-        },
-    }
+    "default": dj_database_url.parse(
+        "postgres://postgres:YOUR_PASSWORD@db.aptzoxomjcnsihefhkbv.supabase.co:5432/postgres",
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
+
+
 DEBUG = True
 
 
