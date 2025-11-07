@@ -13,7 +13,7 @@ from django.utils.timezone import localtime
 import json
 import os
 import requests
-  
+import random
 from decouple import config
  
 
@@ -437,7 +437,7 @@ def open_router_response(request):
             raise Exception(f"OpenRouter API error {resp.status_code}")
 
         data = resp.json()
-        print("Full OpenRouter response:", data)
+         
         message = (
             data.get("choices", [{}])[0]
             .get("message", {})
@@ -445,20 +445,58 @@ def open_router_response(request):
         )
         cleaned_message = message.replace("[OUT]", "").replace("<s>", "").strip()
         if not cleaned_message.strip():
-            cleaned_message = "🤖 Hmm… I'm not sure how to respond to that right now."
+            fallback_responses = [
+                "🤖 Hmm… I'm not sure how to respond to that right now.",
+                "🤔 That’s an interesting one! I’ll have to think more about it.",
+                "😅 I might need a coffee before I can answer that!",
+                "🧠 My circuits are warming up… can you rephrase that?",
+                "🤖 Oops, I couldn’t quite catch that. Mind asking another way?",
+                "💭 That’s deep! I’ll get back to you when my neural nets recover 😄",
+                "🔍 I’m still learning about that. Want to ask me something else?",
+                "😕 That question scrambled my logic circuits a bit!",
+                "🧩 I think I'm missing a piece of the puzzle there.",
+                "💡 Hmm, not sure… but that just gave me something to think about!",
+                "🙃 You’ve stumped me! Even AI has off days.",
+                "🤷 Maybe my data banks are empty on that one.",
+                "😄 Haha, I’m not sure—but I love your curiosity!",
+                "🤖 That’s above my pay grade… for now!",
+                "🧠 I don’t know the answer yet, but I’m eager to learn more about it!"
+            ]
 
-        print("Model reply:", cleaned_message[:200])
+            cleaned_message = random.choice(fallback_responses)
+
+         
         return Response({'generated_text': cleaned_message})
 
     except Exception as e:
  
         print("OpenRouter Proxy Error:", str(e))
-        fallback_message = (
-            "😎 Hey there! Great question! I'm currently in training (learning all the cool stuff about Sayyed), "
-            "so I might not get it 100% right just yet. After I finish my training, I promise to give a proper answer! "
-            "If it's urgent, you can reach out at 📞 9207286895 — my boss will pick up. "
-            "Meanwhile, you can still ask me about skills, projects, hobbies, or anything fun! 😄"
-        )
+        
+        fallback_messages = [
+        "😎 Hey there! That’s a fascinating question — I’m still sharpening my brainpower to handle stuff like that! Right now, I’m in training mode (learning all the cool secrets about Sayyed, his projects, and the digital world). Once I graduate from my training, I’ll be unstoppable! 🚀 If it’s urgent, you can reach out at 📞 9207286895 — my boss will pick up. Meanwhile, feel free to ask me about Sayyed’s skills, hobbies, or projects — that’s my jam! Oh, and before I forget — double-check your spelling, my circuits get confused easily 😅.",
+
+        "😎 Hey there! Great question! I'm currently in training (learning all the cool stuff about Sayyed), so I might not get it 100% right just yet. After I finish my training, I promise to give a proper answer! If it's urgent, you can reach out at 📞 9207286895 — my boss will pick up. Meanwhile, you can still ask me about skills, projects, hobbies, or anything fun! Also, a quick tip — my AI eyes love clean spelling 😉.",
+
+        "🤖 Whoa! That one went right over my neural circuits 😅 I’m still learning how to respond to every possible question like a pro. But don’t worry, I’ll soon be fluent in all things Sayyed! Until then, I might miss a few beats. If it’s something you really need help with, you can always reach out at 📞 9207286895 — my boss will pick up. Oh, and please check your spelling — my digital brain gets tongue-tied by typos 😂.",
+
+        "🧠 My circuits are buzzing trying to decode that question! I’m still in training — learning Sayyed’s world, his experiences, and how to give smarter, more natural replies. I promise I’ll improve soon. If you’re in a hurry or need a human touch, just ring 📞 9207286895 — my boss will pick up. Meanwhile, let’s chat about something fun — like Sayyed’s coding journey or creative projects! And hey, spellcheck is my best friend… and yours too 😜.",
+
+        "😅 Oops, I think I just short-circuited trying to understand that one! I’m currently in training mode — learning from Sayyed’s wisdom and all the cool data he feeds me daily. Soon, I’ll be able to handle tougher questions like a pro! Until then, if it’s something serious, you can call 📞 9207286895 — my boss will pick up. And by the way… make sure your spelling is on point! My code’s allergic to typos 🤧.",
+
+        "🦾 Hmmm… looks like that question is a bit above my current training level! I’m still syncing my AI neurons with Sayyed’s expertise. Soon, I’ll be able to answer deep tech stuff and even more personal insights. But for now, if it’s urgent, you can reach out at 📞 9207286895 — my boss will pick up. Until then, we can talk about Sayyed’s coding adventures, side projects, or even his creative ideas! Just… do me a favor — don’t make me decode typos again 😆.",
+
+        "🤔 Interesting question! I wish I could give you the perfect answer right now, but I’m still fine-tuning my system to understand everything about Sayyed and his awesome work. Once I’m done learning, I’ll be a top-tier assistant, promise! If you really need help right away, you can contact 📞 9207286895 — my boss will pick up. And just between us, if your spelling confuses me, I start speaking JavaScript 😜.",
+
+        "💡 Oh wow, that one’s tricky! I’m still learning how to handle such brilliant questions. My training is ongoing — Sayyed is teaching me all about his world, from code to creativity. I might not have the right answer yet, but soon I will! If you need help urgently, feel free to call 📞 9207286895 — my boss will pick up. Until then, remember — even the best AI appreciates well-spelled messages 😁.",
+
+        "🧩 Hmm… my system is still processing that! I’m in my learning phase, absorbing everything Sayyed knows (which is a lot, trust me 😎). Once I’m fully trained, I’ll respond to even the toughest questions instantly! Until then, if it’s important, please reach out at 📞 9207286895 — my boss will pick up. Oh, and if your spelling looks like encrypted Morse code, I might accidentally start debugging it 🤖.",
+
+        "😄 Haha, that’s a good one! I’m still connecting all my AI dots — Sayyed is training me to be smarter, faster, and way more conversational. I might not have the perfect answer yet, but I’ll soon evolve into a fully capable assistant! If it’s something urgent, don’t wait — call 📞 9207286895 — my boss will pick up. Till then, keep your messages typo-free — I charge extra for decoding them 😅.",
+
+        "🧠 Oh boy, my brain just did a backflip trying to process that! I’m still under training, learning the ins and outs of Sayyed’s projects, creativity, and achievements. Soon, I’ll have the perfect answer for everything — I promise! But if it’s something you need help with immediately, reach out at 📞 9207286895 — my boss will pick up. Meanwhile, how about we explore Sayyed’s portfolio or talk about his recent work? And remember — check your spelling before I overheat my grammar chip 🔥."
+    ]
+
+        fallback_message = random.choice(fallback_messages)
         return Response({'generated_text': fallback_message}, status=200)
 
  

@@ -342,19 +342,83 @@ export default function ChatBot() {
             return `I'm Sayyed Rabeeh, a passionate Full Stack Developer from Kerala with a unique Humanities background. I switched to tech 1.5 years ago and haven't looked back! Building AI apps, gesture games, and full-stack platforms. Currently at Brototype bootcamp. Love Python, Django, React. Night owl, Mac dreamer, space-user, billionaire-in-progress 😎`;
         }
         if (/\b(hi|hello|hey|hlo|hey there|hi there|hello there|hiya|yo|greetings|sup|good morning|good afternoon|good evening)\b/i.test(input)) {
-            return `Hey! 👋 I'm Sayyed Rabeeh's AI assistant. Ask me anything - tech skills, projects, hobbies, favorite food, dream company, or even tabs vs spaces! 😄`;
+               
+            const greetReplies = [
+                    "Hey! 👋 I'm Sayyed Rabeeh’s AI assistant — part human charm, part machine precision! Ask me about his skills, projects, or even his favorite debugging snacks 😄",
+                    "Hello there! 🤖 I’m your friendly AI buddy built by Sayyed Rabeeh. Curious about his projects, coding habits, or dream company? I’ve got the inside scoop! 💻",
+                    "Yo! 👋 You’ve just activated Sayyed Rabeeh’s personal AI. I can talk about tech, creativity, and maybe a little mischief too 😏 What’s up?",
+                    "Hey hey! 😄 Rabeeh’s digital sidekick here — caffeinated, curious, and ready to chat about his work, skills, or favorite frameworks ☕⚙️",
+                    "Greetings, human! 🤝 I’m Sayyed Rabeeh’s AI companion. I come in peace… and Python 🐍. Wanna talk projects, hobbies, or dream goals?",
+                    "Hi there! 👋 I’m Sayyed’s AI assistant, freshly recharged and ready to talk tech, life, and everything in between 🌍💡",
+                    "Hey you! 😎 Sayyed Rabeeh’s digital twin here (well, almost). Ask me anything — projects, skills, or maybe which code editor he secretly hates 😜",
+                    "Hello! 👋 I’m Rabeeh’s AI assistant, smarter than yesterday but still training! Wanna chat about his projects, hobbies, or some cool dev stuff?",
+                    "Sup! 🤖 You just woke up Sayyed Rabeeh’s AI. I can tell you about his journey, coding adventures, or maybe drop a fun fact or two 💬",
+                    "Hey there! 👋 I’m Sayyed Rabeeh’s AI — powered by curiosity, caffeine, and a sprinkle of chaos. Ask me about his work, interests, or coding magic! ✨"
+                ]
+            return   greetReplies[Math.floor(Math.random() * greetReplies.length)];
         }
         if (/\b(bye|goodbye|see you|see ya|catch you later|later|okk|okkk|take care|farewell|ciao|adios|peace|ttyl|talk to you later|see you soon)\b/i.test(input)) {
-            return `Goodbye! 👋 It was nice chatting with you.`;
+              const byeReplies = [
+                    "Goodbye! 👋 It was awesome chatting with you!",
+                    "See you later, alligator! 🐊 (In a while, crocodile 😄)",
+                    "Take care! 💫 Don’t forget to smile — you look better that way!",
+                    "Bye-bye! 👋 May your Wi-Fi be strong and your code bug-free!",
+                    "Catch you later! 🚀 Don’t do anything I wouldn’t… which isn’t much 😏",
+                    "Peace out! ✌️ I’ll be right here if you need me again.",
+                    "Farewell, brave human! ⚔️ May your coffee stay strong ☕",
+                    "Alright then, talk soon! 👋 Don’t ghost me, okay? 😆",
+                    "Cya soon! 🧠 I’ll be training even harder before our next chat!",
+                    "Later! 😎 Always a pleasure chatting — you make the data worth processing!"
+                ];
+            
+            return  byeReplies[Math.floor(Math.random() * byeReplies.length)];
         }
         if (/\b(thanks|thank you|thx|ty|much appreciated|cheers|grateful|thanks a lot)\b/i.test(input)) {
-            return "You're welcome! 😊";
+               const thanksReplies = [
+                    "You're very welcome! 😊 Always happy to help!",
+                    "No problem at all! 😎 Glad I could assist!",
+                    "You got it! 🤖 Helping you is literally my purpose!",
+                    "Anytime! 🙌 I’m here whenever you need me.",
+                    "Aww, you’re too kind! 🥰 I appreciate the appreciation!",
+                    "No worries! 😄 That’s what I’m here for!",
+                    "Glad to be of service! 🫡 Efficiency mode: always on!",
+                    "Don’t mention it — seriously, I insist 😏",
+                    "You’re welcome! 💫 And thank *you* for making my day brighter!",
+                    "😊 Always a pleasure helping out my favorite human!"
+                ];
+           
+            return  thanksReplies[Math.floor(Math.random() * thanksReplies.length)];
         }
         if (/\b(ok|okay|sure|yep|yeah|yup|nope|nah|alright|perfect|sounds good|got it|understood|great|good|awesome|cool|nice|love it)\b/i.test(input)) {
-            return "Got it! 👍";
+                const acknowledgementReplies = [
+                    "👍 Got it, loud and clear!",
+                    "👌 Roger that! My circuits are aligned and ready!",
+                    "😎 Cool! I’m on the same page — let’s roll!",
+                    "💡 Copy that! I totally understand what you mean.",
+                    "🙌 Awesome! I’ll remember that (unless my memory gets upgraded 😅).",
+                    "🔥 Perfect! I’m locking that in — mission accepted!",
+                    "😉 Gotcha! You speak, I compute, we vibe.",
+                    "🤖 Understood, processed, and stored in my digital brain!",
+                    "✅ Sweet! That’s crystal clear to me!",
+                    "😄 Cool beans! I’m fully synced with your vibe now!"
+                ];
+            
+            return  acknowledgementReplies[Math.floor(Math.random() * acknowledgementReplies.length)];
         }
-        if (/\b(how are you|what's up|whats up|how's it going|how are things|how you doing|how do you do)\b/i.test(input)) {
-            return "I'm doing great, thanks for asking! 😄  ";
+        if (/\b(how are you|how r u|how are u| what's up|whats up|how's it going|how are things|how you doing|how do you do)\b/i.test(input)) {
+                const howAreYouReplies = [
+                    "😄 I'm doing awesome, thanks for asking! Running on full battery and zero bugs today!",
+                    "🤖 I’m feeling electric! How about you? ⚡",
+                    "😎 Just another day in the digital world, making pixels proud!",
+                    "😂 I’d say I’m fine, but my CPU fan just sneezed. Other than that, all good!",
+                    "🧠 Processing happiness... complete! I’m doing great — how about you?",
+                    "🙌 I'm fantastic! Thanks for checking in. I was just thinking about Sayyed’s latest project — mind-blowing stuff!",
+                    "😅 I’m holding up! A few 1s and 0s are out of place, but I’ll survive!",
+                    "💻 I’m good! Just finished debugging my emotions. All systems stable now 😁",
+                    "🌟 Couldn’t be better! My algorithmic mood meter is showing 100% positivity!",
+                    "😄 I'm doing great, thanks! Every day’s a good day when I get to chat with someone like you!"
+                ];
+            return  howAreYouReplies[Math.floor(Math.random() * howAreYouReplies.length)]
         }
 
 
@@ -364,42 +428,54 @@ export default function ChatBot() {
  
     } 
     
-        const handleSend = async () => {
+     const handleSend = async () => {
         if (!input.trim()) return;
 
         const userMessage = { type: 'user', text: input };
         setMessage(prev => [...prev, userMessage]);
         const userInput = input;
         setInput("");
-        setIsTyping(true);
+        setIsTyping(true);  
 
         try {
             let botReply = getBotResponse(userInput);
 
-            
             if (botReply && typeof botReply.then === 'function') {
             botReply = await botReply;
             }
 
-            
             if (botReply?.action === "clear") {
-            setMessage([{ type: "bot", text: "Chat cleared" }]);
-            return;
-            }
-            if (botReply?.action === "close") {
-            setIsOpen(false);
+            setTimeout(() => {
+                setMessage([{ type: "bot", text: "Chat cleared" }]);
+                setIsTyping(false);
+            }, 800); 
             return;
             }
 
+            if (botReply?.action === "close") {
+            setTimeout(() => {
+                setIsOpen(false);
+                setIsTyping(false);
+            }, 800);
+            return;
+            }
+ 
+            const delay = Math.min(2000, 400 + botReply.length * 30); 
+      
+
+            setTimeout(() => {
             const botMessage = { type: "bot", text: botReply };
             setMessage(prev => [...prev, botMessage]);
+            setIsTyping(false);
+            }, delay);
+
         } catch (err) {
             console.error("Bot error:", err);
             setMessage(prev => [...prev, { type: "bot", text: "Something went wrong!" }]);
-        } finally {
             setIsTyping(false);
         }
         };
+
 
 
     const handleKeyPress = (e) => {
@@ -497,17 +573,9 @@ export default function ChatBot() {
                                     </div>
                                 </div>
                             ))}
-                              {isTyping && (
-                                    <div className="flex justify-start">
-                                        <div className="bg-gray-800/80 p-3 rounded-2xl">
-                                            <div className="flex gap-1">
-                                                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
-                                                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100"></span>
-                                                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
+                           
+                            {isTyping && <p className="bot-typing  flex items-center gap-2 bg-cyan-500/10 text-cyan-400 text-sm font-medium px-4 py-2 rounded-xl w-fit mt-3 shadow-md backdrop-blur-sm animate-pulse" >RabiBot is typing<span className="dot">...</span></p>}
+
 
                             <div ref={messagesEndRef} />
                         </div>
@@ -563,6 +631,18 @@ export default function ChatBot() {
                 .animate-fade-in {
                     animation: fade-in 0.3s ease-out;
                 }
+
+                .dot::after {
+                content: '';
+                animation: dots 1s steps(5, end) infinite;
+                }
+                @keyframes dots {
+                0%, 20% { content: ''; }
+                40% { content: '.'; }
+                60% { content: '..'; }
+                80%, 100% { content: '...'; }
+                }
+
             `}</style>
         </>
 )}
