@@ -26,4 +26,4 @@ services:
       cd Frontend
       npm install
       npm run build
-    staticPublishPath: Frontend/build
+    staticPublishPath: Frontend/dist
