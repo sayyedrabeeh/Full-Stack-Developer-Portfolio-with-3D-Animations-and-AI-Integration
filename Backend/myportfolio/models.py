@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 
@@ -36,7 +37,7 @@ class Project(models.Model):
 class ProjectImage(models.Model):
 
     project = models.ForeignKey(Project,on_delete=models.CASCADE,related_name='images')
-    image = models.ImageField(upload_to='project_images/')
+    image = CloudinaryField('image') 
 
     def __str__(self):
         return f'image for {self.project.name}'
@@ -47,7 +48,7 @@ class ProjectImage(models.Model):
 class ProjectVideo(models.Model):
 
     project = models.OneToOneField(Project,on_delete=models.CASCADE,related_name='video')
-    video = models.FileField(upload_to='project_video/')
+    video = CloudinaryField('video') 
 
     def __str__(self):
         return f'video for {self.project.name}'
