@@ -24,11 +24,13 @@ import Learning from "./components/projects/Learning";
 import Miniprojects from "./components/projects/MiniProjects";
 import Add_Project from "./components/projects/Add_projects";
 import Saved from "./components/projects/Saved";
+import UsersPage from "./components/users";
 
 function App() {
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
   const isProjectsPage = location.pathname.startsWith("/projects");
+   const isUsersPage = location.pathname === "/users";
   const dragAreaRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -96,7 +98,8 @@ function App() {
           <ExternalLinks/>
           <ContactSection />
           <ChatBot/>
-          
+           
+
           <style>
             {`
               @keyframes gradient {
@@ -115,6 +118,17 @@ function App() {
       )}
 
       {isLoginPage && <Login3D />}
+
+      {isUsersPage && (
+        <Routes>
+          <Route path="/users" element={
+            <PrivateRoute>
+              <UsersPage />
+            </PrivateRoute>
+          } />
+        </Routes>
+      )}
+
  
       {isProjectsPage && (
         <div className="w-full min-h-screen">

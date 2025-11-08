@@ -44,7 +44,7 @@ export default function Saved() {
 const [commentToDelete, setCommentToDelete] = useState(null);
 const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const baseURL = "https://portfolio-backend-0gnb.onrender.com";
+  const baseURL = "https://portfolio-backend-0gnb.onrender.com/";
   const LIMIT = 3;
 
   const observerTarget = useRef(null);
@@ -56,7 +56,7 @@ const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
       try {
         const token = localStorage.getItem("access");
-        const url = `${baseURL}/api/accounts/projects/saved?offset=${currentOffset}&limit=${LIMIT}`;
+        const url = `${baseURL}api/accounts/projects/saved?offset=${currentOffset}&limit=${LIMIT}`;
 
         const response = await fetch(url, {
           headers: { Authorization: `Bearer ${token}` },
@@ -305,7 +305,7 @@ const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
                 {p.media_type === "image" && p.images?.length > 0 && (
                   <div className="relative bg-black">
                     <img
-                      src={`${baseURL}/${p.images[imgIdx].image}`}
+                      src={`${baseURL}${p.images[imgIdx].image}`}
                       alt={`${p.name} – ${imgIdx + 1}`}
                       className="w-full max-h-96 object-contain"
                     />
@@ -343,9 +343,9 @@ const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
                     <video
                       controls
                       className="w-full max-h-96 object-contain"
-                      poster={p.video.thumbnail ? `${baseURL}/${p.video.thumbnail}` : undefined}
+                      poster={p.video.thumbnail ? `${baseURL}${p.video.thumbnail}` : undefined}
                     >
-                      <source src={`${baseURL}/${p.video.video}`} type="video/mp4" />
+                      <source src={`${baseURL}${p.video.video}`} type="video/mp4" />
                       Your browser does not support video.
                     </video>
                   </div>

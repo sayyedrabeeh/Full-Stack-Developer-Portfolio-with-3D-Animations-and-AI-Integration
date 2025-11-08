@@ -129,24 +129,24 @@ export default function Projects() {
 
                                     <div className="relative h-full  bg-white/5 backdrop-blur-2xl rounded-3xl border border-white/10  shadow-xl overflow-hidden transition-all flex flex-col  ">
                                         <div className="h-3/4  overflow-hidden relative group ">
-                                            <motion.img src={p.img ? `http://127.0.0.1:8000${p.img}` : ""} alt={p.title} className="w-full
+                                            <motion.img src={p.img ? `https://portfolio-backend-0gnb.onrender.com/${p.img}` : ""} alt={p.title} className="w-full
                                             h-full object-cover transition-transform  duration-[1200ms]  ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-110 group-hover:blur-sm" />
+                                            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/10 " ></div>
                                             <div className="absolute inset-0 text-lg bg-black/40 flex flex-col items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ">
                                                 <a href={p.live}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="flex items-center gap-2 px-5 py-2 rounded-full  bg-gradient-to-r from-green-400 to-blue-500 text-white font-semibold shadow-lg hover:from-blue-500 hover:to-green-400 transition-all duration-300 "
+                                                    className="flex items-center gap-2 px-5 py-2 rounded-full  bg-gradient-to-r from-green-400 to-blue-500 text-white font-semibold shadow-lg hover:from-blue-500 hover:to-green-400 transition-all duration-300 pointer-events-auto"
                                                 >
                                                    <FaExternalLinkAlt/>Link 
                                                 </a>
                                                 <a href={p.github}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                className="flex items-center gap-2 px-5 py-2 rounded-full bg-white/20  text-white font-semibold shadow-lg hover:bg-white/30 transition-all duration-300 ">
+                                                className="flex items-center gap-2 px-5 py-2 rounded-full bg-white/20  text-white font-semibold shadow-lg hover:bg-white/30 transition-all duration-300 pointer-events-auto ">
                                                     <FaGithub/>Github 
                                                 </a>
                                             </div>
-                                            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/10 " ></div>
                                         </div>
                                         <div className="flex-1 p-6 bg-gradient-to-br from-black to-gray-900 flex flex-col justify-between " >
                                             <h3 className="text-xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text mb-3"> 

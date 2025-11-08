@@ -3,6 +3,7 @@ from datetime import timedelta
 import os
 import dj_database_url
 from dotenv import load_dotenv
+from decouple import config
 
 load_dotenv()
 
@@ -33,7 +34,17 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'myportfolio.apps.MyportfolioConfig',
+    'cloudinary',
+    'cloudinary_storage',
+
 ]
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': config('CLOUDINARY_API_KEY'),
+    'API_SECRET': config('CLOUDINARY_API_SECRET'),
+}
 
 # -----------------------
 # MIDDLEWARE
@@ -149,3 +160,5 @@ USE_I18N = True
 USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+

@@ -7,6 +7,7 @@ function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isSuperuser, setIsSuperuser] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,12 +52,35 @@ function Navbar() {
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
     setIsLoggedIn(false);
+    setIsSuperuser(false);
     setIsMobileMenuOpen(false);
     window.location.href = "/";
   };
+  useEffect(() => {
+       
+        const stored = localStorage.getItem('user');
+        const user = stored && stored !== 'undefined' && stored !== 'null' 
+          ? JSON.parse(stored) 
+          : null;
+        console.log(user)
+        setIsSuperuser(user?.is_superuser || false);
+        
+        
+  }, []);
+  useEffect(() => {
+  console.log('Updated state ->', {
+    isSuperuser,
+    isLoggedIn
+  });
+}, [isSuperuser, isLoggedIn]);
 
   const handleLogin = () => {
     navigate("/login");
+  };
+
+  const handleUsersPage = () => {
+    navigate("/users");
+    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -99,6 +123,19 @@ function Navbar() {
                 </button>
               </li>
             ))}
+            {isLoggedIn && isSuperuser && (
+              <li>
+                <button
+                  onClick={handleUsersPage}
+                  className="px-6 py-2.5 rounded-full text-sm font-medium bg-gradient-to-r from-green-500/50 to-emerald-600/50 text-white hover:from-green-500/70 hover:to-emerald-600/70 border border-green-500/30 transition-all duration-300 flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                  Users
+                </button>
+              </li>
+            )}
             <li>
               {isLoggedIn ? (
                 <button
@@ -173,6 +210,7 @@ function Navbar() {
               </li>
               
             ))}
+            
             <li>
               {isLoggedIn ? (
                 <button

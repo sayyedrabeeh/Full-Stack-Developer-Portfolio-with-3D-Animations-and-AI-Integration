@@ -6,7 +6,7 @@ from rest_framework.parsers import MultiPartParser,FormParser
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken,AccessToken
 from .models import Project,ProjectImage,ProjectVideo,ProjectComment,ProjectLike,ProjectBookmark,JourneyMilestone,JourneyAchievement
 from django.shortcuts import get_object_or_404
 from django.utils.timezone import localtime
@@ -16,7 +16,7 @@ import requests
 import random
 from decouple import config
 import traceback
-
+from django.db.models import Q
 
 # Create your views here.
 
@@ -81,7 +81,52 @@ def login(request):
     else:
         return Response({'error':'Invalid credentials'},status=status.HTTP_401_UNAUTHORIZED)
     
+@api_view(['GET'])
+def user_list(request):
+   
+   
+ 
+    print('hii')
+        
+    if not request.user.is_superuser:
+            return Response({'error': 'Superuser access required'}, status=status.HTTP_403_FORBIDDEN)
 
+    
+    print('hii')
+
+    
+    search = request.GET.get('search', '')
+    users = User.objects.all().order_by('-date_joined')
+    if search:
+        users = users.filter(
+            Q(username__icontains=search) |
+            Q(email__icontains=search) |
+            Q(first_name__icontains=search) |
+            Q(last_name__icontains=search)
+        )
+
+     
+    users_data = [
+        {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "is_active": user.is_active,
+            "is_staff": user.is_staff,
+            "is_superuser": user.is_superuser,
+            "date_joined": user.date_joined.isoformat(),
+        }
+        for user in users
+    
+    ]
+    print(users_data)
+    return Response({
+        "message": "User list fetched successfully",
+        "count": len(users_data),
+        "users": users_data
+    }, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser,FormParser])

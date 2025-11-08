@@ -1,7 +1,7 @@
 from django.urls import path
  
  
-from .views import signUp, login,create_project,project_counts,get_projects,toggle_like,add_comment,get_comments,toggle_bookmark,saved_projects,delete_project,add_journey,get_journey,delete_journey,open_router_response ,delete_comment
+from .views import signUp, login,create_project,project_counts,get_projects,toggle_like,add_comment,get_comments,toggle_bookmark,saved_projects,delete_project,add_journey,get_journey,delete_journey,open_router_response ,delete_comment,user_list
  
  
  
@@ -29,7 +29,7 @@ urlpatterns = [
     path('journey/add/',add_journey),
   
     path('api/open_router/', open_router_response, name='open_router'),
- 
+    path('api/users/', user_list, name='user-list'),
     path('comments/<int:comment_id>/delete/', delete_comment, name='delete-comment'),
     path('journey/delete/<int:pk>/',delete_journey),
  
