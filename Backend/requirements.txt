@@ -73,5 +73,5 @@ wcwidth==0.2.14
 whitenoise==6.11.0
 zope.interface==8.0.1
 gunicorn
-cloudinary==1.x.x
-django-cloudinary-storage==0.x.x
+cloudinary
+django-cloudinary-storage
