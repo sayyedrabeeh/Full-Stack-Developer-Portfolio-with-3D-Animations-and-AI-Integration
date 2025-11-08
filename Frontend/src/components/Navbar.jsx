@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+ 
 
 function Navbar() {
   const [activeSection, setActiveSection] = useState("");
@@ -62,16 +63,12 @@ function Navbar() {
         const user = stored && stored !== 'undefined' && stored !== 'null' 
           ? JSON.parse(stored) 
           : null;
-        console.log(user)
+        
         setIsSuperuser(user?.is_superuser || false);
         
         
   }, []);
-  useEffect(() => {
-  console.log('Updated state ->', {
-    isSuperuser,
-    isLoggedIn
-  });
+  
 }, [isSuperuser, isLoggedIn]);
 
   const handleLogin = () => {
@@ -79,8 +76,9 @@ function Navbar() {
   };
 
   const handleUsersPage = () => {
+
     navigate("/users");
-    setIsMobileMenuOpen(false);
+   
   };
 
   return (

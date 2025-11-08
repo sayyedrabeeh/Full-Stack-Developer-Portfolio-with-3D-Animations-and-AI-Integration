@@ -22,7 +22,7 @@ export default function Projects() {
  
     const [projects, setProjects] = useState([])
  
- 
+    const baseURL = "https://portfolio-backend-0gnb.onrender.com";
 
     const handleautheticate = () => {
         const token = localStorage.getItem("access");
@@ -129,7 +129,10 @@ export default function Projects() {
 
                                     <div className="relative h-full  bg-white/5 backdrop-blur-2xl rounded-3xl border border-white/10  shadow-xl overflow-hidden transition-all flex flex-col  ">
                                         <div className="h-3/4  overflow-hidden relative group ">
-                                            <motion.img src={p.img ? `${p.img}` : ""} alt={p.title} className="w-full
+                                            <motion.img src={ p.img?.startsWith("http")
+                                                        ? p.img
+                                                        : `${baseURL.replace(/\/$/, '')}/${p.img.replace(/^\/+/, '')}`
+                                                    } alt={p.title} className="w-full
                                             h-full object-cover transition-transform  duration-[1200ms]  ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-110 group-hover:blur-sm" />
                                             <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/10 " ></div>
                                             <div className="absolute inset-0 text-lg bg-black/40 flex flex-col items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ">

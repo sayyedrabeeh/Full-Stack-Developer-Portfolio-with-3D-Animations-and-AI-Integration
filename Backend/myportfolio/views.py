@@ -86,13 +86,13 @@ def user_list(request):
    
    
  
-    print('hii')
+  
         
     if not request.user.is_superuser:
             return Response({'error': 'Superuser access required'}, status=status.HTTP_403_FORBIDDEN)
 
     
-    print('hii')
+   
 
     
     search = request.GET.get('search', '')
@@ -121,7 +121,7 @@ def user_list(request):
         for user in users
     
     ]
-    print(users_data)
+   
     return Response({
         "message": "User list fetched successfully",
         "count": len(users_data),
