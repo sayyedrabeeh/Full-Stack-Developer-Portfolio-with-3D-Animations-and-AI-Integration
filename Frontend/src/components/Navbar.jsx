@@ -63,13 +63,12 @@ function Navbar() {
         const user = stored && stored !== 'undefined' && stored !== 'null' 
           ? JSON.parse(stored) 
           : null;
-        
+         
         setIsSuperuser(user?.is_superuser || false);
         
         
   }, []);
   
-}, [isSuperuser, isLoggedIn]);
 
   const handleLogin = () => {
     navigate("/login");
