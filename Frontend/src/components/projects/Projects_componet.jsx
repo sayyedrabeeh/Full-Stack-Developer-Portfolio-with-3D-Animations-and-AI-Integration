@@ -324,7 +324,7 @@ export default function Project_Component({ Project_type }) {
                                     </div>
                                     {p.media_type === 'image' && p.images?.length > 0 && (
                                         <div className="relative bg-black" >
-                                            <img src={`${baseURL}${p.images[imgIdx].image}`}
+                                            <img src={`${p.images[imgIdx].image}`}
                                                 alt={`${p.name} – ${imgIdx + 1}`}
                                                 className="w-full max-h-96 object-contain"
                                             />
@@ -362,10 +362,10 @@ export default function Project_Component({ Project_type }) {
                                                 className="w-full max-h-96 object-contain"
                                                 poster={
                                                 p.video.thumbnail
-                                            ? `${baseURL}${p.video.thumbnail}`
+                                            ? ` }${p.video.thumbnail}`
                                             : undefined
                                             }>
-                                            <source src={`${baseURL}${p.video.video}`} type="video/mp4" />
+                                            <source src={` ${p.video.video}`} type="video/mp4" />
                                                 Your browser does not support video.
                                             </video>
                                         </div>
