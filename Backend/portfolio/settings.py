@@ -131,7 +131,8 @@ DATABASES = {
 
 
 DEBUG = True
-
+MEDIA_URL = None
+MEDIA_ROOT = None
 
 # -----------------------
 # CORS
