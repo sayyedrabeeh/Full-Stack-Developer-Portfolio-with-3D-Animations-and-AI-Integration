@@ -44,7 +44,7 @@ export default function Saved() {
 const [commentToDelete, setCommentToDelete] = useState(null);
 const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const baseURL = "https://portfolio-backend-0gnb.onrender.com/";
+  const baseURL = "https://portfolio-backend-0gnb.onrender.com";
   const LIMIT = 3;
 
   const observerTarget = useRef(null);
@@ -56,7 +56,7 @@ const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
       try {
         const token = localStorage.getItem("access");
-        const url = `${baseURL}api/accounts/projects/saved?offset=${currentOffset}&limit=${LIMIT}`;
+        const url = `${baseURL}/api/accounts/projects/saved?offset=${currentOffset}&limit=${LIMIT}`;
 
         const response = await fetch(url, {
           headers: { Authorization: `Bearer ${token}` },

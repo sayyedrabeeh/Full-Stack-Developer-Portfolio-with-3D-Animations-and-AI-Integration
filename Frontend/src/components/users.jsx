@@ -20,7 +20,7 @@ function UsersPage() {
         return;
       }
 
-      const response = await fetch('https://portfolio-backend-0gnb.onrender.com/api/users/', {
+      const response = await fetch('https://portfolio-backend-0gnb.onrender.com/api/accounts/api/users/', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ function UsersPage() {
       }
 
       const data = await response.json();
-      setUsers(data);
+      setUsers(data.users || []);
       setLoading(false);
     } catch (err) {
       setError(err.message);
