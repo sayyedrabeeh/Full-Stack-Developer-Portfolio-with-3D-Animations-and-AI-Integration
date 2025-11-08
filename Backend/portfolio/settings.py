@@ -25,7 +25,7 @@ cloudinary.config(
 )
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
- 
+MEDIA_URL = '/media/'
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
