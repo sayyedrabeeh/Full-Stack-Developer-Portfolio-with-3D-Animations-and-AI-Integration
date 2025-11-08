@@ -1,13 +1,14 @@
 import React, { useState, useEffect,useCallback,useRef } from "react"
  
-import { ArrowLeft, Heart, MessageCircle, Share2Icon, Trash2 ,Github,Bookmark, BookmarkCheck, ExternalLink, X,ChevronLeft, ChevronRight, Calendar, Send } from "lucide-react"
+import { ArrowLeft, Heart, MessageCircle, Share2Icon, Trash2 ,Github,Bookmark, BookmarkCheck, ExternalLink, X,ChevronLeft, ChevronRight, Calendar, Send,Youtube ,Linkedin } from "lucide-react"
 import moment from "moment";
 import api from "../../api/axios";
 import { toast } from "react-toastify";
 
  const safeJson = async (response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const text = await response.text();
+     const text = await response.text();
+     
          
         if (!text || text.trim() === '' || text === 'undefined') return [];
         try {
@@ -194,8 +195,9 @@ export default function Project_Component({ Project_type }) {
             },
             body:JSON.stringify({text:commentText})
         })
-
-            const data = await safeJson(res);
+        console.log('res',res)
+        const data = await safeJson(res);
+ 
             setProject(prev => prev.map((p) =>
                 p.id === currentProjectId ? { ...p, comments: data.comments } : p
             ));
@@ -472,49 +474,51 @@ export default function Project_Component({ Project_type }) {
                                             </button>
                                         </div>
                                         <div className="max-h-64 overflow-y-auto space-y-3 mb-4 pr-2 scrollbar-thin  scrollbar-thumb-gray-600">
-                                            {comments.length > 0 ? (
-                                                comments.map((c) => (
-                                                    <div key={c.id} className=" bg-gray-800 rounded-lg p-3 shadow-sm border  border-gray-700">
-                                                        <div className="flex items-start gap-2">
-                                                            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center font-bold text-white text-xs flex-shrink-0">
-                                                                {c.user.charAt(0).toUpperCase()}
-                                                            </div>
-                                                             <div className="flex-1 min-w-0">
-                                                        <div className="flex justify-between items-center">
-                                                            <p className="font-semibold text-sm  text-white">
-                                                                {c.user}
-                                                            </p>
-                                                            <span className="text-[11px]  text-gray-400">
-                                                               <p title={moment(c.created_at).format("DD MMM YYYY, hh:mm A")}>
-                                                                        {moment(c.created_at).fromNow()}
-                                                                        </p>
-                                                            </span>
-                                                        </div>
+                                          {comments.length > 0 ? (
+    comments.map((c) => {
+        console.log('c.user_id', c.user_id, 'currentUserId', currentUserId);
 
-                                                        <p className="text-sm text-gray-300 mt-1 break-words">
-                                                            {c.text}
-                                                        </p>
-                                                            </div>
-                                                       {(isSuperUser || c.user_id === currentUserId) && (
-                                                <button   onClick={() => {
-                                                    setCommentToDelete(c.id);
-                                                    setShowDeleteConfirm(true);
-                                                }} className="ml-2 text-red-500 hover:text-red-400">
-                                                    <Trash2 className="w-4 h-4" />
-                                                </button>
-                                                )}
+        return (
+            <div key={c.id} className="bg-gray-800 rounded-lg p-3 shadow-sm border border-gray-700">
+                <div className="flex items-start gap-2">
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center font-bold text-white text-xs flex-shrink-0">
+                        {c.user.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <div className="flex justify-between items-center">
+                            <p className="font-semibold text-sm text-white">{c.user}</p>
+                            <span className="text-[11px] text-gray-400">
+                                <p title={moment(c.created_at).format("DD MMM YYYY, hh:mm A")}>
+                                    {moment(c.created_at).fromNow()}
+                                </p>
+                            </span>
+                        </div>
 
-                                                        </div>
-                                                    </div>
-                                                ))
-                                            ) : (
-                                                <div className="text-center py-8">
-                                                    <MessageCircle className="w-12 h-12 mx-auto  text-gray-600 mb-2" />
-                                                    <p className="text-sm  text-gray-400">
-                                                        No comments yet. Be the first to comment!
-                                                    </p>
-                                                </div>
-                                            )}
+                        <p className="text-sm text-gray-300 mt-1 break-words">{c.text}</p>
+                    </div>
+
+                    {(isSuperUser || Number(c.user_id) === Number(currentUserId)) && (
+                        <button
+                            onClick={() => {
+                                setCommentToDelete(c.id);
+                                setShowDeleteConfirm(true);
+                            }}
+                            className="ml-2 text-red-500 hover:text-red-400"
+                        >
+                            <Trash2 className="w-4 h-4" />
+                        </button>
+                    )}
+                </div>
+            </div>
+        );
+    })
+) : (
+    <div className="text-center py-8">
+        <MessageCircle className="w-12 h-12 mx-auto text-gray-600 mb-2" />
+        <p className="text-sm text-gray-400">No comments yet. Be the first to comment!</p>
+    </div>
+)}
+
                                         </div>
                             {showDeleteConfirm && (
                             <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
@@ -604,33 +608,56 @@ export default function Project_Component({ Project_type }) {
                                              )) }
                                         </div>
                                             
-                                        <div className="flex gap-4 pt-2 text-xs">
-                                            {p.live_link && (
-                                                <a
-                                                    href={p.live_link}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
- 
-                                                    className="flex items-centre gap-1  text-blue-400 hover:underline font-medium ">
- 
-                                                    <ExternalLink className="w-3.5 h-3.5" />
-                                                    live
-                                                </a>
-                                        )  }    
-                                            {p.github_link && (
-                                                <a
-                                                    href={p.github_link}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
- 
-                                                    className="flex items-centre gap-1 text-blue-400 hover:underline font-medium ">
- 
-  
-                                                    <Github className="w-3.5 h-3.5" />
-                                                    Code
-                                                </a>
-                                        )  }    
-                                        </div>
+                                    <div className="flex gap-4 pt-2 text-xs">
+                                        {p.live_link && (
+                                            <a
+                                                href={p.live_link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-1 text-blue-400 hover:underline font-medium"
+                                            >
+                                                <ExternalLink className="w-3.5 h-3.5" />
+                                                Live
+                                            </a>
+                                        )}
+
+                                        {p.github_link && (
+                                            <a
+                                                href={p.github_link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-1 text-blue-400 hover:underline font-medium"
+                                            >
+                                                <Github className="w-3.5 h-3.5" />
+                                                Code
+                                            </a>
+                                        )}
+
+                                        {p.linkedin_link && (
+                                            <a
+                                                href={p.linkedin_link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-1 text-blue-600 hover:underline font-medium"
+                                            >
+                                                <Linkedin className="w-3.5 h-3.5" />  
+                                                LinkedIn
+                                            </a>
+                                        )}
+
+                                        {p.youtube_link && (
+                                            <a
+                                                href={p.youtube_link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-1 text-red-500 hover:underline font-medium"
+                                            >
+                                                <Youtube className="w-3.5 h-3.5" />  
+                                                YouTube
+                                            </a>
+                                        )}
+                                    </div>
+
                                     </div>
                                     <div ref={observerTarget}></div> 
                                     {loading && (

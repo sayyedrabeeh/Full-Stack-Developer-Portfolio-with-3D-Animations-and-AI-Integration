@@ -138,6 +138,8 @@ def create_project(request):
         description = request.data.get('description'),
         live_link = request.data.get('live_link',''),
         github_link = request.data.get('github_link',''),
+        linkedin_link=request.data.get('linkedin_link',''), 
+        youtube_link=request.data.get('youtube_link',''), 
         tech_stack = request.data.get('tech_stack'),
         project_type = request.data.get('project_type'),
         media_type  = request.data.get('media_type',''),
@@ -194,6 +196,8 @@ def get_projects(request):
             'description':p.description,
             'live_link':p.live_link,
             'github_link':p.github_link,
+            'linkedin_link': p.linkedin_link,
+            'youtube_link': p.youtube_link,
             'tech_stack':p.tech_stack,
             'project_type':p.project_type,
             'time_spent':p.time_spent,
@@ -241,19 +245,24 @@ def toggle_like(request,pk):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_comment(request,pk):
+   
     user = request.user
     project = get_object_or_404(Project,id=pk)
     text = request.data.get('text')
+    
     if not text:
         return Response({'error':'Comment text required'},status=status.HTTP_400_BAD_REQUEST)
     comment = ProjectComment.objects.create(project=project,user=user,text=text)
     comment_count = ProjectComment.objects.filter(project=project).count()
+     
+     
     return Response({
         'message':'Comment Added Successfully',
         'comments':comment_count,
         'new_comment': {
             "id": comment.id,
             "user": user.username,
+            'user_id': user.id,
             "text": text,
             "created_at": localtime(comment.created_at).isoformat()
         }
@@ -270,6 +279,7 @@ def get_comments(request,pk):
         data.append({
             'id':c.id,
             'user':c.user.username,
+            'user_id': c.user.id,
             'text':c.text,
             'created_at':localtime(c.created_at).isoformat()
         })
@@ -322,6 +332,7 @@ def saved_projects(request):
             'description': p.description,
             'live_link': p.live_link,
             'github_link': p.github_link,
+            'linkedin_link': p.linkedin_link,
             'tech_stack': p.tech_stack,
             'project_type': p.project_type,
             'time_spent': p.time_spent,
@@ -469,7 +480,7 @@ def open_router_response(request):
         headers = {
             "Authorization": f"Bearer {OPENROUTER_KEY}",
             "Content-Type": "application/json",
-            # "Referer": "https://your-site-name.com",   
+            "Referer": "https://portfolio-fronted-static.onrender.com/",   
             "X-Title": "RabiBot Django API"
         }
         resp = requests.post(

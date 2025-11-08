@@ -27,6 +27,8 @@ class Project(models.Model):
     tech_stack = models.CharField(max_length=300 ,help_text= 'Comma-separated technologies')
     project_type = models.CharField(max_length=20,choices=PROJECT_TYPE_CHOICES,null=True,blank=True)
     time_spent = models.CharField(max_length=100,help_text="Example: '2 weeks', '30 hours'",null=True,blank=True)
+    youtube_link = models.URLField(blank=True, null=True, help_text="YouTube video link for project demo")
+    linkedin_link = models.URLField(blank=True, null=True, help_text="Project LinkedIn post or profile link")
     media_type = models.CharField(max_length=10 ,choices=MEDIA_TYPE_CHOICES)
     created_at = models.DateField(auto_now_add=True)
 

@@ -105,7 +105,44 @@ import { useOutletContext } from "react-router-dom";
                                 <AlertCircle className="w-3 h-3" />{errors.github_link}
                             </p>
                         )}
+                        </div>
+                    <div className="space-y-2">
+                        <label className="flex items-center gap-2 text-sm font-semibold text-slate-300">
+                            <ExternalLink className="w-4 h-4 text-blue-500" />LinkedIn
+                        </label>
+                        <input
+                            type="url"
+                            name="linkedin_link"
+                            value={formData.linkedin_link || ''}
+                            onChange={handleChange}
+                            onFocus={() => setFocusField('linkedin_link')}
+                            onBlur={() => setFocusField(null)}
+                            className={`w-full px-5 py-4 bg-slate-800/60 border-2 rounded-2xl outline-none text-white placeholder-slate-500 font-medium
+                                        ${focusField === 'linkedin_link' ? 'border-blue-500 shadow-xl shadow-blue-500/30' : 'border-slate-700'}
+                                        hover:border-blue-400/70 hover:bg-slate-800/80`}
+                            placeholder="https://linkedin.com/in/yourprofile"
+                        />
                     </div>
+                        
+                    <div className="space-y-2">
+                        <label className="flex items-center gap-2 text-sm font-semibold text-slate-300">
+                            <ExternalLink className="w-4 h-4 text-red-500" />YouTube
+                        </label>
+                        <input
+                            type="url"
+                            name="youtube_link"
+                            value={formData.youtube_link || ''}
+                            onChange={handleChange}
+                            onFocus={() => setFocusField('youtube_link')}
+                            onBlur={() => setFocusField(null)}
+                            className={`w-full px-5 py-4 bg-slate-800/60 border-2 rounded-2xl outline-none text-white placeholder-slate-500 font-medium
+                                        ${focusField === 'youtube_link' ? 'border-red-500 shadow-xl shadow-red-500/30' : 'border-slate-700'}
+                                        hover:border-red-400/70 hover:bg-slate-800/80`}
+                            placeholder="https://youtube.com/..."
+                        />
+                    </div>
+
+
                 </div>
             </div>
 
@@ -351,7 +388,9 @@ export default function Add_Project() {
         name : '',
         description : '',
         live_link : '',
-        github_link : '',
+        github_link: '',
+        linkedin_link: '',
+        youtube_link: '',
         tech_stack : '',
         time_spent: '',
         project_type: "",
@@ -384,8 +423,19 @@ export default function Add_Project() {
         } else if (name === 'live_link' && value && !/^https?:\/\//.test(value)) {
             new_error.live_link = 'Live Link Must Be Start With http://'
         } else if (name === 'github_link' && value && !/^https:\/\/github\.com\/sayyedrabeeh(\/.*)?$/.test(value)) {
-            new_error.github_link = "Must Be Valid sayyedrabeeh's Gitlab Url"
-        } else {
+            new_error.github_link = "Must Be Valid sayyedrabeeh's GitHub Url"
+        }if (name === 'linkedin_link' && value) {
+        const linkedInPattern = /^https:\/\/www\.linkedin\.com\/.*$/;
+        if (!linkedInPattern.test(value)) {
+            new_error.linkedin_link = "Must be a valid LinkedIn URL";
+        }
+        }if (name === 'youtube_link' && value) {
+            const youtubePattern = /^https:\/\/(www\.)?youtube\.com\/.*$/;
+            if (!youtubePattern.test(value)) {
+                new_error.youtube_link = "Must be a valid YouTube URL";
+            }
+        }
+        else {
             delete new_error[name]
         }
     setErrors(new_error)
