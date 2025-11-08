@@ -40,6 +40,12 @@ class ProjectImage(models.Model):
 
     def __str__(self):
         return f'image for {self.project.name}'
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # After saving, get the Cloudinary URL
+        if self.image and not str(self.image).startswith("http"):
+            self.image = self.image.url
+            super().save(update_fields=['image'])
     
 
 
