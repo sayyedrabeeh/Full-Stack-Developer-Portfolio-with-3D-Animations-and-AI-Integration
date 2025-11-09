@@ -17,6 +17,9 @@ import random
 from decouple import config
 import traceback
 from django.db.models import Q
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 
@@ -185,9 +188,12 @@ def get_projects(request):
         projects = Project.objects.all()
  
     user = request.user if request.user.is_authenticated else None
-    projects = projects.order_by('-created_at')
+    projects = projects.order_by('-id')
+    logger.info("Projects queryset: %s", list(projects.values('id','name','created_at')))
+
     total_count = projects.count()
     project_batch = projects[offset:offset + limit]
+
     
     data = []
     for p in project_batch:

@@ -55,8 +55,8 @@ export default function Project_Component({ Project_type }) {
         setLoading(true);
         const token = localStorage.getItem("access");
     const url = Project_type 
-            ? `${baseURL}/api/accounts/projects?project_type=${Project_type}&offset=${currentOffset}&limit=${LIMIT}`
-            : `${baseURL}/api/accounts/projects?offset=${currentOffset}&limit=${LIMIT}`;
+            ? `${baseURL}/api/accounts/projects/?project_type=${Project_type}&offset=${currentOffset}&limit=${LIMIT}`
+            : `${baseURL}/api/accounts/projects/?offset=${currentOffset}&limit=${LIMIT}`;
 
         try {
             const response = await fetch(url, {
@@ -65,6 +65,7 @@ export default function Project_Component({ Project_type }) {
             
             const result = await safeJson(response);
             const newProjects = result.projects || [];
+             console.log(newProjects)
             
             setHasMore(result.hasMore);
             
@@ -74,13 +75,15 @@ export default function Project_Component({ Project_type }) {
                 newProjects.forEach((p) => { idx[p.id] = 0 });
                 setCurrentImgIdx(idx);
             } else {
-                setProject(prev => [...prev, ...newProjects]);
+                setProject(prev => [...prev,...newProjects]);
                 setCurrentImgIdx(prev => {
                     const newIdx = { ...prev };
                     newProjects.forEach((p) => { newIdx[p.id] = 0 });
                     return newIdx;
                 });
             }
+            setOffset(prev => prev + LIMIT);
+            
         } catch (e) {
             console.log('load error', e);
             toast.error("Failed to load projects");
