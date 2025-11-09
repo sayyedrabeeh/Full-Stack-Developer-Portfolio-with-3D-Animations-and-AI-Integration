@@ -248,11 +248,12 @@ def add_comment(request,pk):
    
     user = request.user
     project = get_object_or_404(Project,id=pk)
-    text = request.data.get('text')
+    text = request.data.get('text','').strip()
+    media = request.data.get('media', None)
     
-    if not text:
-        return Response({'error':'Comment text required'},status=status.HTTP_400_BAD_REQUEST)
-    comment = ProjectComment.objects.create(project=project,user=user,text=text)
+    if not text and not media :
+        return Response({'error':'Comment text or media required'},status=status.HTTP_400_BAD_REQUEST)
+    comment = ProjectComment.objects.create(project=project,user=user,text=text,media=media)
     comment_count = ProjectComment.objects.filter(project=project).count()
      
      
@@ -263,7 +264,8 @@ def add_comment(request,pk):
             "id": comment.id,
             "user": user.username,
             'user_id': user.id,
-            "text": text,
+            "text": comment.text,
+            'media': comment.media,
             "created_at": localtime(comment.created_at).isoformat()
         }
     })
@@ -281,6 +283,7 @@ def get_comments(request,pk):
             'user':c.user.username,
             'user_id': c.user.id,
             'text':c.text,
+            'media': c.media,
             'created_at':localtime(c.created_at).isoformat()
         })
     return Response({"comments": data})

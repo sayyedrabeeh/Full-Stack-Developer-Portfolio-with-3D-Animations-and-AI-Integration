@@ -20,6 +20,7 @@
     "animejs": "^4.2.2",
     "axios": "^1.12.2",
     "date-fns": "^4.1.0",
+    "emoji-picker-react": "^4.15.0",
     "framer-motion": "^12.23.24",
     "gsap": "^3.13.0",
     "lottie-react": "^2.4.1",

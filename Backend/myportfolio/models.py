@@ -74,7 +74,8 @@ class ProjectComment(models.Model):
 
     project = models.ForeignKey(Project,on_delete=models.CASCADE,related_name='comments')
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    text = models.TextField()
+    text = models.TextField(blank=True)
+    media = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 

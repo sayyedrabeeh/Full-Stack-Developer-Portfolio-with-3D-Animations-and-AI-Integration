@@ -4,6 +4,7 @@ import { ArrowLeft, Heart, MessageCircle, Share2Icon, Trash2 ,Github,Bookmark, B
 import moment from "moment";
 import api from "../../api/axios";
 import { toast } from "react-toastify";
+import CommentBox from "./conmment";
 
  const safeJson = async (response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -493,8 +494,17 @@ export default function Project_Component({ Project_type }) {
                                 </p>
                             </span>
                         </div>
+                       <p className="text-sm text-gray-300 mt-1 break-words">
+  {c.text.startsWith("http") && c.text.endsWith(".gif") ? (
+    <img src={c.text} alt="gif" className="w-24 h-24 rounded" />
+  ) : (
+    c.text.split(" ").map((word, idx) => <span key={idx}>{word} </span>)
+  )}
+</p>
 
-                        <p className="text-sm text-gray-300 mt-1 break-words">{c.text}</p>
+
+
+                         
                     </div>
 
                     {(isSuperUser || Number(c.user_id) === Number(currentUserId)) && (
@@ -569,26 +579,14 @@ export default function Project_Component({ Project_type }) {
 
                                       
                                         <div className="relative">
-                                            <textarea
-                                                rows={3}
-                                                placeholder="Write a comment..."
-                                                className="w-full resize-none rounded-xl border  border-gray-600 bg-gray-800 px-4 py-3 pr-12 text-sm   placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                                value={commentText}
-                                                onChange={(e) => setCommentText(e.target.value)}
-                                                onKeyDown={(e) => {
-                                                    if (e.key === 'Enter' && !e.shiftKey) {
-                                                        e.preventDefault();
-                                                        addComment();
-                                                    }
-                                                }}
-                                            />
-                                            <button
-                                                onClick={addComment}
-                                                disabled={!commentText.trim()}
-                                                className="absolute right-2 bottom-2 p-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg transition-all transform hover:scale-105 disabled:hover:scale-100"
-                                                aria-label="Send comment">
-                                                <Send className="w-4 h-4" />
-                                            </button>
+                                           {showCommentBox && currentProjectId === p.id && (
+                                        <CommentBox
+                                            projectId={p.id}
+                                            onNewComment={(newComment) => setComments((prev) => [newComment, ...prev])}
+                                        />
+                                        )}
+
+                                             
                                         </div>
                                     </div>
                                 </div>
