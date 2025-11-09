@@ -112,6 +112,22 @@ function App() {
           <Route path="saved_projects" element={<Saved />} />
         </Route>
       </Routes>
+      
+
+ <style>
+            {`
+              @keyframes gradient {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+              }
+              .animate-gradient {
+                background: linear-gradient(270deg, #000000, #0a0a0a, #1b0f3b, #12001f);
+                background-size: 600% 600%;
+                animation: gradient 20s ease infinite;
+              }
+            `}
+          </style>
     </>
   );
 }
