@@ -187,7 +187,7 @@ def get_projects(request):
     user = request.user if request.user.is_authenticated else None
     total_count = projects.count()
     project_batch = projects[offset:offset + limit]
- 
+    projects = projects.order_by('-created_at')
     data = []
     for p in project_batch:
         item ={
