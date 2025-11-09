@@ -1,3 +1,14 @@
+<div align="center">
+
+### **⭐ If this inspires you, consider giving it a star! ⭐**
+
+**Built with 💙 by Sayyed Rabeeh**
+
+*"Code is poetry. Animation is emotion. This portfolio is both."*
+
+</div>
+
+
 #  **Sayyed Rabeeh's Fullstack Portfolio**
 ### *Where Skills Come Alive Through Code*
 
