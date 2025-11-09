@@ -121,7 +121,11 @@ import { useOutletContext } from "react-router-dom";
                                         ${focusField === 'linkedin_link' ? 'border-blue-500 shadow-xl shadow-blue-500/30' : 'border-slate-700'}
                                         hover:border-blue-400/70 hover:bg-slate-800/80`}
                             placeholder="https://linkedin.com/in/yourprofile"
-                        />
+                        />{errors.linkedin_link && (
+                            <p className="text-xs text-red-400  flex items-center gap-1 mt-1" >
+                                <AlertCircle className="w-3 h-3" />{errors.linkedin_link}
+                            </p>
+                        )}
                     </div>
                         
                     <div className="space-y-2">
@@ -139,7 +143,11 @@ import { useOutletContext } from "react-router-dom";
                                         ${focusField === 'youtube_link' ? 'border-red-500 shadow-xl shadow-red-500/30' : 'border-slate-700'}
                                         hover:border-red-400/70 hover:bg-slate-800/80`}
                             placeholder="https://youtube.com/..."
-                        />
+                        />{errors.youtube_link && (
+                            <p className="text-xs text-red-400  flex items-center gap-1 mt-1" >
+                                <AlertCircle className="w-3 h-3" />{errors.youtube_link}
+                            </p>
+                        )}
                     </div>
 
 
@@ -424,12 +432,12 @@ export default function Add_Project() {
             new_error.live_link = 'Live Link Must Be Start With http://'
         } else if (name === 'github_link' && value && !/^https:\/\/github\.com\/sayyedrabeeh(\/.*)?$/.test(value)) {
             new_error.github_link = "Must Be Valid sayyedrabeeh's GitHub Url"
-        }if (name === 'linkedin_link' && value) {
+        }else if (name === 'linkedin_link' && value) {
         const linkedInPattern = /^https:\/\/www\.linkedin\.com\/.*$/;
         if (!linkedInPattern.test(value)) {
             new_error.linkedin_link = "Must be a valid LinkedIn URL";
         }
-        }if (name === 'youtube_link' && value) {
+        }else if (name === 'youtube_link' && value) {
             const youtubePattern = /^https:\/\/(www\.)?youtube\.com\/.*$/;
             if (!youtubePattern.test(value)) {
                 new_error.youtube_link = "Must be a valid YouTube URL";
