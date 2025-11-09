@@ -184,31 +184,7 @@ export default function Project_Component({ Project_type }) {
         setProject((prev)=> prev.map((p)=>p.id === id ?{...p,likes:data.likes,userLiked:data.liked}:p))
         
     }
-
-    const addComment = async () => {
-        const token = localStorage.getItem('access')
-        if (!commentText.trim()) return
-        const res =  await fetch(`https://portfolio-backend-0gnb.onrender.com/api/accounts/projects/${currentProjectId}/comments`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-type':'application/json'
-            },
-            body:JSON.stringify({text:commentText})
-        })
-        console.log('res',res)
-        const data = await safeJson(res);
  
-            setProject(prev => prev.map((p) =>
-                p.id === currentProjectId ? { ...p, comments: data.comments } : p
-            ));
-            if (data.new_comment) {
-                setComments(prev => [data.new_comment,...prev]);
-            }
-
-            setCommentText('');
-                
-    }
 
     const openComments = async (projectId) => {
         if (showCommentBox && currentProjectId === projectId) {
@@ -494,17 +470,10 @@ export default function Project_Component({ Project_type }) {
                                 </p>
                             </span>
                         </div>
-                       <p className="text-sm text-gray-300 mt-1 break-words">
-  {c.text.startsWith("http") && c.text.endsWith(".gif") ? (
-    <img src={c.text} alt="gif" className="w-24 h-24 rounded" />
-  ) : (
-    c.text.split(" ").map((word, idx) => <span key={idx}>{word} </span>)
-  )}
-</p>
-
-
-
-                         
+                    <p className="text-sm text-gray-300 mt-1 break-words">
+                    {c.text && c.text.split(" ").map((word, idx) => <span key={idx}>{word} </span>)}
+                    {c.media && <img src={c.media} alt="gif" className="w-24 h-24 rounded mt-1" />}
+                    </p>                         
                     </div>
 
                     {(isSuperUser || Number(c.user_id) === Number(currentUserId)) && (
