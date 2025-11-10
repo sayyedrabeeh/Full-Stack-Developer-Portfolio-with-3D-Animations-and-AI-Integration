@@ -21,15 +21,15 @@ class Project(models.Model):
         ('learning','Learning')
     ]
      
-    name =models.CharField(max_length=200)
+    name =models.CharField(max_length=500)
     description = models.TextField()
-    live_link = models.URLField(blank=True,null=True)
-    github_link = models.URLField(blank=True,null=True)
-    tech_stack = models.CharField(max_length=300 ,help_text= 'Comma-separated technologies')
+    live_link = models.URLField(max_length=500,blank=True,null=True)
+    github_link = models.URLField(max_length=500,blank=True,null=True)
+    tech_stack = models.CharField(max_length=500 ,help_text= 'Comma-separated technologies')
     project_type = models.CharField(max_length=20,choices=PROJECT_TYPE_CHOICES,null=True,blank=True)
     time_spent = models.CharField(max_length=100,help_text="Example: '2 weeks', '30 hours'",null=True,blank=True)
-    youtube_link = models.URLField(blank=True, null=True, help_text="YouTube video link for project demo")
-    linkedin_link = models.URLField(blank=True, null=True, help_text="Project LinkedIn post or profile link")
+    youtube_link = models.URLField(max_length=500,blank=True, null=True, help_text="YouTube video link for project demo")
+    linkedin_link = models.URLField(max_length=500,blank=True, null=True, help_text="Project LinkedIn post or profile link")
     media_type = models.CharField(max_length=10 ,choices=MEDIA_TYPE_CHOICES)
     created_at = models.DateField(auto_now_add=True)
 
@@ -38,8 +38,8 @@ class Project(models.Model):
 
 class ProjectCustomLink(models.Model):
     project = models.ForeignKey(Project, related_name='custom_links', on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    url = models.URLField()
+    name = models.CharField(max_length=200)
+    url = models.URLField(max_length=500)
 
     def __str__(self):
         return f"{self.name}: {self.url}"
