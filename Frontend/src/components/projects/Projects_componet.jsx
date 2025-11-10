@@ -730,19 +730,23 @@ useEffect(() => {
 
                         })
                 )}
-                {!initialLoad && hasMore && (
+                 {!initialLoad && (
                     <div 
                         ref={observerTarget} 
                         className="h-20 flex items-center justify-center"
+                        style={{ border: '1px dashed red' }} 
                     >
                         {loading && (
                             <div className="w-8 h-8 border-4 border-t-transparent border-purple-600 border-solid rounded-full animate-spin"></div>
                         )}
+                        {!loading && hasMore && (
+                            <span className="text-gray-500 text-xs">Scroll for more...</span>
+                        )}
                     </div>
                 )}
-                {!hasMore && project.length > 0 && (
+                {!hasMore && project.length > 0 && !initialLoad && (
                     <div className="text-center text-gray-400 py-8">
-                        You've reached the end
+                        You've reached the end ({project.length} total)
                     </div>
                 )}
 
