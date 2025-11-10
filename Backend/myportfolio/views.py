@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken,AccessToken
-from .models import Project,ProjectImage,ProjectVideo,ProjectComment,ProjectLike,ProjectBookmark,JourneyMilestone,JourneyAchievement
+from .models import Project,ProjectImage,ProjectVideo,ProjectComment,ProjectLike,ProjectBookmark,JourneyMilestone,JourneyAchievement,ProjectCustomLink
 from django.shortcuts import get_object_or_404
 from django.utils.timezone import localtime
 import json
@@ -155,6 +155,16 @@ def create_project(request):
             ProjectImage.objects.create(project =projects,image = img )
     elif request.data.get('media_type') == 'video':
         ProjectVideo.objects.create(project = projects , video = request.FILES['video'])
+    custom_links = request.data.get('custom_links')
+    if custom_links:
+        import json
+        for link in json.loads(custom_links):
+            ProjectCustomLink.objects.create(
+                project=projects,
+                name=link['name'],
+                url=link['url']
+            )
+
     return Response({'message': 'Project Created Successfully'},status=status.HTTP_201_CREATED)
 
 

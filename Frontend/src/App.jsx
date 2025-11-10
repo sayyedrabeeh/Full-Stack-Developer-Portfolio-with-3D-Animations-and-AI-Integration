@@ -65,12 +65,57 @@ function App() {
         theme="dark"
         toastStyle={{ background: "#1e293b", color: "#fff" }}
       />
-            {backendLoading && (
-            <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-90 text-white text-lg font-semibold">
-              <div className="loader mb-4"></div>
-              Starting backend server… please wait a few seconds.
+       {backendLoading && (
+          <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-900/98 backdrop-blur-sm">
+            <div className="mb-6">
+              <div className="w-20 h-20 bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-xl">
+                <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2" />
+                </svg>
+              </div>
             </div>
-          )}
+            <h3 className="text-xl font-semibold text-white mb-2">Starting Backend Server</h3>
+            <p className="text-slate-400 text-sm mb-8">Please wait while we initialize your environment</p>
+            <div className="w-96 max-w-md">
+              <div className="relative h-2 bg-slate-800 rounded-full overflow-hidden">
+                <div className="progress-bar h-full bg-indigo-600 rounded-full"></div>
+              </div>
+              <div className="text-center mt-3">
+                <span className="progress-percentage text-indigo-400 font-medium text-base"></span>
+              </div>
+            </div>
+
+            <style >{`
+              @keyframes fillProgress {
+                0% { width: 0%; }
+                100% { width: 100%; }
+              }
+
+              .progress-bar {
+                animation: fillProgress 3s ease-in-out forwards;
+              }
+
+              .progress-percentage::after {
+                content: "0%";
+                animation: updatePercentage 3s ease-in-out forwards;
+              }
+
+              @keyframes updatePercentage {
+                0% { content: "0%"; }
+                10% { content: "12%"; }
+                20% { content: "28%"; }
+                30% { content: "41%"; }
+                40% { content: "55%"; }
+                50% { content: "64%"; }
+                60% { content: "73%"; }
+                70% { content: "82%"; }
+                80% { content: "91%"; }
+                90% { content: "97%"; }
+                100% { content: "100%"; }
+              }
+            `}</style>
+          </div>
+)}
 
 
       <Routes>
@@ -153,6 +198,22 @@ function App() {
           @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+
+
+
+                .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #6366f1;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+          }
+
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+
             `}
           </style>
     </>

@@ -631,6 +631,18 @@ useEffect(() => {
                                                 YouTube
                                             </a>
                                         )}
+                                        
+                                        {p.custom_links?.length > 0 && (
+                                        <div className="mt-3 space-y-1">
+                                            {p.custom_links.map((link, i) => (
+                                            <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
+                                                {link.name}
+                                            </a>
+                                            ))}
+                                        </div>
+                                        )}
+    
+
                                     </div>
 
                                     </div>

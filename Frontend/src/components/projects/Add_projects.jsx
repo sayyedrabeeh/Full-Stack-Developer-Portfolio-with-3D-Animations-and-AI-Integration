@@ -1,5 +1,5 @@
 import React, { useState, useEffect,useCallback,memo } from "react";
-import { Upload,Video,Image,Loader2,CheckCircle2,ExternalLink,Github,Clock,Code,Sparkles,ArrowLeft,X,AlertCircle,ChevronDown } from "lucide-react";
+import { Upload,Video,Image,Loader2,CheckCircle2,ExternalLink,Link,Tag ,Github,Clock,Code,Sparkles,ArrowLeft,X,AlertCircle,ChevronDown } from "lucide-react";
 import { toast } from "react-toastify";
 import api from "../../api/axios";
 import { useOutletContext } from "react-router-dom";
@@ -10,7 +10,12 @@ import { useOutletContext } from "react-router-dom";
                         handleChange,
                         focusField,
                         setFocusField,
-                        errors
+                        errors,
+                        customLinks,
+                        handleCustomLinkChange,
+                        removeCustomLink,
+                        addCustomLink
+                        
     }) {
         return(
         <>
@@ -149,6 +154,105 @@ import { useOutletContext } from "react-router-dom";
                             </p>
                         )}
                     </div>
+
+                     <div className="md:col-span-2 space-y-6 mt-6">
+                
+                    <div className="flex items-center justify-between pb-4 border-b border-slate-700/50">
+                        <div className="flex items-center gap-3">
+                            <Link className="w-5 h-5 text-indigo-400" />
+                            <h3 className="text-white font-semibold text-lg">Custom Links</h3>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={addCustomLink}
+                            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-xl transition-all duration-300 shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50"
+                        >
+                            + Add Link
+                        </button>
+                    </div>
+
+                    
+                    {customLinks.length === 0 && (
+                        <div className="text-center py-12 bg-slate-800/30 rounded-2xl border-2 border-dashed border-slate-700">
+                            <Link className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+                            <p className="text-slate-400 text-sm">No custom links added yet</p>
+                            <p className="text-slate-500 text-xs mt-1">Click "Add Link" to get started</p>
+                        </div>
+                    )}
+
+                    
+                    {customLinks.length > 0 && (
+                        <div className="space-y-4">
+                            {customLinks.map((link, idx) => (
+                                <div
+                                    key={idx}
+                                    className="relative bg-slate-800/40 border-2 border-slate-700 rounded-2xl p-5 hover:border-indigo-500/50 transition-all duration-300 group"
+                                >
+                                    <div className="grid md:grid-cols-2 gap-4">
+                                    
+                                        <div className="space-y-2">
+                                            <label className="flex items-center gap-2 text-xs font-semibold text-slate-400">
+                                                <Tag className="w-3 h-3" />
+                                                Link Name
+                                            </label>
+                                            <input
+                                                type="text"
+                                                placeholder="e.g., Medium, Dribbble, Behance"
+                                                value={link.name}
+                                                onChange={(e) => handleCustomLinkChange(idx, 'name', e.target.value)}
+                                                onFocus={() => setFocusField(`custom_name_${idx}`)}
+                                                onBlur={() => setFocusField(null)}
+                                                className={`w-full px-4 py-3 bg-slate-900/60 border-2 rounded-xl transition-all duration-300 outline-none text-white placeholder-slate-500 font-medium
+                                                    ${focusField === `custom_name_${idx}` 
+                                                        ? 'border-indigo-500 shadow-lg shadow-indigo-500/30' 
+                                                        : 'border-slate-700'
+                                                    }
+                                                    hover:border-indigo-400/70 hover:bg-slate-900/80`}
+                                            />
+                                        </div>
+
+                                    
+                                        <div className="space-y-2">
+                                            <label className="flex items-center gap-2 text-xs font-semibold text-slate-400">
+                                                <ExternalLink className="w-3 h-3" />
+                                                URL
+                                            </label>
+                                            <input
+                                                type="url"
+                                                placeholder="https://example.com"
+                                                value={link.url}
+                                                onChange={(e) => handleCustomLinkChange(idx, 'url', e.target.value)}
+                                                onFocus={() => setFocusField(`custom_url_${idx}`)}
+                                                onBlur={() => setFocusField(null)}
+                                                className={`w-full px-4 py-3 bg-slate-900/60 border-2 rounded-xl transition-all duration-300 outline-none text-white placeholder-slate-500 font-medium
+                                                    ${focusField === `custom_url_${idx}` 
+                                                        ? 'border-indigo-500 shadow-lg shadow-indigo-500/30' 
+                                                        : 'border-slate-700'
+                                                    }
+                                                    hover:border-indigo-400/70 hover:bg-slate-900/80`}
+                                            />
+                                        </div>
+                                    </div>
+
+                            
+                                    <button
+                                        type="button"
+                                        onClick={() => removeCustomLink(idx)}
+                                        className="absolute -top-2 -right-2 p-2 bg-red-500/10 hover:bg-red-500/20 border-2 border-red-500/50 hover:border-red-500 rounded-xl text-red-400 hover:text-red-300 transition-all duration-300 opacity-0 group-hover:opacity-100"
+                                        title="Remove link"
+                                    >
+                                        <X className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+
+
+
+
 
 
                 </div>
@@ -404,6 +508,9 @@ export default function Add_Project() {
         project_type: "",
         media_type : 'image' 
     })
+    const [customLinks, setCustomLinks] = useState([
+  { name: '', url: '' }  
+]);
 
     const [files, setFiles] = useState([])
     const [video, setVideo] = useState(null)
@@ -495,6 +602,21 @@ export default function Add_Project() {
 
     const removeVideo = () => setVideo(null)
 
+    const handleCustomLinkChange = (index, field, value) => {
+        const updatedLinks = [...customLinks];
+        updatedLinks[index][field] = value;
+        setCustomLinks(updatedLinks);
+    };
+
+    const addCustomLink = () => {
+        setCustomLinks([...customLinks, { name: '', url: '' }]);
+    };
+
+    const removeCustomLink = (index) => {
+        setCustomLinks(customLinks.filter((_, i) => i !== index));
+    };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (Object.keys(errors).length > 0 || !formData.name || !formData.description || !formData.github_link || !formData.media_type ||!formData.project_type || !formData.tech_stack  ) {
@@ -513,6 +635,7 @@ export default function Add_Project() {
         setLoading(true)
         const data = new FormData()
         Object.entries(formData).forEach(([key, value]) => data.append(key, value))
+        data.append('custom_links', JSON.stringify(customLinks.filter(l => l.name && l.url)));
         
         if (formData.media_type === 'image') {
             files.forEach((file) => data.append('images',file))
@@ -584,6 +707,10 @@ export default function Add_Project() {
                                 focusField={focusField}
                                 setFocusField={setFocusField}
                                 errors = {errors}
+                                customLinks = {customLinks}
+                                handleCustomLinkChange = {handleCustomLinkChange}
+                                removeCustomLink = {removeCustomLink}
+                                addCustomLink = {addCustomLink}
                             />
                             <Media_section
                                 formData={formData}
