@@ -26,9 +26,16 @@ import Add_Project from "./components/projects/Add_projects";
 import Saved from "./components/projects/Saved";
 import UsersPage from "./components/users";
 
+import { useContext } from "react";
+import { BackendContext } from "./api/BackendContext.jsx";
+
+
 function App() {
   const dragAreaRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
+
+  
+ const { backendLoading } = useContext(BackendContext);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 1000);
@@ -58,6 +65,13 @@ function App() {
         theme="dark"
         toastStyle={{ background: "#1e293b", color: "#fff" }}
       />
+            {backendLoading && (
+            <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-90 text-white text-lg font-semibold">
+              <div className="loader mb-4"></div>
+              Starting backend server… please wait a few seconds.
+            </div>
+          )}
+
 
       <Routes>
        
@@ -126,6 +140,19 @@ function App() {
                 background-size: 600% 600%;
                 animation: gradient 20s ease infinite;
               }
+                          
+                .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #6366f1;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+          }
+
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
             `}
           </style>
     </>

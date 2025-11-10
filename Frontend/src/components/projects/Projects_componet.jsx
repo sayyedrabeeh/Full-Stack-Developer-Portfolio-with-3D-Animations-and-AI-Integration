@@ -1,10 +1,13 @@
-import React, { useState, useEffect,useCallback,useRef } from "react"
+import React, { useState, useEffect, useCallback, useContext,useRef } from "react"
+
  
 import { ArrowLeft, Heart, MessageCircle, Share2Icon, Trash2 ,Github,Bookmark, BookmarkCheck, ExternalLink, X,ChevronLeft, ChevronRight, Calendar, Send,Youtube ,Linkedin } from "lucide-react"
 import moment from "moment";
 import api from "../../api/axios";
 import { toast } from "react-toastify";
 import CommentBox from "./conmment";
+import { BackendContext } from '../../api/BackendContext.jsx';
+
 
  const safeJson = async (response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -21,13 +24,13 @@ import CommentBox from "./conmment";
     };
 
 export default function Project_Component({ Project_type }) {
+      const { backendLoading } = useContext(BackendContext);
     
      
     const [project, setProject] = useState([])
     const [currentImgIdx, setCurrentImgIdx] = useState({})
     const [showCommentBox, setShowCommentBox] = useState(false)
     const [currentProjectId, setCurrentProjectId] = useState(null)
-    const [commentText, setCommentText] = useState('')
     const [comments, setComments] = useState([])
     const [isSuperUser, setIsSuperUser] = useState(false);
     const [currentUserId, setCurrentUserId] = useState(null);
@@ -96,13 +99,15 @@ export default function Project_Component({ Project_type }) {
     }, [Project_type, loading, hasMore]);
 
     
-    useEffect(() => {
+useEffect(() => {
+    if (!backendLoading) {
         setProject([]);
         setOffset(0);
         setHasMore(true);
         setInitialLoad(true);
         fetchProjects(0, true);
-    }, [Project_type]);
+    }
+}, [Project_type, backendLoading]);
 
      
     useEffect(() => {
