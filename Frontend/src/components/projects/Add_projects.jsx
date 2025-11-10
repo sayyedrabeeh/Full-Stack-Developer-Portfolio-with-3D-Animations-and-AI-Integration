@@ -248,13 +248,6 @@ import { useOutletContext } from "react-router-dom";
                         </div>
                     )}
                 </div>
-
-
-
-
-
-
-
                 </div>
             </div>
 
@@ -336,6 +329,7 @@ import { useOutletContext } from "react-router-dom";
                             <option value="django">Django</option>
                             <option value="react">React</option>
                             <option value="opencv">OpenCV</option>
+                            <option value="html">HTML</option>
                             <option value="ai">AI / Machine Learning</option>
                             <option value="miniprojects">Mini Projects</option>
                             <option value="learning">Learning / Practice</option>

@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from "react";
  
-import { Home,Globe,Layers,Zap,Terminal,Brain,Puzzle,BookOpen ,Github,Mail, TrendingUp, Linkedin,Menu,X,LogOut,FolderPlus,ArrowLeft,Bookmark  } from "lucide-react";
+import { Home,Globe,Layers,Zap,FileCode2,Terminal,Brain,Puzzle,BookOpen ,Github,Mail, TrendingUp, Linkedin,Menu,X,LogOut,FolderPlus,ArrowLeft,Bookmark  } from "lucide-react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { SiLeetcode } from "react-icons/si";
  
@@ -18,6 +18,7 @@ export default function AppLayout() {
     { id: "react", name: "React Frontend", icon: Zap, color: "bg-cyan-500" },
     { id: "opencv", name: "Computer Vision", icon: Terminal, color: "bg-indigo-500" },
     { id: "ai", name: "AI & Assistants", icon: Brain, color: "bg-pink-500" },
+    { id: "html", name: "HTML Projects", icon: FileCode2, color: "bg-orange-500" },
     { id: "miniprojects", name: "Mini Projects", icon: Puzzle, color: "bg-yellow-600" },
     { id: "learnings", name: "Learning & Docs", icon: BookOpen, color: "bg-sky-500" },
   ];
@@ -28,6 +29,7 @@ export default function AppLayout() {
     react: 0,
     opencv: 0,
     ai: 0,
+    html: 0,
     miniprojects: 0,
     learning:0
 
@@ -264,6 +266,11 @@ useEffect(() => {
             <div className="flex justify-between  items-center p-2  rounded-lg bg-pink-900/30 border border-pink-800/50 " >
               <span className="text-pink-300">AI</span>
               <span className="font-bold text-pink-200 "> {counts.ai}</span>
+            </div>
+            
+            <div className="flex justify-between  items-center p-2  rounded-lg bg-orange-900/30 border border-orange-800/50 " >
+              <span className="text-orange-300">HTML</span>
+              <span className="font-bold text-orange-200 "> {counts.html}</span>
             </div>
             
             

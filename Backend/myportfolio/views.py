@@ -179,6 +179,7 @@ def project_counts(request):
         'react':Project.objects.filter(project_type = 'react').count(),
         'opencv':Project.objects.filter(project_type = 'opencv').count(),
         'ai':Project.objects.filter(project_type = 'ai').count(),
+        'html':Project.objects.filter(project_type = 'html').count(),
         'miniprojects':Project.objects.filter(project_type = 'miniprojects').count(),
         'learning':Project.objects.filter(project_type = 'learning').count(),
     }

@@ -25,6 +25,7 @@ import Miniprojects from "./components/projects/MiniProjects";
 import Add_Project from "./components/projects/Add_projects";
 import Saved from "./components/projects/Saved";
 import UsersPage from "./components/users";
+import HTML1 from "./components/projects/htlm.jsx";
 
 import { useContext } from "react";
 import { BackendContext } from "./api/BackendContext.jsx";
@@ -165,6 +166,7 @@ function App() {
           <Route path="react" element={<ReactProjects />} />
           <Route path="opencv" element={<Opencv />} />
           <Route path="ai" element={<AI />} />
+          <Route path="html" element={<HTML1 />} />
           <Route path="learnings" element={<Learning />} />
           <Route path="miniprojects" element={<Miniprojects />} />
           <Route path="add_project" element={<Add_Project />} />

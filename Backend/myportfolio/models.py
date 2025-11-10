@@ -16,6 +16,7 @@ class Project(models.Model):
         ('react','React'),
         ('opencv','OpenCv'),
         ('ai','AI'),
+        ('html','HTML'),
         ('miniprojects','MiniProjects'),
         ('learning','Learning')
     ]

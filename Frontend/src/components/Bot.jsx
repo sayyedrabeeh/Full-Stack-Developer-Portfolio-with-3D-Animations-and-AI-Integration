@@ -530,11 +530,11 @@ export default function ChatBot() {
                             <div className="absolute inset-0 bg-black opacity-20"></div>
                             <div className="flex items-center gap-3 relative z-10">
                                 <div className="relative">
-                                    <img 
-                                        src="/images/rabi2.jpg" 
-                                        alt="Sayyed Rabeeh"
-                                        className="w-12 h-12 rounded-full border-2 border-white shadow-lg"
-                                    />
+                                <img
+                                src="/images/rabi2.jpg"
+                                alt="Sayyed Rabeeh"
+                                className="relative w-14 h-14 rounded-full object-cover border-2 border-white/70" 
+                                />
                                  </div>
                                 <div>
                                     <h2 className="font-bold text-lg">Sayyed Rabeeh</h2>
@@ -642,7 +642,6 @@ export default function ChatBot() {
                 60% { content: '..'; }
                 80%, 100% { content: '...'; }
                 }
-
             `}</style>
         </>
 )}
