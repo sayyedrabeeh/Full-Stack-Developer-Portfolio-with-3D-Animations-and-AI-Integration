@@ -724,12 +724,27 @@ useEffect(() => {
                                     </div>
                                 </div>
                             </div>
-                                  <div ref={observerTarget}></div> 
+                                
                                  </article>
                             )
 
                         })
-                ) }
+                )}
+                {!initialLoad && hasMore && (
+                    <div 
+                        ref={observerTarget} 
+                        className="h-20 flex items-center justify-center"
+                    >
+                        {loading && (
+                            <div className="w-8 h-8 border-4 border-t-transparent border-purple-600 border-solid rounded-full animate-spin"></div>
+                        )}
+                    </div>
+                )}
+                {!hasMore && project.length > 0 && (
+                    <div className="text-center text-gray-400 py-8">
+                        You've reached the end
+                    </div>
+                )}
 
             </main>
         
