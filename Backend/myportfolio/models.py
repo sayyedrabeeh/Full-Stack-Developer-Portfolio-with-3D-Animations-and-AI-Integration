@@ -59,7 +59,7 @@ class ProjectImage(models.Model):
 class ProjectVideo(models.Model):
 
     project = models.OneToOneField(Project,on_delete=models.CASCADE,related_name='video')
-    video = CloudinaryField('video') 
+    video = CloudinaryField('video',resource_type='video') 
 
     def __str__(self):
         return f'video for {self.project.name}'
