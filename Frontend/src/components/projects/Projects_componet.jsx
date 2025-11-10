@@ -266,6 +266,13 @@ useEffect(() => {
             </header>
 
             <main className="max-w-2xl mx-auto px-4 py-4 space-y-6 pb-20 ">
+                  
+                                    {loading && (
+                                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                                        <div className="w-16 h-16 border-4 border-t-transparent border-purple-600 border-solid rounded-full animate-spin"></div>
+                                    </div>
+                                    )}
+
                 {project.length === 0 ? (
  
  
@@ -717,13 +724,7 @@ useEffect(() => {
                                     </div>
                                 </div>
                             </div>
-                                    <div ref={observerTarget}></div> 
-                                    {loading && (
-                                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                                        <div className="w-16 h-16 border-4 border-t-transparent border-purple-600 border-solid rounded-full animate-spin"></div>
-                                    </div>
-                                    )}
-
+                                  <div ref={observerTarget}></div> 
                                  </article>
                             )
 

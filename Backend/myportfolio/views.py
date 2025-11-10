@@ -239,7 +239,7 @@ def get_projects(request):
         data.append(item)
     return Response({
         'projects': data,
-        'hasMore': (offset + limit) < total_count,
+        'hasMore': len(project_batch) == limit,
         'total': total_count
     })
 
