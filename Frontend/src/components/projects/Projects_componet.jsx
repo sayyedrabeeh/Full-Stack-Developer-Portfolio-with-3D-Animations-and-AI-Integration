@@ -53,6 +53,8 @@ export default function Project_Component({ Project_type }) {
  
     const baseURL = "https://portfolio-backend-0gnb.onrender.com"
 
+    
+
     const fetchProjects = useCallback(async (currentOffset, isInitial = false) => { 
         if (loading || (!hasMore && !isInitial)) return;
         setLoading(true);
@@ -85,7 +87,8 @@ export default function Project_Component({ Project_type }) {
                     return newIdx;
                 });
             }
-            setOffset(prev => prev + LIMIT);
+            
+     
             
         } catch (e) {
             console.log('load error', e);
@@ -108,15 +111,20 @@ useEffect(() => {
         fetchProjects(0, true);
     }
 }, [Project_type, backendLoading]);
+    
+    useEffect(() => {
+  if (!initialLoad && hasMore && !loading) {
+    fetchProjects(offset);
+  }
+}, [offset]);
 
      
     useEffect(() => {
         const observer = new IntersectionObserver(
             entries => {
                 if (entries[0].isIntersecting && hasMore && !loading && !initialLoad) {
-                    const newOffset = offset + LIMIT;
-                    setOffset(newOffset);
-                    fetchProjects(newOffset);
+                    setOffset(prevOffset => prevOffset + LIMIT);
+                
                 }
             },
             { threshold: 0.5 }
@@ -132,7 +140,7 @@ useEffect(() => {
                 observer.unobserve(currentTarget);
             }
         };
-    }, [hasMore, loading, offset, fetchProjects, initialLoad]);
+    }, [hasMore, loading,  initialLoad]);
 
 
 
@@ -730,25 +738,22 @@ useEffect(() => {
 
                         })
                 )}
-                 {!initialLoad && (
-                    <div 
-                        ref={observerTarget} 
-                        className="h-20 flex items-center justify-center"
-                        style={{ border: '1px dashed red' }} 
-                    >
-                        {loading && (
-                            <div className="w-8 h-8 border-4 border-t-transparent border-purple-600 border-solid rounded-full animate-spin"></div>
-                        )}
-                        {!loading && hasMore && (
-                            <span className="text-gray-500 text-xs">Scroll for more...</span>
-                        )}
-                    </div>
-                )}
-                {!hasMore && project.length > 0 && !initialLoad && (
-                    <div className="text-center text-gray-400 py-8">
-                        You've reached the end ({project.length} total)
-                    </div>
-                )}
+          <div 
+            ref={observerTarget}
+            className="mt-4 h-12 flex items-center justify-center"
+            >
+            {loading ? (
+                <span className="text-gray-400 text-xs animate-pulse">Loading more...</span>
+            ) : hasMore ? (
+                <span className="text-gray-500 text-xs">Scroll for more...</span>
+            ) : (
+                !initialLoad && project.length > 0 && (
+                <span className="text-gray-400 text-xs">You've reached the end ({project.length} total)</span>
+                )
+            )}
+            </div>
+
+
 
             </main>
         
