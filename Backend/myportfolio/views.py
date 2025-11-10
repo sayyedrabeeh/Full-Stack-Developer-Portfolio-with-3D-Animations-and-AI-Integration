@@ -198,7 +198,9 @@ def get_projects(request):
         projects = Project.objects.all()
  
     user = request.user if request.user.is_authenticated else None
-    projects = projects.order_by('-id')
+    projects = projects.order_by('-id').prefetch_related(
+        'custom_links', 'images', 'likes', 'comments', 'bookmarks'
+    )
     logger.info("Projects queryset: %s", list(projects.values('id','name','created_at')))
 
     total_count = projects.count()
@@ -215,6 +217,7 @@ def get_projects(request):
             'github_link':p.github_link,
             'linkedin_link': p.linkedin_link,
             'youtube_link': p.youtube_link,
+            'custom_links': [{'name': link.name, 'url': link.url} for link in p.custom_links.all()],
             'tech_stack':p.tech_stack,
             'project_type':p.project_type,
             'time_spent':p.time_spent,
