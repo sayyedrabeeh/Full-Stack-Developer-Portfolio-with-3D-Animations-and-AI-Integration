@@ -154,7 +154,17 @@ def create_project(request):
         for img in request.FILES.getlist('images'):
             ProjectImage.objects.create(project =projects,image = img )
     elif request.data.get('media_type') == 'video':
-        ProjectVideo.objects.create(project=projects , video=request.FILES.get('video'))
+        video_file = request.FILES.get('video')
+        if video_file:
+            try:
+                ProjectVideo.objects.create(project=projects, video=video_file)
+            except Exception as e:
+                 
+                return Response({'error': f'Video upload failed: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+             
+            return Response({'error': 'No video file provided'}, status=status.HTTP_400_BAD_REQUEST)
+
     custom_links = request.data.get('custom_links')
     if custom_links:
         import json
