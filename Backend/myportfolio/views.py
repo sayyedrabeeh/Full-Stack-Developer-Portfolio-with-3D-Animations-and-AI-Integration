@@ -154,7 +154,7 @@ def create_project(request):
         for img in request.FILES.getlist('images'):
             ProjectImage.objects.create(project =projects,image = img )
     elif request.data.get('media_type') == 'video':
-        ProjectVideo.objects.create(project = projects , video = request.FILES['video'])
+        ProjectVideo.objects.create(project=projects , video=request.FILES.get('video'))
     custom_links = request.data.get('custom_links')
     if custom_links:
         import json
