@@ -48,7 +48,7 @@ export default function Project_Component({ Project_type }) {
 
     
     const observerTarget = useRef(null)
-    const LIMIT = 3;
+    const LIMIT = 10;
      
  
     const baseURL = "https://portfolio-backend-0gnb.onrender.com"
@@ -748,7 +748,7 @@ useEffect(() => {
                 <span className="text-gray-500 text-xs">Scroll for more...</span>
             ) : (
                 !initialLoad && project.length > 0 && (
-                <span className="text-gray-400 text-xs">You've reached the end ({project.length} total)</span>
+                <span className="text-gray-400 text-xs">You've reached the end total ({project.length} projects )</span>
                 )
             )}
             </div>
