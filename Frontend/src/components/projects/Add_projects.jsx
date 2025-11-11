@@ -84,7 +84,7 @@ import { useOutletContext } from "react-router-dom";
                                             
                             className={`w-full px-5 py-4 bg-slate-800/60 border-2 rounded-2xl transition-all duration-300 outline-none text-white placeholder-slate-500 font-medium 
                                                 ${focusField === 'live_link' ? 'border-emerald-500 shadow-xl shadow-emerald-500/30' : 'border-slate-700'} ${errors.live_link ? 'border-red-500 ' : ''}
-                                                hover:border-emerald-400/70 hover:bg-slate-800/80 `} placeholder="https://yourproject.com" required />
+                                                hover:border-emerald-400/70 hover:bg-slate-800/80 `} placeholder="https://yourproject.com"   />
                         {errors.live_link && (
                             <p className="text-xs text-red-400  flex items-center gap-1 mt-1" >
                                 <AlertCircle className="w-3 h-3" />{errors.live_link}
