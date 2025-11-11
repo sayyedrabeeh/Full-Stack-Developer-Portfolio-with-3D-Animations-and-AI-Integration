@@ -159,10 +159,10 @@ def create_project(request):
             try:
                 ProjectVideo.objects.create(project=projects, video=video_file)
             except Exception as e:
-                 
+                projects.delete()
                 return Response({'error': f'Video upload failed: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-             
+            projects.delete() 
             return Response({'error': 'No video file provided'}, status=status.HTTP_400_BAD_REQUEST)
 
     custom_links = request.data.get('custom_links')
