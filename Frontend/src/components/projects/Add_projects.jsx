@@ -657,6 +657,7 @@ export default function Add_Project() {
             });
             setFiles([])
             setVideo(null)
+            setCustomLinks([{ name: '', url: '' }]); 
               }
         catch(err) {
             console.error(err)
