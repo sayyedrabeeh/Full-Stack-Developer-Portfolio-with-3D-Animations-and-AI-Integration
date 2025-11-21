@@ -393,7 +393,7 @@ useEffect(() => {
                                     <button onClick={() => openComments(p.id)}
                                         className={`flex items-center gap-1.5 transition-all hover:scale-110 ${isCommentsOpen ? ' text-blue-400' : 'text-gray-300'}`}>
                                         <MessageCircle className={`w-6 h-6 ${isCommentsOpen ? 'fill-current' : ''}`} />
-                                        <span className="text-sm font-medium">{comments.length || 0}</span>
+                                        <span className="text-sm font-medium">{p.comments || 0}</span>
                                     </button>
                                                                 
                                         <button
