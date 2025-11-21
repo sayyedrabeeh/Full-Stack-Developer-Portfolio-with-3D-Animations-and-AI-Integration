@@ -1,6 +1,6 @@
 
 
-![ banner](https://raw.githubusercontent.com/sayyedrabeeh/portfolio/main/image/banner.png)
+![banner](https://raw.githubusercontent.com/sayyedrabeeh/portfolio/main/image/banner.png)
 
 <div align="center">
 
