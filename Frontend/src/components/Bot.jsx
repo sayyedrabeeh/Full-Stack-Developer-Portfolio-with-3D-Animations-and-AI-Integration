@@ -118,7 +118,49 @@ export default function ChatBot() {
 
 
     
-     
+    const getGeminiResponse = async (userInput) => {
+        try {
+            const response = await fetch(GEMINI_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: [
+                        {
+                            parts: [
+                                
+                                {
+                                    text : SYSTEM_PROMPT
+                                },
+                                {
+                                    text: `User : ${userInput}\n\nAssistant:`
+                                }
+                            ]
+                        }
+                    ],
+                     generationConfig: {
+                        temperature: 0.7,
+                        maxOutputTokens: 800,
+                        topP: 0.9,
+                        topK: 40
+                    }
+                })
+            })
+            if (!response.ok) {
+                throw new Error(`Api Error : ${response.status}`)
+            }
+            const data = await response.json()
+            const aiResponse = data.candidates[0].content.parts[0].text
+            return aiResponse
+        
+        } catch (error) {
+            console.log('Gemni api error', error)
+         return `😅 Oops! I'm having a moment. My AI brain needs a quick reboot. Try asking again, or reach out directly:\n\n📧 Email: sayyedrabeehom240@gmail.com\n📱 WhatsApp: 9207286895`   
+        }
+        
+
+     }
      
  
     
@@ -132,11 +174,16 @@ export default function ChatBot() {
         setIsTyping(true);  
 
         try {
-            let botReply = getBotResponse(userInput);
+            let botReply = await getGeminiResponse(userInput);
 
-            if (botReply && typeof botReply.then === 'function') {
-            botReply = await botReply;
-            }
+            const delay = Math.min(2000, 500 + botReply.length * 20)
+
+            setTimeout(() => {
+                const botMessage = { type: "bot", text: botReply };
+                setMessage(prev => [...prev, botMessage]);
+                setIsTyping(false);
+            }, delay)
+ 
 
             if (botReply?.action === "clear") {
             setTimeout(() => {
@@ -154,14 +201,9 @@ export default function ChatBot() {
             return;
             }
  
-            const delay = Math.min(2000, 400 + botReply.length * 30); 
-      
+       
 
-            setTimeout(() => {
-            const botMessage = { type: "bot", text: botReply };
-            setMessage(prev => [...prev, botMessage]);
-            setIsTyping(false);
-            }, delay);
+            
 
         } catch (err) {
             console.error("Bot error:", err);
