@@ -16,7 +16,7 @@ export default function ChatBot() {
  
     const textareaRef = useRef(null);
  
-    const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE";
+    const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
     const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
   
     const scrollToBottom = () => {
@@ -114,7 +114,7 @@ export default function ChatBot() {
         - Keep responses natural and conversational
         - Use markdown for links when sharing URLs
 
-        Now respond to user queries as Sayyed Rabeeh's personal AI assistant!`;
+        Now respond to user queries as Sayyed Rabeeh's personal AI assistant! Be conversational, use emojis, keep answers concise`;
 
 
     
