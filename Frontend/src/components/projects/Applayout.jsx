@@ -99,7 +99,7 @@ useEffect(() => {
  
           </a>
           <a
-            href="https://linkedin.com"
+            href="https://www.linkedin.com/in/sayyed-rabeeh/"
             target="_blank"
             rel="noreferrer"
             className="p-2.5 bg-gray-800 rounded-lg hover:bg-gray-700 transition-all duration-200"
