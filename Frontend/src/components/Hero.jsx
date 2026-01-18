@@ -89,53 +89,7 @@ function HeroSection({ dragAreaRef }) {
           >
             Resume
           </button>
- <AnimatePresence>
-          {showPopup && (
-            <motion.div
-              initial={{ opacity: 0, y: -15, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -15, scale: 0.95 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-              className="absolute -top-24 left-1/2 -translate-x-1/2
-                        bg-gradient-to-r from-blue-600/20 via-cyan-500/20 to-purple-600/20
-                        border border-blue-400/30 backdrop-blur-xl
-                        rounded-2xl shadow-[0_0_20px_rgba(0,0,0,0.3)]
-                        px-7 py-4 flex items-center gap-4
-                        text-white"
-            >
-              
-              <div className="flex items-center justify-center w-10 h-10 
-                              bg-blue-500/25 rounded-full border border-blue-400/30
-                              shadow-inner">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="rgb(147,197,253)"
-                  className="w-6 h-6 animate-spin-slow"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 8v4l3 3m6 1.5A9 9 0 1112 3v0a9 9 0 019 9z"
-                  />
-                </svg>
-              </div>
-
-              
-              <div className="flex flex-col">
-                <p className="font-semibold text-lg tracking-wide text-blue-100">
-                  Resume Under Preparation
-                </p>
-                <p className="text-gray-300 text-sm font-light">
-                  An updated professional version will be available soon. 🚀
-                </p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-       
+  
           <a
             href="https://github.com/sayyedrabeeh"
             target="_blank"
