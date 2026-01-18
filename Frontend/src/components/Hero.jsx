@@ -30,15 +30,14 @@ function HeroSection({ dragAreaRef }) {
 
  
   const handleResumeClick = () => {
-  setShowPopup(true);
-
   const link = document.createElement("a");
-  link.href = "/resume/Sayyed_Rabeeh_Resume.pdf";
+  link.href = "/Sayyed_Rabeeh_Resume.pdf";  
   link.download = "Sayyed_Rabeeh_Resume.pdf";
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
 
+  setShowPopup(true);
   setTimeout(() => setShowPopup(false), 2500);
 };
 
